@@ -1,0 +1,129 @@
+version: '3.8'
+
+services:
+  # ============================================================================
+  # PostgreSQL Database Service
+  # ============================================================================
+  postgres:
+    image: postgres:16-alpine
+    container_name: modeldoctor-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-modeldoctor_db}
+      POSTGRES_USER: ${POSTGRES_USER:-modeldoctor_admin}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-modeldoctor_secret_password_change_me}
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init-scripts/init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-modeldoctor_admin} -d ${POSTGRES_DB:-modeldoctor_db}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - modeldoctor-net
+
+  # ============================================================================
+  # MinIO S3-Compatible Object Storage Service
+  # ============================================================================
+  minio:
+    image: minio/minio:latest
+    container_name: modeldoctor-minio
+    restart: unless-stopped
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER:-minioadmin}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD:-minioadmin_secure_key}
+    ports:
+      - "${MINIO_PORT:-9000}:9000"
+      - "${MINIO_CONSOLE_PORT:-9001}:9001"
+    volumes:
+      - minio_data:/data
+    healthcheck:
+      test: ["CMD", "mc", "ready", "local"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - modeldoctor-net
+
+  # ============================================================================
+  # MinIO Bucket Auto-Provisioner
+  # ============================================================================
+  minio-init:
+    image: minio/mc:latest
+    container_name: modeldoctor-minio-init
+    depends_on:
+      minio:
+        condition: service_healthy
+    entrypoint: >
+      /bin/sh -c "
+      /usr/bin/mc alias set myminio http://minio:9000 ${MINIO_ROOT_USER:-minioadmin} ${MINIO_ROOT_PASSWORD:-minioadmin_secure_key};
+      /usr/bin/mc mb --ignore-existing myminio/model-doctor-artifacts;
+      /usr/bin/mc mb --ignore-existing myminio/model-doctor-datasets;
+      echo 'MinIO buckets created successfully.';
+      exit 0;
+      "
+    networks:
+      - modeldoctor-net
+
+  # ============================================================================
+  # Backend Orchestration Service (Optional Containerized Run)
+  # ============================================================================
+  backend:
+    build:
+      context: ../backend
+      dockerfile: Dockerfile
+    container_name: modeldoctor-backend
+    restart: unless-stopped
+    ports:
+      - "${BACKEND_PORT:-8080}:8080"
+    environment:
+      SPRING_PROFILES_ACTIVE: dev
+      ML_ENGINE_URL: http://ml-engine:8000
+      S3_ENDPOINT: http://minio:9000
+      S3_BUCKET: model-doctor-artifacts
+    depends_on:
+      postgres:
+        condition: service_healthy
+      minio:
+        condition: service_healthy
+    profiles:
+      - full-stack
+    networks:
+      - modeldoctor-net
+
+  # ============================================================================
+  # ML Engine Diagnostic Service (Optional Containerized Run)
+  # ============================================================================
+  ml-engine:
+    build:
+      context: ../ml-engine
+      dockerfile: Dockerfile
+    container_name: modeldoctor-ml-engine
+    restart: unless-stopped
+    ports:
+      - "${ML_ENGINE_PORT:-8000}:8000"
+    environment:
+      DEBUG: "true"
+      S3_ENDPOINT: http://minio:9000
+      S3_ACCESS_KEY: ${MINIO_ROOT_USER:-minioadmin}
+      S3_SECRET_KEY: ${MINIO_ROOT_PASSWORD:-minioadmin_secure_key}
+      S3_BUCKET: model-doctor-artifacts
+    depends_on:
+      minio:
+        condition: service_healthy
+    profiles:
+      - full-stack
+    networks:
+      - modeldoctor-net
+
+networks:
+  modeldoctor-net:
+    driver: bridge
+
+volumes:
+  postgres_data:
+  minio_data:

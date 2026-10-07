@@ -1,0 +1,1 @@
+{"learner": {"attributes": {"scikit_learn": "{\"classes_\": [0, 1, 2], \"n_classes_\": 3, \"unique_tag\": \"scenario_c_unique\"}"}, "learner_model_param": {"num_feature": "4", "num_class": "3"}}}

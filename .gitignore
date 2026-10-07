@@ -1,0 +1,58 @@
+# Model Doctor Monorepo .gitignore
+
+# Operating System
+.DS_Store
+Thumbs.db
+*.tmp
+
+# Environment Variables
+.env
+.env.local
+.env.*.local
+*.env
+
+# IDEs and Editors
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Node / Frontend
+node_modules/
+frontend/node_modules/
+frontend/.next/
+frontend/out/
+frontend/build/
+*.tsbuildinfo
+
+# Java / Backend
+target/
+backend/target/
+*.class
+*.jar
+*.war
+.mvn/wrapper/maven-wrapper.jar
+
+# Python / ML Engine
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+ml-engine/env/
+ml-engine/build/
+ml-engine/dist/
+ml-engine/*.egg-info/
+ml-engine/.venv/
+ml-engine/venv/
+.pytest_cache/
+.coverage
+htmlcov/
+.mypy_cache/
+.ruff_cache/
+
+# Docker & Storage Local Mounts
+infra/postgres_data/
+infra/minio_data/
+storage/
+backend/storage/

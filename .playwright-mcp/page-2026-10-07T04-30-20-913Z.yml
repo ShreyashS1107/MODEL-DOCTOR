@@ -1,0 +1,266 @@
+- generic [ref=e2]:
+  - banner [ref=e3]:
+    - generic [ref=e4]:
+      - generic [ref=e5]:
+        - generic [ref=e6]: MODEL DOCTOR
+        - generic [ref=e7]: INSTRUMENT v1.0
+      - generic [ref=e8]:
+        - generic [ref=e9]: "MODEL:"
+        - generic [ref=e10]: fraud_classifier_v17
+        - generic [ref=e11]: v17.4.2 • XGBoost 2.0.3
+      - generic [ref=e12]:
+        - generic [ref=e13]: "DATASET:"
+        - generic [ref=e14]: production_2026_09
+        - generic [ref=e15]: (250,000 rows, 47 features)
+    - generic [ref=e16]:
+      - generic [ref=e17]:
+        - generic [ref=e18]: "ACTIVE RUN:"
+        - generic [ref=e19]: run_690d3bfe
+      - generic [ref=e20]:
+        - button "COMPARE" [ref=e21] [cursor=pointer]
+        - button "EXPORT" [ref=e22] [cursor=pointer]
+        - button "RUN DIAGNOSTIC" [ref=e23] [cursor=pointer]
+  - generic [ref=e24]:
+    - generic [ref=e25]:
+      - link "HOME" [ref=e26] [cursor=pointer]:
+        - /url: /
+      - generic [ref=e27]: /
+      - link "DIAGNOSE SETUP" [ref=e28] [cursor=pointer]:
+        - /url: /diagnose
+      - generic [ref=e29]: /
+      - generic [ref=e30]: RUN run_690d3bfe
+    - generic [ref=e31]:
+      - generic [ref=e32]: • READY
+      - generic [ref=e33]: "|"
+      - link "[+ NEW DIAGNOSTIC RUN]" [ref=e34] [cursor=pointer]:
+        - /url: /diagnose
+  - generic [ref=e35]:
+    - complementary [ref=e36]:
+      - generic [ref=e37]:
+        - generic [ref=e38]: DIAGNOSTIC MODULES
+        - navigation [ref=e39]:
+          - button "01 OVERVIEW" [ref=e40] [cursor=pointer]:
+            - generic [ref=e41]:
+              - generic [ref=e42]: "01"
+              - generic [ref=e43]: OVERVIEW
+          - button "02 DATA QUALITY 1" [ref=e44] [cursor=pointer]:
+            - generic [ref=e45]:
+              - generic [ref=e46]: "02"
+              - generic [ref=e47]: DATA QUALITY
+            - generic [ref=e48]: "1"
+          - button "03 DATA LEAKAGE 1" [ref=e50] [cursor=pointer]:
+            - generic [ref=e51]:
+              - generic [ref=e52]: "03"
+              - generic [ref=e53]: DATA LEAKAGE
+            - generic [ref=e54]: "1"
+          - button "04 DISTRIBUTION DRIFT 1 1" [ref=e56] [cursor=pointer]:
+            - generic [ref=e57]:
+              - generic [ref=e58]: "04"
+              - generic [ref=e59]: DISTRIBUTION DRIFT
+            - generic [ref=e60]:
+              - generic [ref=e61]: "1"
+              - generic [ref=e62]: "1"
+          - button "05 MODEL PERFORMANCE" [ref=e63] [cursor=pointer]:
+            - generic [ref=e64]:
+              - generic [ref=e65]: "05"
+              - generic [ref=e66]: MODEL PERFORMANCE
+          - button "06 EXPLAINABILITY" [ref=e67] [cursor=pointer]:
+            - generic [ref=e68]:
+              - generic [ref=e69]: "06"
+              - generic [ref=e70]: EXPLAINABILITY
+          - button "07 FAIRNESS & BIAS 1" [ref=e71] [cursor=pointer]:
+            - generic [ref=e72]:
+              - generic [ref=e73]: "07"
+              - generic [ref=e74]: FAIRNESS & BIAS
+            - generic [ref=e75]: "1"
+          - button "08 ADVERSARIAL STRESS 1" [ref=e77] [cursor=pointer]:
+            - generic [ref=e78]:
+              - generic [ref=e79]: "08"
+              - generic [ref=e80]: ADVERSARIAL STRESS
+            - generic [ref=e81]: "1"
+          - button "09 EXPERIMENTS" [ref=e83] [cursor=pointer]:
+            - generic [ref=e84]:
+              - generic [ref=e85]: "09"
+              - generic [ref=e86]: EXPERIMENTS
+          - button "10 REPORTS" [ref=e87] [cursor=pointer]:
+            - generic [ref=e88]:
+              - generic [ref=e89]: "10"
+              - generic [ref=e90]: REPORTS
+      - generic [ref=e91]:
+        - generic [ref=e92]: "ORCHESTRATOR: JAVA 21"
+        - generic [ref=e93]: "ML RUNTIME: PY 3.14 / XGB 2.0"
+        - generic [ref=e94]: "LATENCY: 14ms"
+    - generic [ref=e95]:
+      - generic [ref=e96]:
+        - generic [ref=e97]:
+          - button "TOPOLOGY GRAPH" [ref=e98] [cursor=pointer]
+          - button "DISTRIBUTION SHIFT (KS / PSI)" [ref=e99] [cursor=pointer]
+          - button "CALIBRATION & ERROR (ECE)" [ref=e100] [cursor=pointer]
+          - button "MUTUAL INFO & LEAKAGE" [ref=e101] [cursor=pointer]
+          - button "RUN HISTORY (4)" [ref=e102] [cursor=pointer]
+        - generic [ref=e103]:
+          - generic [ref=e104]: "FILTER:"
+          - generic [ref=e105]:
+            - button "ALL (10)" [ref=e106]
+            - button "FLAGGED (6)" [ref=e107]
+            - button "CRITICAL (2)" [ref=e108]
+      - generic [ref=e110]:
+        - generic [ref=e111]:
+          - generic [ref=e112]: FEATURE RELATIONSHIP & ANOMALY TOPOLOGY • 10 NODES • 9 CORRELATION EDGES
+          - generic [ref=e113]:
+            - generic [ref=e114]: CRITICAL LEAK / DRIFT
+            - generic [ref=e116]: WARNING
+            - generic [ref=e118]: NOMINAL
+        - img [ref=e121]:
+          - generic [ref=e141] [cursor=pointer]:
+            - generic [ref=e145]: transaction_id_hash
+            - generic [ref=e146]: "MI: 0.941"
+          - generic [ref=e147] [cursor=pointer]:
+            - generic [ref=e150]: user_velocity_6h
+            - generic [ref=e151]: "PSI: 0.312"
+          - generic [ref=e152] [cursor=pointer]:
+            - generic [ref=e155]: billing_zip_code
+            - generic [ref=e156]: "SHAP: 6.4%"
+          - generic [ref=e157] [cursor=pointer]:
+            - generic [ref=e160]: device_trust_score
+            - generic [ref=e161]: "SHAP: 21.8%"
+          - generic [ref=e162] [cursor=pointer]:
+            - generic [ref=e165]: amount_usd
+            - generic [ref=e166]: "SHAP: 28.4%"
+          - generic [ref=e167] [cursor=pointer]:
+            - generic [ref=e170]: is_foreign_ip
+            - generic [ref=e171]: "SHAP: 9.2%"
+          - generic [ref=e172] [cursor=pointer]:
+            - generic [ref=e175]: auth_attempts_24h
+            - generic [ref=e176]: "SHAP: 11.4%"
+          - generic [ref=e177] [cursor=pointer]:
+            - generic [ref=e180]: merchant_category_code
+            - generic [ref=e181]: "SHAP: 8.1%"
+          - generic [ref=e182] [cursor=pointer]:
+            - generic [ref=e185]: card_age_days
+            - generic [ref=e186]: "SHAP: 7.2%"
+          - generic [ref=e187] [cursor=pointer]:
+            - generic [ref=e190]: ip_risk_score
+            - generic [ref=e191]: "SHAP: 16.2%"
+        - generic [ref=e192]:
+          - generic [ref=e193]: CLICK A FEATURE NODE TO INSPECT EXACT CAUSAL EVIDENCE & METRICS
+          - generic [ref=e194]:
+            - text: "ACTIVE SELECTION:"
+            - strong [ref=e195]: transaction_id_hash
+    - complementary [ref=e196]:
+      - generic [ref=e197]:
+        - generic [ref=e198]: MODEL HEALTH INDEX
+        - generic [ref=e199]:
+          - generic [ref=e200]:
+            - generic [ref=e201]: "73"
+            - generic [ref=e202]: / 100
+          - generic [ref=e203]: CRITICAL FINDINGS
+        - generic [ref=e204]:
+          - generic [ref=e205]:
+            - generic [ref=e206]: "3"
+            - generic [ref=e207]: CRITICAL
+          - generic [ref=e208]:
+            - generic [ref=e209]: "5"
+            - generic [ref=e210]: WARNINGS
+          - generic [ref=e211]:
+            - generic [ref=e212]: "14"
+            - generic [ref=e213]: OBSERVATIONS
+        - generic [ref=e214]:
+          - generic [ref=e215]:
+            - generic [ref=e216]: "Leakage MI Risk:"
+            - generic [ref=e217]: 0.941 (FAIL)
+          - generic [ref=e218]:
+            - generic [ref=e219]: "Max PSI Drift:"
+            - generic [ref=e220]: 0.312 (FAIL)
+          - generic [ref=e221]:
+            - generic [ref=e222]: "Calibration ECE:"
+            - generic [ref=e223]: 0.084 (WARN)
+          - generic [ref=e224]:
+            - generic [ref=e225]: "Disparate Impact:"
+            - generic [ref=e226]: 0.771 (WARN)
+          - generic [ref=e227]:
+            - generic [ref=e228]: "Gaussian Jitter Flip:"
+            - generic [ref=e229]: 14.8% (WARN)
+      - generic [ref=e230]:
+        - generic [ref=e231]:
+          - generic [ref=e232]: INSPECTOR • FEATURE DETAIL
+          - generic [ref=e233]:
+            - generic [ref=e234]:
+              - generic [ref=e235]:
+                - generic [ref=e236]: transaction_id_hash
+                - generic [ref=e237]: CRITICAL
+              - generic [ref=e238]: "TYPE: identifier • ID: f_01"
+            - generic [ref=e239]:
+              - generic [ref=e240]:
+                - generic [ref=e241]: MUTUAL INFO
+                - generic [ref=e242]: "0.941"
+              - generic [ref=e243]:
+                - generic [ref=e244]: CORRELATION
+                - generic [ref=e245]: "0.962"
+              - generic [ref=e246]:
+                - generic [ref=e247]: PSI DRIFT
+                - generic [ref=e248]: "0.012"
+              - generic [ref=e249]:
+                - generic [ref=e250]: SHAP IMPORTANCE
+                - generic [ref=e251]: 42.1%
+            - generic [ref=e252]:
+              - generic [ref=e253]:
+                - generic [ref=e254]: DETECTED ANOMALY
+                - generic [ref=e255]: Direct Target Proxy Leakage
+              - generic [ref=e256]:
+                - generic [ref=e257]: ROOT CAUSE
+                - generic [ref=e258]: High mutual information (MI = 0.941). Hash generation logic inadvertently encodes fraudulent label flags from the source OLTP table.
+              - generic [ref=e259]:
+                - generic [ref=e260]: RECOMMENDATION
+                - generic [ref=e261]: Drop 'transaction_id_hash' from feature store ingestion pipeline before retraining.
+        - generic [ref=e262]:
+          - button "ISOLATE & PROBE FEATURE" [ref=e263] [cursor=pointer]
+          - button "EXPORT FEATURE JSON" [ref=e264] [cursor=pointer]
+  - generic [ref=e265]:
+    - generic [ref=e266]:
+      - generic [ref=e267]:
+        - generic [ref=e268]: DIAGNOSTIC EVENT STREAM
+        - generic [ref=e269]: (7 entries)
+      - generic [ref=e270]:
+        - generic [ref=e271]:
+          - button "ALL" [ref=e272]
+          - button "CRIT" [ref=e273]
+          - button "WARN" [ref=e274]
+          - button "INFO" [ref=e275]
+        - button "EXPAND" [ref=e276]
+    - generic [ref=e277]:
+      - generic [ref=e278]:
+        - generic [ref=e279]: 15:14:02.184
+        - generic [ref=e280]: CRIT
+        - generic [ref=e281]: "[LEAKAGE_ENGINE]"
+        - generic [ref=e282]: "VIOLATION: Mutual information = 0.941 on feature 'transaction_id_hash' against target 'is_fraud'. Threshold: 0.850."
+      - generic [ref=e283]:
+        - generic [ref=e284]: 15:13:58.912
+        - generic [ref=e285]: CRIT
+        - generic [ref=e286]: "[DRIFT_ENGINE]"
+        - generic [ref=e287]: "ALERT: KS two-sample test rejected null hypothesis on 'user_velocity_6h' (D=0.284, p=0.0001, PSI=0.312)."
+      - generic [ref=e288]:
+        - generic [ref=e289]: 15:13:51.440
+        - generic [ref=e290]: WARN
+        - generic [ref=e291]: "[FAIRNESS_ENGINE]"
+        - generic [ref=e292]: Disparate impact ratio = 0.771 on protected attribute 'is_foreign_ip'. Violates 0.800 legal threshold.
+      - generic [ref=e293]:
+        - generic [ref=e294]: 15:13:44.208
+        - generic [ref=e295]: WARN
+        - generic [ref=e296]: "[ROBUSTNESS_ENGINE]"
+        - generic [ref=e297]: Gaussian noise injection (std=0.05) caused 14.8% classification flip on feature 'auth_attempts_24h'.
+      - generic [ref=e298]:
+        - generic [ref=e299]: 15:13:38.102
+        - generic [ref=e300]: WARN
+        - generic [ref=e301]: "[CALIBRATION_ENGINE]"
+        - generic [ref=e302]: Expected Calibration Error (ECE) = 0.084 across 10 probability deciles. Overconfidence in range [0.0 - 0.2].
+      - generic [ref=e303]:
+        - generic [ref=e304]: 15:13:25.019
+        - generic [ref=e305]: EVAL
+        - generic [ref=e306]: "[DATA_QUALITY]"
+        - generic [ref=e307]: Missing value audit completed across 47 columns. 2 columns flagged with null rates > 1.0%.
+      - generic [ref=e308]:
+        - generic [ref=e309]: 15:13:12.800
+        - generic [ref=e310]: INFO
+        - generic [ref=e311]: "[ORCHESTRATOR]"
+        - generic [ref=e312]: Dataset partition 'production_2026_09' (250,000 rows, 47 cols) ingested from MinIO store in 482ms.
