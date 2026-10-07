@@ -469,3 +469,93 @@ export async function deleteDatasetArtifact(id: string): Promise<void> {
     throw new Error(`Failed to delete dataset artifact: ${response.status}`);
   }
 }
+
+export type InvestigationPriority = "CRITICAL" | "HIGH" | "MEDIUM" | "LOW" | "INFO";
+export type EvidenceConfidence = "HIGH" | "MEDIUM" | "LOW";
+
+export interface DiagnosticCorrelation {
+  id: string;
+  runId: string;
+  ruleId: string;
+  findingType: string;
+  severity: string;
+  priority: InvestigationPriority;
+  priorityScore: number;
+  confidence: EvidenceConfidence;
+  feature?: string;
+  summary: string;
+  investigationDirection?: string;
+  whyItMatters?: string;
+  isAssociativeOnly: boolean;
+  evidence: Record<string, any>;
+  sourceModules: string[];
+  sourceResultIds: string[];
+  createdAt: string;
+}
+
+export interface FeatureProfile {
+  featureName: string;
+  driftPsi?: number;
+  driftSeverity?: string;
+  importanceRank?: number;
+  importanceScore?: number;
+  robustnessFlipRate?: number;
+  robustnessSeverity?: string;
+  leakageCorrelation?: number;
+  leakageSeverity?: string;
+  missingPercentage?: number;
+  isIdentifierLike?: boolean;
+  findingsCount: number;
+}
+
+export interface RunSummary {
+  runId: string;
+  status: string;
+  moduleCount: number;
+  completedModules: number;
+  failedModules: number;
+  criticalFindings: number;
+  highPriorityFindings: number;
+  mediumPriorityFindings: number;
+  lowPriorityFindings: number;
+  infoFindings: number;
+  totalFindings: number;
+  topFeatures: string[];
+  topInvestigationAreas: string[];
+  contributingModules: Record<string, number>;
+  featureProfiles: Record<string, FeatureProfile>;
+  isAssociativeOnly: boolean;
+  notes: string;
+}
+
+/**
+ * Retrieves cross-module correlation findings for a diagnostic run.
+ */
+export async function getDiagnosticCorrelations(
+  runId: string
+): Promise<DiagnosticCorrelation[]> {
+  return request<DiagnosticCorrelation[]>(`/api/diagnostics/${encodeURIComponent(runId)}/correlations`);
+}
+
+/**
+ * Retrieves a diagnostic run's summary & cross-module investigation metrics.
+ */
+export async function getDiagnosticRunSummary(
+  runId: string
+): Promise<RunSummary> {
+  return request<RunSummary>(`/api/diagnostics/${encodeURIComponent(runId)}/summary`);
+}
+
+/**
+ * Triggers deterministic recalculation of cross-module correlations for a run.
+ */
+export async function recalculateDiagnosticCorrelations(
+  runId: string
+): Promise<DiagnosticCorrelation[]> {
+  const url = `${API_BASE_URL}/api/diagnostics/${encodeURIComponent(runId)}/correlations/recalculate`;
+  const response = await fetch(url, { method: "POST" });
+  if (!response.ok) {
+    throw new Error(`Failed to recalculate correlations: ${response.status}`);
+  }
+  return response.json() as Promise<DiagnosticCorrelation[]>;
+}

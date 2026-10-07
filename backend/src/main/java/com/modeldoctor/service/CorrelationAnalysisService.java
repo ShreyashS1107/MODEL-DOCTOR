@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 @Service
 public class CorrelationAnalysisService {
 
-    private static final Logger log = LoggerFactory.getLogger(CorrelationAnalysisService.class);
+    private static final Logger logger = LoggerFactory.getLogger(CorrelationAnalysisService.class);
 
     private final DiagnosticRunRepository runRepository;
     private final DiagnosticResultRepository resultRepository;
@@ -63,11 +63,13 @@ public class CorrelationAnalysisService {
 
         // Delete existing correlations for this run to support clean, idempotent recalculation without duplicates
         correlationRepository.deleteByRunId(runId);
+        correlationRepository.flush();
 
         List<DiagnosticCorrelation> savedEntities = new ArrayList<>();
         for (DiagnosticCorrelation corr : evaluatedFindings) {
             savedEntities.add(correlationRepository.save(corr));
         }
+        correlationRepository.flush();
 
         logger.info("Generated and persisted {} cross-module correlation findings for run {}", savedEntities.size(), runId);
         return savedEntities.stream().map(this::mapToDto).collect(Collectors.toList());

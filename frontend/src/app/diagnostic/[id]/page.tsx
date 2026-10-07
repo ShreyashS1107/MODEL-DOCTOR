@@ -16,6 +16,7 @@ import { BiasView } from "@/components/views/BiasView";
 import { RobustnessView } from "@/components/views/RobustnessView";
 import { ExperimentsView } from "@/components/views/ExperimentsView";
 import { ReportsView } from "@/components/views/ReportsView";
+import { IntelligenceView } from "@/components/views/IntelligenceView";
 import { Modal } from "@/components/ui/Modal";
 import {
   getDiagnosticRun,
@@ -25,8 +26,12 @@ import {
   retryDiagnosticModules,
   getDiagnosticRunEvents,
   getDiagnosticRunProgress,
+  getDiagnosticCorrelations,
+  getDiagnosticRunSummary,
   DiagnosticProgress,
   DiagnosticRunEvent,
+  DiagnosticCorrelation,
+  RunSummary,
 } from "@/lib/api";
 import {
   CALIBRATION_BINS,
@@ -90,6 +95,9 @@ export default function DiagnosticWorkstationPage({
   const [progress, setProgress] = useState<DiagnosticProgress | null>(null);
   const [moduleResults, setModuleResults] = useState<any[]>([]);
   const [isRetrying, setIsRetrying] = useState<boolean>(false);
+  const [correlations, setCorrelations] = useState<DiagnosticCorrelation[]>([]);
+  const [runSummary, setRunSummary] = useState<RunSummary | null>(null);
+  const [isLoadingCorrelations, setIsLoadingCorrelations] = useState<boolean>(false);
 
   // Poll backend run state, events, progress, and results
   useEffect(() => {
@@ -246,6 +254,23 @@ export default function DiagnosticWorkstationPage({
               }
             }
           } catch {}
+
+          // Fetch Phase 4 cross-module correlations and run summary
+          try {
+            setIsLoadingCorrelations(true);
+            const [correlationsData, summaryData] = await Promise.all([
+              getDiagnosticCorrelations(runIdParam),
+              getDiagnosticRunSummary(runIdParam),
+            ]);
+            if (isMounted) {
+              setCorrelations(correlationsData || []);
+              setRunSummary(summaryData || null);
+            }
+          } catch {
+            // Suppress if correlations not generated yet
+          } finally {
+            if (isMounted) setIsLoadingCorrelations(false);
+          }
         }
 
         // Schedule next poll if still running/queued
@@ -349,6 +374,30 @@ export default function DiagnosticWorkstationPage({
 
   const renderCenterContent = () => {
     switch (activeSection) {
+      case "00_INTELLIGENCE":
+        return (
+          <div className="flex-1 overflow-auto p-4 bg-[#090b0e]">
+            <IntelligenceView
+              runId={runIdParam}
+              correlations={correlations}
+              runSummary={runSummary}
+              isLoading={isLoadingCorrelations}
+              onSelectSection={(sec) => setActiveSection(sec)}
+              onSelectFeature={(feat) => {
+                const node = FEATURE_NODES.find((n) => n.name === feat);
+                if (node) setSelectedFeature(node);
+              }}
+              onRefresh={async () => {
+                try {
+                  const corrs = await getDiagnosticCorrelations(runIdParam);
+                  const summ = await getDiagnosticRunSummary(runIdParam);
+                  setCorrelations(corrs);
+                  setRunSummary(summ);
+                } catch {}
+              }}
+            />
+          </div>
+        );
       case "01_OVERVIEW":
         return (
           <DiagnosticViewport

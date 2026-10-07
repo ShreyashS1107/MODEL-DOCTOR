@@ -656,4 +656,129 @@ $$\text{Progress \%} = \text{round}\left(\frac{\text{completedModules}}{\text{to
 
 - **Browser Refresh Safety:** Refreshing `/diagnostic/[id]` at any time queries the backend source of truth, resumes status/progress polling if `RUNNING`, displays real historical events, and renders completed module diagnostic views seamlessly.
 
+---
+
+## 12. Phase 4 — Cross-Module Diagnostic Intelligence Layer
+
+### A. Architectural Overview
+
+The Cross-Module Diagnostic Intelligence Layer sits downstream of the seven primary diagnostic engines. Rather than treating diagnostic outputs as seven isolated cards, Phase 4 normalizes raw outputs, discovers multi-module statistical relationships, aggregates mathematical evidence, and derives prioritized, actionable investigation directives.
+
+```text
+7 Independent Raw Diagnostic Results (DATA_QUALITY, LEAKAGE, DRIFT, PERFORMANCE, EXPLAINABILITY, BIAS, ROBUSTNESS)
+                                              ↓
+                   Result Normalization (ResultNormalizer / NormalizedModuleData)
+                                              ↓
+               Deterministic Rule Registry (Pairwise Rules + Multi-Module Risk Patterns)
+                                              ↓
+                 Evidence & Provenance Aggregation (Metrics, Thresholds, Source Result IDs)
+                                              ↓
+               Investigation Priority & Evidence Confidence Scoring (Deterministic Formulas)
+                                              ↓
+                  Persistence Layer (diagnostic_correlations with Idempotent Upsert)
+                                              ↓
+                REST APIs: GET /correlations, GET /summary, POST /correlations/recalculate
+                                              ↓
+          Next.js Diagnostic Intelligence Console (HUD, Findings Feed, Feature Forensic Matrix)
+```
+
+---
+
+### B. Core Intelligence Principles
+
+1. **100% Deterministic Rule-Based Intelligence (Zero LLM Brain):**
+   - Correlation rules, priorities, and confidence levels are evaluated purely using explicit deterministic mathematical rules and thresholds. No generative LLMs calculate correlations, invent findings, or assign severity.
+2. **Authoritative Raw Results Immutability:**
+   - Persisted `diagnostic_results` are never overwritten, modified, or summarized in-place. Phase 4 outputs are persisted separately in `diagnostic_correlations` and link back to source results via provenance IDs.
+3. **Strictly Associative Findings (No Causal Assertions):**
+   - Findings use associative and hypothesis phrasing (e.g., *"Feature X is strongly associated with observed performance degradation"* or *"Observed distribution shift coincides with robustness sensitivity"*).
+   - Every finding and summary payload explicitly flags `isAssociativeOnly: true` with prominent methodology disclaimers.
+4. **Resilient Failure Isolation:**
+   - Malformed, missing, or failed modules do not crash the correlation engine. Unaffected rules continue to evaluate successfully against valid module data.
+5. **Idempotency & Re-evaluability:**
+   - Cross-module findings are keyed deterministically by `(run_id, rule_id, feature, correlation_key)`. Recalculating correlations updates existing records without creating database duplicates.
+
+---
+
+### C. Rule Catalogue & Mathematical Thresholds
+
+#### 1. Pairwise Correlation Rules
+
+| Rule ID | Source Modules | Trigger Condition / Thresholds | Derivation & Evidence | Severity / Confidence | Priority Score |
+|---|---|---|---|---|---|
+| `DRIFT_EXPLAINABILITY_INTERACTION` | DRIFT, EXPLAINABILITY | Feature Drift $\text{PSI} \ge 0.10$ AND SHAP Importance Rank $\le 5$ (or Top 20%) | High-impact feature experiencing material covariate shift. | $\text{HIGH}$ / $\text{HIGH}$ | $70 + \text{driftBonus} + \text{rankBonus}$ |
+| `DRIFT_PERFORMANCE_INTERACTION` | DRIFT, PERFORMANCE | Feature Drift $\text{PSI} \ge 0.15$ AND ($\text{ROC-AUC} < 0.75 \lor \text{F1} < 0.65 \lor \text{LogLoss} > 0.60$) | Distribution shift coincides with degraded classification performance. | $\text{HIGH}$ / $\text{HIGH}$ | $75 + \text{metricDeviation}$ |
+| `DRIFT_ROBUSTNESS_INTERACTION` | DRIFT, ROBUSTNESS | Feature Drift $\text{PSI} \ge 0.10$ AND Adversarial Flip Rate $\ge 15\%$ | Feature has shifted in production and exhibits high decision boundary instability. | $\text{HIGH}$ / $\text{HIGH}$ | $65 + \text{driftBonus} + \text{flipBonus}$ |
+| `LEAKAGE_EXPLAINABILITY_INTERACTION` | LEAKAGE, EXPLAINABILITY | Leakage Score (Mutual Info / Correlation) $\ge 0.70$ AND SHAP Importance Rank $\le 5$ | Feature exhibits extreme target association and dominates model predictions (target proxy risk). | $\text{CRITICAL}$ / $\text{HIGH}$ | $85 + \text{leakageBonus}$ |
+| `DATA_QUALITY_PERFORMANCE_INTERACTION` | DATA_QUALITY, PERFORMANCE | Feature Missingness $\ge 15\%$ AND ($\text{ROC-AUC} < 0.75 \lor \text{F1} < 0.65$) | Severe data nullness/corruption coincides with degraded predictive utility. | $\text{HIGH}$ / $\text{MEDIUM}$ | $60 + \text{missingBonus}$ |
+| `BIAS_PERFORMANCE_INTERACTION` | BIAS, PERFORMANCE | Subgroup Disparate Impact Ratio $< 0.80$ AND ($\text{ROC-AUC} < 0.75 \lor \text{F1} < 0.65$) | Subgroup performance disparities intersect overall model performance degradation. | $\text{HIGH}$ / $\text{HIGH}$ | $75 + \text{biasBonus}$ |
+| `BIAS_DRIFT_INTERACTION` | BIAS, DRIFT | Disparate Impact $< 0.80$ AND Max Feature Drift $\text{PSI} \ge 0.15$ | Subgroup fairness degradation coincides with global distribution shift. | $\text{HIGH}$ / $\text{MEDIUM}$ | $65 + \text{driftBonus}$ |
+| `ROBUSTNESS_EXPLAINABILITY_INTERACTION` | ROBUSTNESS, EXPLAINABILITY | Feature Flip Rate $\ge 20\%$ AND SHAP Rank $\le 5$ | Highly influential feature exhibits extreme vulnerability under input perturbations. | $\text{HIGH}$ / $\text{HIGH}$ | $70 + \text{flipBonus}$ |
+
+#### 2. Multi-Module Higher-Order Risk Patterns
+
+| Rule ID | Source Modules | Multi-Module Trigger Criteria | Diagnostic Finding | Priority |
+|---|---|---|---|---|
+| `MULTI_DRIFT_PERFORMANCE_RISK` | DRIFT, EXPLAINABILITY, PERFORMANCE | Feature $\text{PSI} \ge 0.10$ AND SHAP Rank $\le 5$ AND Degradation in ROC-AUC / F1 | **CRITICAL:** High-impact feature has materially shifted while model performance exhibits system-wide degradation. | `CRITICAL` (Score: 90+) |
+| `MULTI_LEAKAGE_PROXY_RISK` | LEAKAGE, EXPLAINABILITY, DATA_QUALITY | Leakage Score $\ge 0.70$ AND SHAP Rank $\le 3$ AND (Identifier-like flag or Near-constant) | **CRITICAL:** Feature exhibits multiple independent indicators of target leakage and proxy behavior. | `CRITICAL` (Score: 95+) |
+| `MULTI_FAIRNESS_SHIFT_RISK` | BIAS, PERFORMANCE, DRIFT | Disparate Impact $< 0.80$ AND Performance Degraded AND Feature $\text{PSI} \ge 0.15$ | **HIGH:** Disproportionate subgroup disparity coincides with measurable data distribution drift. | `HIGH` (Score: 80+) |
+| `MULTI_FRAGILE_FEATURE_RISK` | EXPLAINABILITY, ROBUSTNESS, DRIFT | SHAP Rank $\le 5$ AND Flip Rate $\ge 15\%$ AND Feature $\text{PSI} \ge 0.10$ | **CRITICAL:** High-importance feature is simultaneously distributionally shifted and sensitivity-prone. | `CRITICAL` (Score: 90+) |
+
+---
+
+### D. Priority & Confidence Definitions
+
+#### Priority Scoring Formula
+Every derived finding is assigned a deterministic priority score between 0 and 100:
+$$\text{PriorityScore} = \text{BaseScore}(\text{Rule}) + \text{MetricWeight}(\text{Severity}) + \text{ModuleCountBonus}(\text{Sources}) + \text{FeatureSignificanceBonus}$$
+
+- $\text{Score} \ge 85 \implies \text{CRITICAL}$
+- $70 \le \text{Score} < 85 \implies \text{HIGH}$
+- $50 \le \text{Score} < 70 \implies \text{MEDIUM}$
+- $30 \le \text{Score} < 50 \implies \text{LOW}$
+- $\text{Score} < 30 \implies \text{INFO}$
+
+#### Evidence Confidence
+- **HIGH:** Supported by 2+ independent modules with strong statistical significance ($p < 0.01$, $\text{PSI} \ge 0.20$, or complete metric availability).
+- **MEDIUM:** Supported by 2 modules with moderate metric deviations or partial sample coverage.
+- **LOW:** Rule conditions met near boundary thresholds.
+*Note: Evidence confidence reflects statistical robustness of the evidence pattern, NOT a subjective belief probability.*
+
+---
+
+### E. Database Schema & REST APIs
+
+#### 1. Table Schema: `diagnostic_correlations`
+```sql
+CREATE TABLE diagnostic_correlations (
+    id BIGSERIAL PRIMARY KEY,
+    run_id VARCHAR(64) NOT NULL REFERENCES diagnostic_runs(id) ON DELETE CASCADE,
+    rule_id VARCHAR(64) NOT NULL,
+    correlation_key VARCHAR(128) NOT NULL,
+    finding_type VARCHAR(64) NOT NULL,
+    severity VARCHAR(32) NOT NULL,
+    priority VARCHAR(32) NOT NULL,
+    priority_score DOUBLE PRECISION NOT NULL,
+    confidence VARCHAR(32) NOT NULL,
+    feature VARCHAR(128),
+    title VARCHAR(255),
+    summary TEXT NOT NULL,
+    why_it_matters TEXT,
+    investigation_direction TEXT,
+    evidence_json JSONB,
+    source_modules_json JSONB,
+    source_result_ids_json JSONB,
+    is_associative_only BOOLEAN DEFAULT TRUE,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT uk_correlations_identity UNIQUE (run_id, rule_id, correlation_key)
+);
+CREATE INDEX idx_diag_corr_run_id ON diagnostic_correlations(run_id);
+CREATE INDEX idx_diag_corr_priority ON diagnostic_correlations(run_id, priority_score DESC);
+```
+
+#### 2. REST Endpoints
+- `GET /api/diagnostics/{id}/correlations`: Returns list of persisted `DiagnosticCorrelationDto` records ordered by `priorityScore DESC`.
+- `GET /api/diagnostics/{id}/summary`: Returns `RunSummaryDto` containing run status, module counts, priority counts, top repeated features, top investigation directives, module contributions, and the full cross-module `featureProfiles` matrix.
+- `POST /api/diagnostics/{id}/correlations/recalculate`: Triggers deterministic re-evaluation and upsert of cross-module findings.
+
 

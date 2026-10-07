@@ -12,6 +12,7 @@ interface NavEntry {
 }
 
 const NAVIGATION_ITEMS: NavEntry[] = [
+  { id: "00_INTELLIGENCE", code: "00", label: "DIAGNOSTIC INTEL" },
   { id: "01_OVERVIEW", code: "01", label: "OVERVIEW" },
   { id: "02_DATA", code: "02", label: "DATA QUALITY", warningCount: 1 },
   { id: "03_FORENSICS", code: "03", label: "DATA LEAKAGE", criticalCount: 1 },

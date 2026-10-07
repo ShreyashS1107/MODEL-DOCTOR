@@ -1,4 +1,5 @@
 export type NavSection =
+  | "00_INTELLIGENCE"
   | "01_OVERVIEW"
   | "02_DATA"
   | "03_FORENSICS"

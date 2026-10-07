@@ -1,5 +1,6 @@
 package com.modeldoctor.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.Instant;
 import java.util.List;
 import java.util.Map;
@@ -23,6 +24,8 @@ public class DiagnosticCorrelationDto {
     private List<String> sourceModules;
     private List<String> sourceResultIds;
     private Instant createdAt;
+
+    @JsonProperty("isAssociativeOnly")
     private boolean isAssociativeOnly = true;
 
     public DiagnosticCorrelationDto() {}

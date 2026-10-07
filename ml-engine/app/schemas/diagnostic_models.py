@@ -12,6 +12,7 @@ class DiagnosticCategory(str, Enum):
     FAIRNESS = "fairness"
     ROBUSTNESS = "robustness"
     EXPLAINABILITY = "explainability"
+    ERROR_FORENSICS = "error_forensics"
 
 
 class SeverityLevel(str, Enum):
