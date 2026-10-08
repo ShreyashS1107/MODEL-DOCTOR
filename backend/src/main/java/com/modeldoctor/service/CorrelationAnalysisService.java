@@ -10,6 +10,8 @@ import com.modeldoctor.intelligence.normalization.NormalizedModuleData;
 import com.modeldoctor.intelligence.normalization.ResultNormalizer;
 import com.modeldoctor.intelligence.rules.RuleRegistry;
 import com.modeldoctor.repository.DiagnosticCorrelationRepository;
+import com.modeldoctor.repository.DiagnosticInvestigationRepository;
+import com.modeldoctor.repository.DiagnosticRemediationRepository;
 import com.modeldoctor.repository.DiagnosticResultRepository;
 import com.modeldoctor.repository.DiagnosticRunRepository;
 import org.slf4j.Logger;
@@ -28,24 +30,37 @@ public class CorrelationAnalysisService {
     private final DiagnosticRunRepository runRepository;
     private final DiagnosticResultRepository resultRepository;
     private final DiagnosticCorrelationRepository correlationRepository;
+    private final DiagnosticInvestigationRepository investigationRepository;
+    private final DiagnosticRemediationRepository remediationRepository;
+    private final com.modeldoctor.repository.DiagnosticExperimentRepository experimentRepository;
     private final ResultNormalizer normalizer;
     private final RuleRegistry ruleRegistry;
     private final ObjectMapper objectMapper;
+    private final org.springframework.beans.factory.ObjectProvider<InvestigationAnalysisService> investigationAnalysisServiceProvider;
 
     public CorrelationAnalysisService(
             DiagnosticRunRepository runRepository,
             DiagnosticResultRepository resultRepository,
             DiagnosticCorrelationRepository correlationRepository,
+            DiagnosticInvestigationRepository investigationRepository,
+            DiagnosticRemediationRepository remediationRepository,
+            com.modeldoctor.repository.DiagnosticExperimentRepository experimentRepository,
             ResultNormalizer normalizer,
             RuleRegistry ruleRegistry,
-            ObjectMapper objectMapper) {
+            ObjectMapper objectMapper,
+            org.springframework.beans.factory.ObjectProvider<InvestigationAnalysisService> investigationAnalysisServiceProvider) {
         this.runRepository = runRepository;
         this.resultRepository = resultRepository;
         this.correlationRepository = correlationRepository;
+        this.investigationRepository = investigationRepository;
+        this.remediationRepository = remediationRepository;
+        this.experimentRepository = experimentRepository;
         this.normalizer = normalizer;
         this.ruleRegistry = ruleRegistry;
         this.objectMapper = objectMapper;
+        this.investigationAnalysisServiceProvider = investigationAnalysisServiceProvider;
     }
+
 
     @Transactional
     public List<DiagnosticCorrelationDto> analyzeAndPersist(String runId) {
@@ -194,9 +209,79 @@ public class CorrelationAnalysisService {
                 profile.put("qualityNullRate", q.nullRate);
                 profile.put("qualityOutlierRate", q.outlierRate);
             }
+            if (normalized.getErrorByFeature().containsKey(feat)) {
+                var err = normalized.getErrorByFeature().get(feat);
+                profile.put("errorCorrelation", err.correlation);
+                profile.put("errorFpSeparation", err.fpSeparation);
+                profile.put("errorFnSeparation", err.fnSeparation);
+                profile.put("errorAbsoluteAssociation", err.absoluteAssociation);
+                profile.put("errorAdjustedPValue", err.adjustedPValue);
+                profile.put("isErrorEnriched", err.isErrorEnriched);
+            }
             featureProfiles.put(feat, profile);
         }
         summary.setFeatureProfiles(featureProfiles);
+
+        // Phase 6 Investigation summary statistics
+        List<DiagnosticInvestigation> investigations = investigationRepository.findByRunIdOrderByPriorityScoreDesc(runId);
+        summary.setInvestigationTargetCount(investigations.size());
+        int critInv = 0;
+        int highInv = 0;
+        for (DiagnosticInvestigation inv : investigations) {
+            if (inv.getPriority() == InvestigationPriority.CRITICAL) critInv++;
+            else if (inv.getPriority() == InvestigationPriority.HIGH) highInv++;
+        }
+        summary.setCriticalInvestigationCount(critInv);
+        summary.setHighInvestigationCount(highInv);
+        if (!investigations.isEmpty()) {
+            summary.setTopInvestigationTarget(investigations.get(0).getTargetKey());
+            summary.setTopInvestigationScore(investigations.get(0).getPriorityScore());
+        }
+
+        InvestigationAnalysisService invService = investigationAnalysisServiceProvider.getIfAvailable();
+        if (invService != null) {
+            try {
+                com.modeldoctor.dto.EvidenceGraphDto graph = invService.getEvidenceGraph(runId);
+                summary.setEvidenceGraphNodeCount(graph.getNodeCount());
+                summary.setEvidenceGraphEdgeCount(graph.getEdgeCount());
+            } catch (Exception ignored) {}
+        }
+
+        // Phase 7 Remediation summary statistics
+        List<DiagnosticRemediation> remediations = remediationRepository.findByRunIdOrderByPriorityScoreDesc(runId);
+        summary.setRemediationCount(remediations.size());
+        summary.setRemediationAvailable(!remediations.isEmpty());
+        int critRem = 0;
+        int highRem = 0;
+        int selRem = 0;
+        int valRem = 0;
+        for (DiagnosticRemediation rem : remediations) {
+            if (rem.getPriority() == InvestigationPriority.CRITICAL) critRem++;
+            else if (rem.getPriority() == InvestigationPriority.HIGH) highRem++;
+
+            if (rem.getStatus() == RemediationStatus.SELECTED) selRem++;
+            else if (rem.getStatus() == RemediationStatus.VALIDATED) valRem++;
+        }
+        summary.setCriticalRemediationCount(critRem);
+        summary.setHighRemediationCount(highRem);
+        summary.setSelectedRemediationCount(selRem);
+        summary.setValidatedRemediationCount(valRem);
+        if (!remediations.isEmpty()) {
+            summary.setTopRemediationType(remediations.get(0).getRemediationType().name());
+            summary.setTopRemediationTarget(remediations.get(0).getTargetKey());
+        }
+
+        // Phase 8 Experiment summary statistics
+        List<DiagnosticExperiment> experiments = experimentRepository.findByBaselineRunIdOrderByCreatedAtDesc(runId);
+        summary.setExperimentCount(experiments.size());
+        int valExp = 0;
+        int runExp = 0;
+        for (DiagnosticExperiment exp : experiments) {
+            if (exp.getConclusion() == ExperimentConclusion.VALIDATED) valExp++;
+            if (exp.getStatus() == ExperimentStatus.RUNNING) runExp++;
+        }
+        summary.setValidatedExperimentCount(valExp);
+        summary.setRunningExperimentCount(runExp);
 
         return summary;
     }

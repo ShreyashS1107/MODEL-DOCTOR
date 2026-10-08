@@ -11,12 +11,17 @@ import { DataQualityView } from "@/components/views/DataQualityView";
 import { ForensicsView } from "@/components/views/ForensicsView";
 import { DriftView } from "@/components/views/DriftView";
 import { PerformanceView } from "@/components/views/PerformanceView";
+import { ErrorForensicsView } from "@/components/views/ErrorForensicsView";
 import { ExplainView } from "@/components/views/ExplainView";
 import { BiasView } from "@/components/views/BiasView";
 import { RobustnessView } from "@/components/views/RobustnessView";
 import { ExperimentsView } from "@/components/views/ExperimentsView";
 import { ReportsView } from "@/components/views/ReportsView";
 import { IntelligenceView } from "@/components/views/IntelligenceView";
+import { InvestigationView } from "@/components/views/InvestigationView";
+import { RemediationView } from "@/components/views/RemediationView";
+import { ExperimentView } from "@/components/views/ExperimentView";
+import { TemporalView } from "@/components/views/TemporalView";
 import { Modal } from "@/components/ui/Modal";
 import {
   getDiagnosticRun,
@@ -335,6 +340,7 @@ export default function DiagnosticWorkstationPage({
   const explainModule = moduleResults.find((m) => m.module === "EXPLAINABILITY");
   const biasModule = moduleResults.find((m) => m.module === "BIAS" || m.module === "FAIRNESS");
   const robustModule = moduleResults.find((m) => m.module === "ROBUSTNESS");
+  const errorForensicsModule = moduleResults.find((m) => m.module === "ERROR_FORENSICS");
 
   // Modal dialog states
   const [isScanModalOpen, setIsScanModalOpen] = useState(false);
@@ -382,6 +388,28 @@ export default function DiagnosticWorkstationPage({
               correlations={correlations}
               runSummary={runSummary}
               isLoading={isLoadingCorrelations}
+              onSelectSection={(sec) => setActiveSection(sec)}
+              onSelectFeature={(feat) => {
+                const node = FEATURE_NODES.find((n) => n.name === feat);
+                if (node) setSelectedFeature(node);
+              }}
+              onRefresh={async () => {
+                try {
+                  const corrs = await getDiagnosticCorrelations(runIdParam);
+                  const summ = await getDiagnosticRunSummary(runIdParam);
+                  setCorrelations(corrs);
+                  setRunSummary(summ);
+                } catch {}
+              }}
+            />
+          </div>
+        );
+      case "06_INVESTIGATION":
+        return (
+          <div className="flex-1 overflow-auto p-4 bg-[#090b0e]">
+            <InvestigationView
+              runId={runIdParam}
+              runSummary={runSummary}
               onSelectSection={(sec) => setActiveSection(sec)}
               onSelectFeature={(feat) => {
                 const node = FEATURE_NODES.find((n) => n.name === feat);
@@ -453,6 +481,16 @@ export default function DiagnosticWorkstationPage({
             />
           </div>
         );
+      case "05_ERROR_FORENSICS":
+        return (
+          <div className="flex-1 overflow-auto p-4 bg-[#090b0e]">
+            <ErrorForensicsView
+              result={errorForensicsModule?.result}
+              status={errorForensicsModule?.status}
+              statusMessage={errorForensicsModule?.statusMessage}
+            />
+          </div>
+        );
       case "06_EXPLAIN":
         return (
           <div className="flex-1 overflow-auto p-4 bg-[#090b0e]">
@@ -460,6 +498,60 @@ export default function DiagnosticWorkstationPage({
               explainResult={explainModule?.result}
               status={explainModule?.status}
               statusMessage={explainModule?.statusMessage}
+            />
+          </div>
+        );
+      case "07_REMEDIATION":
+        return (
+          <div className="flex-1 overflow-auto bg-[#090b0e]">
+            <RemediationView
+              runId={runIdParam}
+              runSummary={runSummary}
+              onSelectSection={setActiveSection}
+              onSelectFeature={(featName) => {
+                const node = FEATURE_NODES.find((f) => f.name === featName) || null;
+                setSelectedFeature(node);
+              }}
+              onRefresh={async () => {
+                const summ = await getDiagnosticRunSummary(runIdParam);
+                setRunSummary(summ);
+              }}
+            />
+          </div>
+        );
+      case "08_EXPERIMENT":
+        return (
+          <div className="flex-1 overflow-auto bg-[#090b0e]">
+            <ExperimentView
+              runId={runIdParam}
+              runSummary={runSummary}
+              onSelectSection={setActiveSection}
+              onSelectFeature={(featName) => {
+                const node = FEATURE_NODES.find((f) => f.name === featName) || null;
+                setSelectedFeature(node);
+              }}
+              onRefresh={async () => {
+                const summ = await getDiagnosticRunSummary(runIdParam);
+                setRunSummary(summ);
+              }}
+            />
+          </div>
+        );
+      case "09_TEMPORAL":
+        return (
+          <div className="flex-1 overflow-auto bg-[#090b0e] p-6">
+            <TemporalView
+              runId={runIdParam}
+              runSummary={runSummary}
+              onSelectSection={setActiveSection}
+              onSelectFeature={(featName) => {
+                const node = FEATURE_NODES.find((f) => f.name === featName) || null;
+                setSelectedFeature(node);
+              }}
+              onRefresh={async () => {
+                const summ = await getDiagnosticRunSummary(runIdParam);
+                setRunSummary(summ);
+              }}
             />
           </div>
         );

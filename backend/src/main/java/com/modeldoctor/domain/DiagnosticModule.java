@@ -11,5 +11,6 @@ public enum DiagnosticModule {
     EXPLAINABILITY,
     BIAS,
     ROBUSTNESS,
-    EXPERIMENTS
+    EXPERIMENTS,
+    ERROR_FORENSICS
 }

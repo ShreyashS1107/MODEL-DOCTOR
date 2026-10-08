@@ -75,4 +75,79 @@ public class MlEngineClient {
             throw new DiagnosticExecutionException(errorMsg, ex);
         }
     }
+
+    @SuppressWarnings("unchecked")
+    public java.util.Map<String, Object> applyIntervention(java.util.Map<String, Object> request) {
+        String endpoint = mlEngineBaseUrl + "/api/v1/experiments/apply-intervention";
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<java.util.Map<String, Object>> entity = new HttpEntity<>(request, headers);
+        try {
+            ResponseEntity<java.util.Map> response = restTemplate.postForEntity(endpoint, entity, java.util.Map.class);
+            return response.getBody();
+        } catch (Exception ex) {
+            log.error("Failed to apply intervention via ML Engine: {}", ex.getMessage());
+            throw new DiagnosticExecutionException("Failed to apply intervention: " + ex.getMessage(), ex);
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    public java.util.Map<String, Object> computeStatisticalComparison(java.util.Map<String, Object> request) {
+        String endpoint = mlEngineBaseUrl + "/api/v1/experiments/statistical-comparison";
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<java.util.Map<String, Object>> entity = new HttpEntity<>(request, headers);
+        try {
+            ResponseEntity<java.util.Map> response = restTemplate.postForEntity(endpoint, entity, java.util.Map.class);
+            return response.getBody();
+        } catch (Exception ex) {
+            log.error("Failed to compute statistical comparison via ML Engine: {}", ex.getMessage());
+            throw new DiagnosticExecutionException("Failed to compute statistical comparison: " + ex.getMessage(), ex);
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    public java.util.Map<String, Object> evaluateThresholdCounterfactual(java.util.Map<String, Object> request) {
+        String endpoint = mlEngineBaseUrl + "/api/v1/experiments/threshold-counterfactual";
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<java.util.Map<String, Object>> entity = new HttpEntity<>(request, headers);
+        try {
+            ResponseEntity<java.util.Map> response = restTemplate.postForEntity(endpoint, entity, java.util.Map.class);
+            return response.getBody();
+        } catch (Exception ex) {
+            log.error("Failed to evaluate threshold counterfactual via ML Engine: {}", ex.getMessage());
+            throw new DiagnosticExecutionException("Failed to evaluate threshold counterfactual: " + ex.getMessage(), ex);
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    public java.util.Map<String, Object> evaluateCalibrationCounterfactual(java.util.Map<String, Object> request) {
+        String endpoint = mlEngineBaseUrl + "/api/v1/experiments/calibration-counterfactual";
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<java.util.Map<String, Object>> entity = new HttpEntity<>(request, headers);
+        try {
+            ResponseEntity<java.util.Map> response = restTemplate.postForEntity(endpoint, entity, java.util.Map.class);
+            return response.getBody();
+        } catch (Exception ex) {
+            log.error("Failed to evaluate calibration counterfactual via ML Engine: {}", ex.getMessage());
+            throw new DiagnosticExecutionException("Failed to evaluate calibration counterfactual: " + ex.getMessage(), ex);
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    public java.util.Map<String, Object> evaluateSubgroupCounterfactual(java.util.Map<String, Object> request) {
+        String endpoint = mlEngineBaseUrl + "/api/v1/experiments/subgroup-counterfactual";
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<java.util.Map<String, Object>> entity = new HttpEntity<>(request, headers);
+        try {
+            ResponseEntity<java.util.Map> response = restTemplate.postForEntity(endpoint, entity, java.util.Map.class);
+            return response.getBody();
+        } catch (Exception ex) {
+            log.error("Failed to evaluate subgroup counterfactual via ML Engine: {}", ex.getMessage());
+            throw new DiagnosticExecutionException("Failed to evaluate subgroup counterfactual: " + ex.getMessage(), ex);
+        }
+    }
 }

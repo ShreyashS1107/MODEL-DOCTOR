@@ -13,15 +13,20 @@ interface NavEntry {
 
 const NAVIGATION_ITEMS: NavEntry[] = [
   { id: "00_INTELLIGENCE", code: "00", label: "DIAGNOSTIC INTEL" },
+  { id: "06_INVESTIGATION", code: "06", label: "ROOT-CAUSE INVESTIGATION" },
+  { id: "07_REMEDIATION", code: "07", label: "REMEDIATION DECISION" },
+  { id: "08_EXPERIMENT", code: "08", label: "EXPERIMENTAL VALIDATION" },
+  { id: "09_TEMPORAL", code: "09", label: "TEMPORAL INTELLIGENCE" },
   { id: "01_OVERVIEW", code: "01", label: "OVERVIEW" },
   { id: "02_DATA", code: "02", label: "DATA QUALITY", warningCount: 1 },
   { id: "03_FORENSICS", code: "03", label: "DATA LEAKAGE", criticalCount: 1 },
   { id: "04_DRIFT", code: "04", label: "DISTRIBUTION DRIFT", criticalCount: 1, warningCount: 1 },
   { id: "05_PERFORMANCE", code: "05", label: "MODEL PERFORMANCE" },
-  { id: "06_EXPLAIN", code: "06", label: "EXPLAINABILITY" },
-  { id: "07_BIAS", code: "07", label: "FAIRNESS & BIAS", warningCount: 1 },
-  { id: "08_ROBUSTNESS", code: "08", label: "ADVERSARIAL STRESS", warningCount: 1 },
-  { id: "09_EXPERIMENTS", code: "09", label: "EXPERIMENTS" },
+  { id: "05_ERROR_FORENSICS", code: "05B", label: "ERROR FORENSICS" },
+  { id: "06_EXPLAIN", code: "06B", label: "EXPLAINABILITY" },
+  { id: "07_BIAS", code: "07B", label: "FAIRNESS & BIAS", warningCount: 1 },
+  { id: "08_ROBUSTNESS", code: "08B", label: "ADVERSARIAL STRESS", warningCount: 1 },
+  { id: "09_EXPERIMENTS", code: "09B", label: "EXPERIMENTS" },
   { id: "10_REPORTS", code: "10", label: "REPORTS" },
 ];
 

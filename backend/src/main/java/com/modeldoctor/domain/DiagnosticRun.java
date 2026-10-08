@@ -63,6 +63,18 @@ public class DiagnosticRun {
     @Column(name = "protected_attribute", length = 255)
     private String protectedAttribute;
 
+    @Column(name = "run_type", length = 32)
+    private String runType = "BASELINE"; // "BASELINE", "EXPERIMENT"
+
+    @Column(name = "parent_run_id", length = 64)
+    private String parentRunId;
+
+    @Column(name = "experiment_id", length = 64)
+    private String experimentId;
+
+    @Column(name = "remediation_id")
+    private Long remediationId;
+
     @Column(name = "created_at", nullable = false)
     private Instant createdAt;
 
@@ -115,6 +127,9 @@ public class DiagnosticRun {
         this.executionDurationMs = executionDurationMs;
         this.errorMessage = errorMessage;
         this.modules = modules != null ? modules : new ArrayList<>();
+        for (DiagnosticRunModule m : this.modules) {
+            m.setRun(this);
+        }
     }
 
     public void addModule(DiagnosticRunModule module) {
@@ -200,6 +215,17 @@ public class DiagnosticRun {
     public static Builder builder() {
         return new Builder();
     }
+    public String getRunType() { return runType; }
+    public void setRunType(String runType) { this.runType = runType; }
+
+    public String getParentRunId() { return parentRunId; }
+    public void setParentRunId(String parentRunId) { this.parentRunId = parentRunId; }
+
+    public String getExperimentId() { return experimentId; }
+    public void setExperimentId(String experimentId) { this.experimentId = experimentId; }
+
+    public Long getRemediationId() { return remediationId; }
+    public void setRemediationId(Long remediationId) { this.remediationId = remediationId; }
 
     public static class Builder {
         private String id;

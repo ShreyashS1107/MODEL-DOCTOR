@@ -18,10 +18,17 @@ import java.util.List;
 public class DiagnosticController {
 
     private final DiagnosticService diagnosticService;
+    private final com.modeldoctor.service.ExperimentOrchestrationService experimentService;
+    private final com.modeldoctor.service.TemporalAnalysisService temporalService;
 
     @Autowired
-    public DiagnosticController(DiagnosticService diagnosticService) {
+    public DiagnosticController(
+            DiagnosticService diagnosticService,
+            com.modeldoctor.service.ExperimentOrchestrationService experimentService,
+            com.modeldoctor.service.TemporalAnalysisService temporalService) {
         this.diagnosticService = diagnosticService;
+        this.experimentService = experimentService;
+        this.temporalService = temporalService;
     }
 
     @PostMapping("/validate")
@@ -116,6 +123,177 @@ public class DiagnosticController {
         return ResponseEntity.ok(diagnosticService.recalculateCorrelations(id));
     }
 
+    @GetMapping("/{id}/investigations")
+    @Operation(summary = "Get Ranked Investigation Targets", description = "Retrieves prioritized, evidence-backed root-cause investigation targets with deterministic priority scores and non-causal hypotheses.")
+    public ResponseEntity<List<InvestigationTargetDto>> getDiagnosticInvestigations(@PathVariable String id) {
+        return ResponseEntity.ok(diagnosticService.getInvestigations(id));
+    }
+
+    @GetMapping("/{id}/investigations/{targetKey}")
+    @Operation(summary = "Get Investigation Dossier", description = "Retrieves the comprehensive evidence chain, ordered investigation path, next inspection actions, and provenance for a target.")
+    public ResponseEntity<InvestigationDossierDto> getDiagnosticInvestigationDossier(
+            @PathVariable String id,
+            @PathVariable String targetKey) {
+        return ResponseEntity.ok(diagnosticService.getInvestigationDossier(id, targetKey));
+    }
+
+    @GetMapping("/{id}/evidence-graph")
+    @Operation(summary = "Get Diagnostic Evidence Graph", description = "Retrieves the deterministic, observational evidence graph nodes, edges, and provenance connections.")
+    public ResponseEntity<EvidenceGraphDto> getDiagnosticEvidenceGraph(@PathVariable String id) {
+        return ResponseEntity.ok(diagnosticService.getEvidenceGraph(id));
+    }
+
+    // =========================================================================
+    // Phase 7: Remediation Decision Support & Run Comparison
+    // =========================================================================
+
+    @GetMapping("/{id}/remediations")
+    @Operation(summary = "Get Ranked Remediation Candidates", description = "Retrieves prioritized, evidence-grounded remediation recommendations with validation hypotheses, acceptance criteria, and regression guards.")
+    public ResponseEntity<List<DiagnosticRemediationDto>> getDiagnosticRemediations(@PathVariable String id) {
+        return ResponseEntity.ok(diagnosticService.getRemediations(id));
+    }
+
+    @GetMapping("/{id}/remediations/{remediationId}")
+    @Operation(summary = "Get Remediation Dossier", description = "Retrieves the comprehensive dossier for a specific remediation candidate by ID.")
+    public ResponseEntity<DiagnosticRemediationDto> getDiagnosticRemediationById(
+            @PathVariable String id,
+            @PathVariable String remediationId) {
+        return ResponseEntity.ok(diagnosticService.getRemediationById(remediationId));
+    }
+
+    @PostMapping("/{id}/remediations/recalculate")
+    @Operation(summary = "Recalculate Remediations", description = "Explicitly re-runs deterministic remediation rules against persisted evidence and investigations.")
+    public ResponseEntity<List<DiagnosticRemediationDto>> recalculateDiagnosticRemediations(@PathVariable String id) {
+        return ResponseEntity.ok(diagnosticService.recalculateRemediations(id));
+    }
+
+    @PostMapping("/{id}/remediations/{remediationId}/select")
+    @Operation(summary = "Select Remediation Candidate", description = "Marks a remediation candidate as SELECTED by the engineer for investigation.")
+    public ResponseEntity<DiagnosticRemediationDto> selectRemediation(
+            @PathVariable String id,
+            @PathVariable String remediationId) {
+        return ResponseEntity.ok(diagnosticService.selectRemediation(remediationId));
+    }
+
+    @PostMapping("/{id}/remediations/{remediationId}/reject")
+    @Operation(summary = "Reject Remediation Candidate", description = "Marks a remediation candidate as REJECTED with an optional rationale.")
+    public ResponseEntity<DiagnosticRemediationDto> rejectRemediation(
+            @PathVariable String id,
+            @PathVariable String remediationId,
+            @RequestParam(required = false) String reason) {
+        return ResponseEntity.ok(diagnosticService.rejectRemediation(remediationId, reason));
+    }
+
+    @GetMapping("/{id}/comparison/{candidateRunId}")
+    @Operation(summary = "Compare Diagnostic Runs", description = "Performs a deterministic before/after metric comparison between a baseline run and a candidate run.")
+    public ResponseEntity<DiagnosticComparisonDto> compareDiagnosticRuns(
+            @PathVariable String id,
+            @PathVariable String candidateRunId) {
+        return ResponseEntity.ok(diagnosticService.compareRuns(id, candidateRunId));
+    }
+
+    @GetMapping("/{id}/experiments")
+    @Operation(summary = "List Experimental Validation Candidates", description = "Retrieves all experiments associated with a baseline diagnostic run.")
+    public ResponseEntity<List<DiagnosticExperimentDto>> getExperiments(@PathVariable String id) {
+        return ResponseEntity.ok(experimentService.getExperimentsForRun(id));
+    }
+
+    @GetMapping("/{id}/experiments/{experimentId}")
+    @Operation(summary = "Get Experiment Dossier", description = "Retrieves detailed experimental evaluation dossier including interventions, provenance, metrics, and acceptance criteria.")
+    public ResponseEntity<DiagnosticExperimentDto> getExperiment(
+            @PathVariable String id,
+            @PathVariable String experimentId) {
+        return ResponseEntity.ok(experimentService.getExperiment(id, experimentId));
+    }
+
+    @PostMapping("/{id}/experiments")
+    @Operation(summary = "Create Experimental Validation Candidate", description = "Registers a new controlled experiment against a baseline run and remediation hypothesis.")
+    public ResponseEntity<DiagnosticExperimentDto> createExperiment(
+            @PathVariable String id,
+            @RequestBody CreateExperimentRequestDto request) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(experimentService.createExperiment(id, request));
+    }
+
+    @PostMapping("/{id}/experiments/{experimentId}/execute")
+    @Operation(summary = "Execute Experimental Validation", description = "Executes the experimental strategy, evaluates candidate run, computes paired metrics, and assesses acceptance criteria.")
+    public ResponseEntity<DiagnosticExperimentDto> executeExperiment(
+            @PathVariable String id,
+            @PathVariable String experimentId) {
+        return ResponseEntity.ok(experimentService.executeExperiment(id, experimentId));
+    }
+
+    @PostMapping("/{id}/experiments/{experimentId}/cancel")
+    @Operation(summary = "Cancel Experiment", description = "Cancels a proposed or running experiment.")
+    public ResponseEntity<DiagnosticExperimentDto> cancelExperiment(
+            @PathVariable String id,
+            @PathVariable String experimentId) {
+        return ResponseEntity.ok(experimentService.cancelExperiment(id, experimentId));
+    }
+
+    @GetMapping("/{id}/experiments/{experimentId}/comparison")
+    @Operation(summary = "Get Experiment Comparison", description = "Retrieves the before/after metric comparison produced by an experiment.")
+    public ResponseEntity<DiagnosticExperimentDto> getExperimentComparison(
+            @PathVariable String id,
+            @PathVariable String experimentId) {
+        return ResponseEntity.ok(experimentService.getExperiment(id, experimentId));
+    }
+
+    // =========================================================================
+    // Phase 9: Longitudinal Model Monitoring & Temporal Intelligence
+    // =========================================================================
+
+    @GetMapping("/{id}/temporal/history")
+    @Operation(summary = "Get Model Lineage History", description = "Retrieves longitudinal model history, metric time-series, issue tracks, alerts, change points, and remediation durability.")
+    public ResponseEntity<ModelLineageHistoryDto> getModelLineageHistory(
+            @PathVariable String id,
+            @RequestParam(required = false, defaultValue = "ALL_AVAILABLE") String window) {
+        return ResponseEntity.ok(temporalService.getModelLineageHistory(id, window));
+    }
+
+    @GetMapping("/{id}/temporal/metrics")
+    @Operation(summary = "Get Temporal Metric Time Series", description = "Retrieves historical metric series and trend models.")
+    public ResponseEntity<List<TemporalMetricHistoryDto>> getTemporalMetrics(
+            @PathVariable String id,
+            @RequestParam(required = false, defaultValue = "ALL_AVAILABLE") String window) {
+        return ResponseEntity.ok(temporalService.getModelLineageHistory(id, window).getMetricHistories());
+    }
+
+    @GetMapping("/{id}/temporal/issues")
+    @Operation(summary = "Get Longitudinal Issue Tracks", description = "Retrieves issue tracks grouping historical findings by target with persistence states.")
+    public ResponseEntity<List<IssueTrackDto>> getTemporalIssues(@PathVariable String id) {
+        return ResponseEntity.ok(temporalService.getModelLineageHistory(id, "ALL_AVAILABLE").getIssueTracks());
+    }
+
+    @GetMapping("/{id}/temporal/alerts")
+    @Operation(summary = "Get Temporal Alerts", description = "Retrieves prioritized longitudinal alerts (new degradations, persistence, change points).")
+    public ResponseEntity<List<TemporalAlertDto>> getTemporalAlerts(@PathVariable String id) {
+        return ResponseEntity.ok(temporalService.getModelLineageHistory(id, "ALL_AVAILABLE").getAlerts());
+    }
+
+    @GetMapping("/{id}/temporal/change-points")
+    @Operation(summary = "Get Metric Change Points", description = "Retrieves detected statistical change points in model metrics.")
+    public ResponseEntity<List<ChangePointDto>> getTemporalChangePoints(@PathVariable String id) {
+        return ResponseEntity.ok(temporalService.getModelLineageHistory(id, "ALL_AVAILABLE").getChangePoints());
+    }
+
+    @GetMapping("/{id}/temporal/remediations")
+    @Operation(summary = "Get Remediation Durability", description = "Retrieves durability evaluations tracking remediation effectiveness across subsequent baseline runs.")
+    public ResponseEntity<List<RemediationDurabilityDto>> getTemporalRemediations(@PathVariable String id) {
+        return ResponseEntity.ok(temporalService.getModelLineageHistory(id, "ALL_AVAILABLE").getRemediationDurability());
+    }
+
+    @GetMapping("/{id}/temporal/timeline")
+    @Operation(summary = "Get Model Historical Timeline", description = "Retrieves chronological ordered run summaries.")
+    public ResponseEntity<List<RunSummaryDto>> getTemporalTimeline(@PathVariable String id) {
+        return ResponseEntity.ok(temporalService.getModelLineageHistory(id, "ALL_AVAILABLE").getOrderedRuns());
+    }
+
+    @PostMapping("/{id}/temporal/recalculate")
+    @Operation(summary = "Recalculate Temporal Intelligence", description = "Idempotently rebuilds temporal observations, issue tracks, change points, and alerts from raw diagnostic results.")
+    public ResponseEntity<TemporalRecalculateResponseDto> recalculateTemporalIntelligence(@PathVariable String id) {
+        return ResponseEntity.ok(temporalService.recalculateTemporalIntelligence(id));
+    }
+
     @GetMapping("/runs")
     @Operation(summary = "List Diagnostic Inspection Runs", description = "Retrieves recent diagnostic evaluation runs.")
     public ResponseEntity<List<DiagnosticRunDto>> getRecentRuns() {
@@ -128,3 +306,5 @@ public class DiagnosticController {
         return ResponseEntity.ok(diagnosticService.getRecentActivities());
     }
 }
+
+

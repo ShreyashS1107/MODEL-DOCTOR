@@ -14,7 +14,7 @@ Next.js Frontend (/diagnose, /diagnostic/[id])
                Python FastAPI ML Engine (Port 8000)
                       ↓ Registry & Engine Dispatch
  ┌─────────────────────────────────────────────────────────────┐
- │ 7 Core Diagnostic Engines:                                  │
+ │ 8 Core Diagnostic Engines:                                  │
  │ 1. DATA_QUALITY      (Nulls, Duplicates, Types, Schema)     │
  │ 2. LEAKAGE           (Target/Feature Correlation Heuristics)│
  │ 3. DRIFT             (PSI, KS-Test, Jensen-Shannon)         │
@@ -22,12 +22,25 @@ Next.js Frontend (/diagnose, /diagnostic/[id])
  │ 5. EXPLAINABILITY    (TreeSHAP, LinearSHAP, KernelSHAP)     │
  │ 6. BIAS              (Disparate Impact, Demographic Parity) │
  │ 7. ROBUSTNESS        (Gaussian Noise, Boundary Flip, Rank)  │
+ │ 8. ERROR_FORENSICS   (Residuals, Disparities, Flip Rates)   │
  └─────────────────────────────────────────────────────────────┘
                       ↓ JSON DiagnosticReport
               Spring Boot Persistence & Status Resolution
-                      ↓ Transactional Save
-           Database (diagnostic_runs, diagnostic_results)
-                      ↓ HTTP GET /api/diagnostics/{id}/results
+                      ↓
+              RAW DIAGNOSTICS
+                      ↓
+               CORRELATIONS
+                      ↓
+               INVESTIGATION
+                      ↓
+              EVIDENCE GRAPH
+                      ↓
+               REMEDIATION
+                      ↓
+         EXPERIMENTAL VALIDATION
+                      ↓
+            BEFORE / AFTER EVIDENCE
+                      ↓ HTTP GET /api/diagnostics/{id}/...
              Next.js Workstation (/diagnostic/[id])
 ```
 
@@ -781,4 +794,901 @@ CREATE INDEX idx_diag_corr_priority ON diagnostic_correlations(run_id, priority_
 - `GET /api/diagnostics/{id}/summary`: Returns `RunSummaryDto` containing run status, module counts, priority counts, top repeated features, top investigation directives, module contributions, and the full cross-module `featureProfiles` matrix.
 - `POST /api/diagnostics/{id}/correlations/recalculate`: Triggers deterministic re-evaluation and upsert of cross-module findings.
 
+---
+
+## 13. Phase 5 — Performance & Error Forensics
+
+### A. Purpose & Forensic Scope
+While standard `PERFORMANCE` metrics aggregate classification scores (ROC-AUC, PR-AUC, F1), `ERROR_FORENSICS` investigates the micro-composition and segment-level localization of model failure modes:
+1. **Record-Level Attribution:** On which specific records does the model fail, and what was the prediction confidence?
+2. **Feature Separation:** Are False Positives and False Negatives driven by different numeric and categorical distributions?
+3. **High-Confidence Mistakes:** Is the model confidently incorrect on specific feature regions?
+4. **Quantile Range Concentrations:** Which feature intervals exhibit enriched error rates?
+5. **Threshold Tradeoff Curves:** How does moving the decision threshold shift the error burden between False Positives and False Negatives?
+6. **Subgroup Disparities:** Do protected attributes experience statistically significant error rate gaps ($95\%$ Wilson Score CIs)?
+
+> [!IMPORTANT]
+> **Strict Associative Phrasing & Non-Causal Disclaimers:**
+> All forensic findings, feature separations, and subgroup comparisons are strictly associative (`isAssociativeOnly = true`). Statistical correlation or enrichment does **not** imply causality. Subgroup error rate gaps do not automatically imply intentional discrimination; users are directed to the `BIAS` console for formal fairness metrics.
+
+---
+
+### B. Mathematical Formulations & Statistical Tests
+
+#### 1. Point-Biserial Correlation ($r_{pb}$)
+For numeric features, error association is calculated against binary prediction correctness $E \in \{0, 1\}$:
+$$r_{pb} = \frac{\bar{X}_1 - \bar{X}_0}{s_X} \sqrt{\frac{n_1 n_0}{n(n-1)}}$$
+where $\bar{X}_1$ is the feature mean on incorrect records, $\bar{X}_0$ is the feature mean on correct records, and $s_X$ is sample standard deviation.
+
+#### 2. Cramer's V ($V$)
+For categorical features, association with prediction error is evaluated using Pearson's Chi-Squared statistic $\chi^2$:
+$$V = \sqrt{\frac{\chi^2}{n \cdot \min(r-1, k-1)}}$$
+
+#### 3. Standardized Mean Difference (Cohen's $d$) & Mann-Whitney U Test
+Separation between False Positives ($FP$) vs True Negatives ($TN$), and False Negatives ($FN$) vs True Positives ($TP$):
+$$d = \frac{\bar{X}_{\text{error}} - \bar{X}_{\text{correct}}}{s_{\text{pooled}}}$$
+Accompanied by two-sided Mann-Whitney U test p-values.
+
+#### 4. Benjamini-Hochberg False Discovery Rate (FDR)
+Across all $M$ evaluated feature hypotheses, raw p-values $P_{(1)} \le P_{(2)} \le \dots \le P_{(M)}$ are adjusted to control FDR:
+$$P_{\text{adj}(i)} = \min\left(1, \min_{k \ge i} \left( \frac{M}{k} P_{(k)} \right)\right)$$
+
+#### 5. Wilson Score Confidence Intervals ($95\%$)
+For subgroup error rates $\hat{p} = \frac{e}{n}$ with $z = 1.96$:
+$$\text{CI} = \frac{\hat{p} + \frac{z^2}{2n} \pm z \sqrt{\frac{\hat{p}(1-\hat{p})}{n} + \frac{z^2}{4n^2}}}{1 + \frac{z^2}{n}}$$
+
+---
+
+### C. Phase 5 Cross-Module Correlation Rules
+
+| Rule ID | Source Modules | Trigger Conditions | Finding Description | Priority |
+|---|---|---|---|---|
+| `ERROR_DRIFT_INTERACTION` | ERROR_FORENSICS, DRIFT | Feature Error Association $|r_{pb}| \ge 0.15$ AND Feature $\text{PSI} \ge 0.10$ | Feature exhibits distribution drift concurrent with elevated error rates. | `HIGH` / `CRITICAL` |
+| `ERROR_EXPLAINABILITY_INTERACTION` | ERROR_FORENSICS, EXPLAINABILITY | Feature Error Association $|r_{pb}| \ge 0.15$ AND SHAP Rank $\le 5$ | Highly influential feature is simultaneously strongly error-associated. | `HIGH` / `CRITICAL` |
+| `ERROR_ROBUSTNESS_INTERACTION` | ERROR_FORENSICS, ROBUSTNESS | Feature Error Association $|r_{pb}| \ge 0.15$ AND Adversarial Flip Rate $\ge 15\%$ | Feature exhibits both high empirical error correlation and high perturbation vulnerability. | `HIGH` |
+| `ERROR_BIAS_INTERACTION` | ERROR_FORENSICS, BIAS | Subgroup Disparity Ratio $\ge 1.30$ AND Disparate Impact Ratio $< 0.80$ | Subgroup exhibits elevated error rate concurrent with algorithmic fairness gap. | `HIGH` / `CRITICAL` |
+| `CONFIDENCE_CALIBRATION_ERROR` | ERROR_FORENSICS, PERFORMANCE | High-Confidence Error Rate $\ge 15\%$ AND Expected Calibration Error $\text{ECE} \ge 0.08$ | Elevated high-confidence errors coincide with systematic model probability miscalibration. | `HIGH` |
+
+---
+
+## 14. Phase 6 — Root-Cause Investigation & Evidence Graph
+
+### A. Purpose & Core Philosophy
+Phase 6 connects cross-module diagnostic evidence into an explicit, deterministic, and traceable **Root-Cause Investigation Layer**. Rather than presenting disconnected findings or generating an ungrounded LLM narrative, Phase 6 deterministically synthesizes evidence across all 8 diagnostic modules to answer:
+> *"Given everything the diagnostic system discovered, what should I investigate first, what evidence supports that investigation path, what other findings are connected to it, and which original diagnostic results prove each step?"*
+
+> [!CAUTION]
+> **Strict Non-Causality Principle & Terminology:**
+> - Phase 6 does **NOT** perform causal inference or claim scientific causality.
+> - The graph does **NOT** contain causal edges (e.g. `CAUSES`, `PROVES`, `RESPONSIBLE_FOR`).
+> - Hypotheses and paths are **strictly associative**: `"Feature X is implicated across drift, explainability, and error evidence and is therefore a high-priority investigation target."`
+> - The official terminology is **Root-Cause Investigation**, not *Automated Root-Cause Proof*.
+
+---
+
+### B. Investigation Target Model
+Every investigation target is assigned a stable, canonical identity:
+- **`FEATURE::<feature_name>`**: Individual dataset features exhibiting cross-module anomalies.
+- **`SUBGROUP::<attribute>=<value>`**: Demographically or functionally segmented subgroups with elevated failure rates.
+- **`BEHAVIOR::<behavior_name>`**: Macro model behaviors such as `HIGH_CONFIDENCE_ERRORS`, `CALIBRATION_FAILURE`, or `GLOBAL_ROBUSTNESS_VULNERABILITY`.
+- **`ERROR_TYPE::<error_type>`**: Error classes such as `FALSE_POSITIVE` or `FALSE_NEGATIVE`.
+
+---
+
+### C. Evidence Graph Architecture
+
+```text
+               MODULE [DRIFT]
+                     │
+                     │ OBSERVES (PSI=0.31, threshold >= 0.25)
+                     ▼
+          FEATURE [FEATURE::income] ─── ASSOCIATED_WITH ───► ERROR [ERROR::PREDICTION_MISTAKE]
+                     │                                                      ▲
+                     │ INFLUENCES (SHAP Rank #1)                            │
+                     ▼                                                      │
+         MODULE [EXPLAINABILITY] ─── PRODUCES ───► FINDING [FINDING::ERROR_DRIFT]
+```
+
+#### 1. Graph Node Types
+- `MODULE`: One of the 8 diagnostic modules (`DATA_QUALITY`, `LEAKAGE`, `DRIFT`, `PERFORMANCE`, `EXPLAINABILITY`, `BIAS`, `ROBUSTNESS`, `ERROR_FORENSICS`).
+- `FEATURE`: Specific feature node (`FEATURE::<name>`).
+- `SUBGROUP`: Specific subgroup node (`SUBGROUP::<group>`).
+- `ERROR`: Target error node (`ERROR::<type>`).
+- `BEHAVIOR`: Model behavior anomaly node (`BEHAVIOR::<name>`).
+- `FINDING`: Cross-module correlation finding node (`FINDING::<rule_id>`).
+- `METRIC`: Specific observed measurement (`METRIC::<module>::<metric>`).
+
+#### 2. Graph Edge Types (Strictly Associative)
+- `OBSERVES`: Module observes target with specific metric and threshold.
+- `PRODUCES`: Module produces a correlation finding.
+- `IMPLICATES`: Finding implicates a feature or subgroup target.
+- `INVOLVES`: Finding involves a subgroup or behavior.
+- `SUPPORTED_BY`: Finding or target is supported by a metric observation.
+- `DRIFTED_IN`: Feature exhibits distribution shift in evaluation data.
+- `INFLUENCES`: Feature exhibits high model importance or explainability attribution.
+- `ASSOCIATED_WITH`: Feature or subgroup correlates with prediction errors.
+- `SENSITIVE_UNDER`: Feature or model exhibits vulnerability under perturbation.
+- `CONCURRENT_WITH` / `CO_OCCURS_WITH`: Co-occurring anomaly signals across modules.
+
+---
+
+### D. Deterministic Ranking & Scoring Formula
+
+To prevent arbitrary health metrics and avoid double-counting evidence, the **Investigation Priority Score** ($S \in [0, 100]$) is computed transparently:
+
+$$S = S_{\text{finding}} + (N_{\text{modules}} \times 12.0) + S_{\text{error}} + S_{\text{drift}} + S_{\text{shap}} + S_{\text{robustness}} + S_{\text{subgroup}}$$
+
+Where:
+- $S_{\text{finding}}$: Maximum base priority score from Phase 4/5 correlation findings (up to $45.0$ pts).
+- $N_{\text{modules}}$: Count of **distinct independent modules** contributing evidence (up to $36.0$ pts). Multiple metrics from the same module are supporting observations and do not inflate module independence.
+- $S_{\text{error}}$: Error association strength ($|r_{pb}| \times 20.0$, capped at $20.0$ pts).
+- $S_{\text{drift}}$: Drift severity ($\min(\text{PSI} \times 25.0, 15.0)$ pts).
+- $S_{\text{shap}}$: Explainability weight (Rank 1: $10.0$ pts, Rank 2-3: $7.0$ pts, Rank 4-5: $4.0$ pts).
+- $S_{\text{robustness}}$: Adversarial flip rate ($\text{flipRate} \times 20.0$, capped at $10.0$ pts).
+- $S_{\text{subgroup}}$: Subgroup error disparity ($(\text{disparityRatio} - 1.0) \times 15.0$, capped at $15.0$ pts).
+
+#### Priority Levels:
+- **`CRITICAL`**: $S \ge 75.0$
+- **`HIGH`**: $55.0 \le S < 75.0$
+- **`MEDIUM`**: $35.0 \le S < 55.0$
+- **`LOW`**: $20.0 \le S < 35.0$
+- **`INFO`**: $S < 20.0$
+
+---
+
+### E. Evidence Independence & Anti-Inflation
+Metrics are clustered by source module before scoring. Five metrics from `ERROR_FORENSICS` count as $1$ independent module supporting evidence, not $5$. Evidence confidence (`VERY_HIGH`, `HIGH`, `MEDIUM`, `LOW`) is determined by the number of independent module sources ($\ge 3 \to \text{VERY\_HIGH}$, $2 \to \text{HIGH}$, $1 \to \text{MEDIUM}$).
+
+---
+
+### F. Deterministic Hypotheses & Next Actions
+Hypotheses and next actions are generated from controlled evidence-derived templates:
+- **Hypothesis Template Example:**
+  > `"Feature 'income' is a high-priority investigation target because it is simultaneously influential (SHAP rank #1), drifted (PSI = 0.31), associated with prediction errors (r = 0.27), and vulnerable under perturbation (flip rate = 18.2%)."`
+- **Deterministic Next Actions Checklist:**
+  1. Inspect current evaluation distribution for `income` and compare against baseline.
+  2. Inspect feature contribution and partial dependence against error-associated records.
+  3. Inspect sensitivity under Gaussian noise and test decision boundary proximity.
+
+---
+
+### G. Database Schema: `diagnostic_investigations`
+
+```sql
+CREATE TABLE diagnostic_investigations (
+    id BIGSERIAL PRIMARY KEY,
+    run_id VARCHAR(64) NOT NULL REFERENCES diagnostic_runs(id) ON DELETE CASCADE,
+    target_type VARCHAR(64) NOT NULL,
+    target_key VARCHAR(128) NOT NULL,
+    display_name VARCHAR(255) NOT NULL,
+    priority VARCHAR(32) NOT NULL,
+    priority_score DOUBLE PRECISION NOT NULL,
+    evidence_confidence VARCHAR(32) NOT NULL,
+    supporting_module_count INT NOT NULL,
+    supporting_finding_count INT NOT NULL,
+    supporting_evidence_count INT NOT NULL,
+    hypothesis TEXT NOT NULL,
+    next_actions_json JSONB,
+    evidence_summary_json JSONB,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT uk_investigation_identity UNIQUE (run_id, target_type, target_key)
+);
+CREATE INDEX idx_diag_inv_run_id ON diagnostic_investigations(run_id);
+CREATE INDEX idx_diag_inv_priority ON diagnostic_investigations(run_id, priority_score DESC);
+```
+
+---
+
+### H. REST Endpoints
+
+| Endpoint | Method | Response DTO | Description |
+|---|---|---|---|
+| `/api/diagnostics/{id}/investigations` | `GET` | `List<InvestigationTargetDto>` | Returns ranked investigation targets ordered by `priorityScore DESC`. |
+| `/api/diagnostics/{id}/investigations/{targetKey}` | `GET` | `InvestigationDossierDto` | Returns full investigation dossier with ordered path, hypotheses, actions, and provenance. |
+| `/api/diagnostics/{id}/evidence-graph` | `GET` | `EvidenceGraphDto` | Returns evidence graph nodes and edges with provenance and relation labels. |
+| `/api/diagnostics/{id}/correlations/recalculate` | `POST` | `List<DiagnosticCorrelationDto>` | Idempotently re-evaluates correlations, investigations, and graph state. |
+
+---
+
+## 15. Phase 7 — Diagnostic Decision & Remediation Planning Layer
+
+Phase 7 evolves Model Doctor from an investigation and evidence-graph tool into a complete, deterministic **Remediation Decision Support System**. It bridges the gap between diagnostic evidence and engineer action by synthesizing ranked remediation candidates, explicit validation hypotheses, acceptance criteria, regression guards, and an automated before-and-after run comparison engine.
+
+### A. Phase 7 Core Architecture Diagram
+
+```text
+RAW DIAGNOSTICS (8 Modules)
+      ↓
+CORRELATIONS (17+ Rules)
+      ↓
+INVESTIGATIONS (Target Synthesis)
+      ↓
+EVIDENCE GRAPH (Multi-relational Graph)
+      ↓
+REMEDIATION RULE REGISTRY (11 Deterministic Rules)
+      ↓
+REMEDIATION CANDIDATES (Ranked by Priority Score)
+      ↓
+VALIDATION PLAN (Required Modules, Acceptance Criteria, Regression Guards)
+      ↓
+FUTURE CANDIDATE RUN (Re-evaluated Model Artifact / Preprocessing)
+      ↓
+BEFORE / AFTER COMPARISON (Metric Deltas & Significance)
+      ↓
+VALIDATED / REJECTED / MIXED / NO_MATERIAL_CHANGE
+```
+
+---
+
+### B. Core Principles & Safety Directives
+
+1. **Decision Support, Not Autonomous Modification:**
+   Model Doctor is an analytical workbench. It never alters user model artifacts, never executes arbitrary retraining scripts, never deploys code, and never fabricates synthetic experiment results.
+2. **Strict Non-Causal Associative Language:**
+   Statistical correlations and drift metrics do not establish causality. Hypotheses are framed as candidate interventions to validate empirically (e.g. *"Feature X is associated with prediction errors and exhibits high model influence; investigate distribution shift and feature consistency"* rather than *"Feature X caused the model to fail"*).
+3. **Deterministic & Auditable:**
+   Zero stochastic elements or black-box LLMs are used in rule evaluation or ranking. Given identical inputs, candidate sets, priority scores, and validation plans are 100% reproducible.
+4. **Idempotency & Lifecycle Separation:**
+   Recalculating remediations preserves deterministic integrity without duplicating database records. The remediation status (`PROPOSED`, `SELECTED`, `VALIDATING`, `VALIDATED`, `REJECTED`, `SUPERSEDED`) strictly reflects verified actions, and candidate validation requires an actual candidate run comparison.
+
+---
+
+### C. Remediation Types & Strategy Registry
+
+The platform implements 14 standardized remediation strategies in `RemediationType`:
+
+| Remediation Type | Target Category | Primary Trigger Condition | Primary Validation Modules |
+|---|---|---|---|
+| `DISTRIBUTION_SHIFT_INVESTIGATION` | Feature | DRIFT $\text{PSI} \ge 0.25$ + Explainability / Error association | `DRIFT`, `PERFORMANCE`, `ERROR_FORENSICS`, `ROBUSTNESS` |
+| `FEATURE_ENGINEERING_REVIEW` | Feature | SHAP Rank $\le 3$ + $\|r_{\text{error}}\| \ge 0.25$ | `EXPLAINABILITY`, `ERROR_FORENSICS`, `PERFORMANCE`, `ROBUSTNESS` |
+| `DATA_LEAKAGE_REVIEW` | Feature / Dataset | Leakage Score $\ge 0.70$ or ID-like feature in model | `LEAKAGE`, `PERFORMANCE`, `EXPLAINABILITY` |
+| `DATA_QUALITY_REPAIR` | Feature / Dataset | Missing rate $\ge 15\%$ or severe outlier / invalid values | `DATA_QUALITY`, `PERFORMANCE`, `ERROR_FORENSICS` |
+| `CALIBRATION_REVIEW` | Model | Expected Calibration Error $\text{ECE} \ge 0.10$ | `PERFORMANCE`, `ERROR_FORENSICS` |
+| `THRESHOLD_REVIEW` | Model | Sub-optimal threshold in 21-point operating grid | `PERFORMANCE`, `ERROR_FORENSICS` |
+| `ERROR_SEGMENT_REVIEW` | Subgroup / Segment | High-confidence error rate $\ge 10\%$ or segment concentration | `ERROR_FORENSICS`, `PERFORMANCE`, `BIAS` |
+| `FAIRNESS_REVIEW` | Protected Attribute | Disparate Impact $< 0.80$ or TPR/FPR gap $\ge 0.10$ | `BIAS`, `PERFORMANCE`, `ERROR_FORENSICS` |
+| `ROBUSTNESS_REVIEW` | Model / Feature | Adversarial flip rate $\ge 10\%$ or mean prob shift $\ge 0.05$ | `ROBUSTNESS`, `PERFORMANCE`, `EXPLAINABILITY` |
+| `MODEL_COMPLEXITY_REVIEW` | Model | Concentrated attribution + high perturbation sensitivity | `ROBUSTNESS`, `EXPLAINABILITY`, `PERFORMANCE` |
+| `FEATURE_REMOVAL_REVIEW` | Feature | Multi-module high risk (Leakage/Quality + High Error + Drift) | `PERFORMANCE`, `LEAKAGE`, `DATA_QUALITY`, `EXPLAINABILITY` |
+| `CLASS_IMBALANCE_REVIEW` | Target | Extreme class disparity affecting minority recall | `PERFORMANCE`, `ERROR_FORENSICS` |
+| `DATA_COLLECTION_REVIEW` | Dataset | Under-represented feature ranges or high missingness | `DATA_QUALITY`, `DRIFT` |
+| `EVALUATION_DATA_REVIEW` | Dataset | Evaluation dataset distribution anomalies | `DRIFT`, `PERFORMANCE` |
+
+---
+
+### D. Deterministic Rule Engine
+
+Each rule implements `DiagnosticRemediationRule` and executes in `RemediationAnalysisService` with complete exception isolation:
+
+1. **`DistributionShiftRemediationRule`**: Triggers when a feature has severe or warning PSI ($\ge 0.25$) and is present in Explainability or Error Forensics findings. Recommends pipeline verification, schema checks, and baseline retraining window alignment.
+2. **`FeatureEngineeringRemediationRule`**: Triggers when a feature has top SHAP importance (Rank $\le 3$) and point-biserial error correlation $\|r\| \ge 0.25$. Formulates hypotheses separating importance from error association.
+3. **`DataLeakageRemediationRule`**: Triggers when target correlation or rule leakage $\ge 0.70$. Explicitly notes in acceptance criteria that fixing leakage may reduce apparent test metrics while establishing a trustworthy evaluation.
+4. **`DataQualityRepairRemediationRule`**: Detects missingness ($\ge 15\%$) or extreme outlier counts. Recommends upstream imputation, sensor calibration, or validation schemas.
+5. **`CalibrationReviewRemediationRule`**: Fires when $\text{ECE} \ge 0.10$. Recommends temperature scaling, isotonic regression, Platt scaling, and reliability curve evaluation.
+6. **`ThresholdReviewRemediationRule`**: Evaluates the 21-point operating threshold curve ($0.00$ to $1.00$). Finds candidate thresholds offering favorable FNR/FPR tradeoffs (e.g. lowering FNR by $\ge 0.05$ with FPR increase $\le 0.05$).
+7. **`ErrorSegmentReviewRemediationRule`**: Triggers when high-confidence errors constitute $\ge 10\%$ of errors or are concentrated in identifiable subgroups.
+8. **`FairnessReviewRemediationRule`**: Triggers on 80% rule violation or TPR/FPR gap $\ge 0.10$. Recommends threshold adjustment, re-sampling, or protected subgroup auditing.
+9. **`RobustnessReviewRemediationRule`**: Triggers when adversarial flip rate $\ge 10\%$ or mean probability shift $\ge 0.05$. Recommends input clipping, regularization, or noise augmentation.
+10. **`ModelComplexityReviewRemediationRule`**: Evaluates attribution Gini concentration ($> 0.60$) combined with high sensitivity. Recommends regularization, pruning, or simpler architectures.
+11. **`FeatureRemovalReviewRemediationRule`**: Evaluates multi-source evidence (e.g. leakage + attribution or quality + error). Explicitly frames removal as a testable ablation hypothesis.
+
+---
+
+### E. Priority Scoring Formula
+
+The Remediation Priority Score ($S \in [0, 100]$) quantifies the strength of empirical justification for investigating a remediation path:
+
+$$S = \min(100.0, S_{\text{base}} + S_{\text{modules}} + S_{\text{severity}} + S_{\text{feature}} + S_{\text{validation}} - P_{\text{uncertainty}})$$
+
+Where:
+- **$S_{\text{base}}$**: Base score according to remediation type ($30.0$ to $50.0$ pts).
+- **$S_{\text{modules}}$**: Independent supporting module bonus ($N_{\text{distinct\_modules}} \times 10.0$, capped at $30.0$ pts).
+- **$S_{\text{severity}}$**: Empirical metric severity bonus (e.g. $\text{PSI} \ge 0.25 \to +10.0$, $\text{ECE} \ge 0.15 \to +10.0$, $\text{flipRate} \ge 0.15 \to +10.0$).
+- **$S_{\text{feature}}$**: High-influence feature bonus (SHAP Rank 1 $\to +10.0$, Rank 2-3 $\to +6.0$).
+- **$S_{\text{validation}}$**: High validation leverage bonus ($+5.0$ if actionable across $\ge 3$ diagnostic modules).
+- **$P_{\text{uncertainty}}$**: Missing prerequisite module penalty ($-10.0$ per missing corroborating module).
+
+#### Priority Bands:
+- **`CRITICAL`**: $S \ge 75.0$
+- **`HIGH`**: $55.0 \le S < 75.0$
+- **`MEDIUM`**: $35.0 \le S < 55.0$
+- **`LOW`**: $20.0 \le S < 35.0$
+- **`INFO`**: $S < 20.0$
+
+Deterministic sorting order: `priorityScore DESC`, `priority DESC`, `targetKey ASC`, `remediationType ASC`.
+
+---
+
+### F. Structured Validation Plan & Acceptance Criteria
+
+Each remediation entity stores structured JSON metadata defining:
+1. **Validation Strategy & Objective:** High-level testing protocol.
+2. **Required Modules:** The exact set of diagnostic engines that must be re-run on the candidate model/dataset.
+3. **Acceptance Criteria:** Deterministic numerical thresholds defining successful empirical validation (e.g. *"PSI decreases below 0.10"*, *"F1 does not regress by > 0.01"*).
+4. **Regression Guards:** Mandatory metric invariants that must not be violated during intervention.
+5. **Expected Impact Hypotheses:** Structured metric direction mappings (e.g. `ECE -> DECREASE`, `FNR -> DECREASE`, `PSI -> DECREASE`) with explicit non-causal rationales.
+
+---
+
+### G. Before / After Run Comparison Model
+
+`RunComparisonService` provides automated metric comparison between a baseline diagnostic run and any candidate diagnostic run:
+
+- Computes absolute deltas ($\Delta = v_{\text{candidate}} - v_{\text{baseline}}$) and relative percentage changes.
+- Directional assessment based on metric semantics:
+  - Higher-is-better metrics (Accuracy, Precision, Recall, Specificity, F1, ROC-AUC, PR-AUC): $\Delta \ge 0.005 \to \text{IMPROVED}$, $\Delta \le -0.005 \to \text{REGRESSED}$.
+  - Lower-is-better metrics (Log Loss, Brier Score, ECE, MCE, FPR, FNR, PSI, KS, Flip Rate, Missing Rate): $\Delta \le -0.005 \to \text{IMPROVED}$, $\Delta \ge 0.005 \to \text{REGRESSED}$.
+  - Metrics within $|\Delta| < 0.005$ are classified as `NO_MATERIAL_CHANGE` / `UNCHANGED`.
+- Produces an **Overall Comparison Assessment**:
+  - `IMPROVED`: Improved metrics $> 0$ and Regressed metrics $== 0$.
+  - `REGRESSED`: Regressed metrics $> 0$ and Improved metrics $== 0$.
+  - `MIXED`: Both improved and regressed metrics exist.
+  - `NO_MATERIAL_CHANGE`: Only unchanged metrics exist.
+  - `INSUFFICIENT_EVIDENCE`: No common metrics could be compared.
+
+---
+
+### H. Database Schema: `diagnostic_remediations`
+
+```sql
+CREATE TABLE diagnostic_remediations (
+    id BIGSERIAL PRIMARY KEY,
+    run_id VARCHAR(64) NOT NULL REFERENCES diagnostic_runs(id) ON DELETE CASCADE,
+    target_type VARCHAR(64) NOT NULL,
+    target_key VARCHAR(128) NOT NULL,
+    remediation_type VARCHAR(64) NOT NULL,
+    title VARCHAR(255) NOT NULL,
+    description TEXT NOT NULL,
+    priority VARCHAR(32) NOT NULL,
+    priority_score DOUBLE PRECISION NOT NULL,
+    confidence VARCHAR(32) NOT NULL,
+    evidence_strength VARCHAR(32) NOT NULL,
+    hypothesis TEXT NOT NULL,
+    expected_effect TEXT NOT NULL,
+    validation_strategy TEXT NOT NULL,
+    expected_impact_json JSONB,
+    acceptance_criteria_json JSONB,
+    regression_guards_json JSONB,
+    required_modules_json JSONB,
+    source_correlation_ids_json JSONB,
+    source_result_ids_json JSONB,
+    source_investigation_target VARCHAR(128),
+    status VARCHAR(32) NOT NULL DEFAULT 'PROPOSED',
+    user_rationale TEXT,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT uk_remediation_identity UNIQUE (run_id, remediation_type, target_key)
+);
+CREATE INDEX idx_diag_rem_run_id ON diagnostic_remediations(run_id);
+CREATE INDEX idx_diag_rem_priority ON diagnostic_remediations(run_id, priority_score DESC);
+CREATE INDEX idx_diag_rem_status ON diagnostic_remediations(run_id, status);
+```
+
+---
+
+### I. REST Endpoints
+
+| Endpoint | Method | Request Body / Params | Response DTO | Description |
+|---|---|---|---|---|
+| `/api/diagnostics/{id}/remediations` | `GET` | - | `List<DiagnosticRemediationDto>` | Returns ranked remediation candidates ordered by priority score. |
+| `/api/diagnostics/{id}/remediations/{remediationId}` | `GET` | - | `DiagnosticRemediationDto` | Returns single detailed remediation candidate dossier. |
+| `/api/diagnostics/{id}/remediations/recalculate` | `POST` | - | `List<DiagnosticRemediationDto>` | Idempotently re-evaluates all remediation rules against current evidence. |
+| `/api/diagnostics/{id}/remediations/{remediationId}/select` | `POST` | `rationale` (optional) | `DiagnosticRemediationDto` | Marks a proposed candidate as `SELECTED` for investigation. |
+| `/api/diagnostics/{id}/remediations/{remediationId}/reject` | `POST` | `rationale` (required) | `DiagnosticRemediationDto` | Marks a candidate as `REJECTED` with user explanation. |
+| `/api/diagnostics/{id}/comparison/{candidateRunId}` | `GET` | - | `DiagnosticComparisonDto` | Returns delta evaluation between baseline run and candidate run. |
+
+---
+
+### J. Frontend Workstation: `07 REMEDIATION & VALIDATION`
+
+Located at section `07` of the Model Doctor diagnostic workstation:
+- **Decision Support HUD:** Metrics for Total Proposed, Critical, High, Selected, and Validated candidates.
+- **Safety & Non-Causal Advisory:** Prominent banner emphasizing evidence-driven hypothesis testing over causal certainty.
+- **Remediation Queue:** Technical table with filters for status and priority, displaying target, remediation type, evidence modules, confidence, and validation requirements.
+- **Remediation Dossier:** Complete breakdown of target key, recommended action, empirical rationale, hypothesis, expected impacts with directional arrows, validation modules, acceptance criteria checklist, regression guards, and provenance trace (with direct clickable jumps to source investigation targets and correlation findings).
+- **Run Comparison Console:** Interactive selector to compare the active baseline run against any historical candidate run, rendering clean metric deltas, directional indicators, and overall delta assessment badges.
+
+---
+
+## 16. Phase 8 — Experimental Validation & Counterfactual Evaluation Layer
+
+Phase 8 elevates Model Doctor from remediation planning into a deterministic **Experimental Validation Layer**. It allows engineers and ML practitioners to evaluate controlled candidate interventions against baseline model and dataset behavior without automated retraining, black-box AutoML, or uncontrolled LLM hallucinations.
+
+```text
+Baseline Run (Phase 1–6 Evidence)
+        ↓
+Phase 7 Selected Remediation Hypothesis
+        ↓
+Phase 8 Controlled Candidate Intervention
+        ↓
+Diagnostic Experiment Strategy Dispatch
+        ↓
+Candidate Diagnostic Run Evaluation
+        ↓
+Baseline ↔ Candidate Paired Statistical Analysis
+        ↓
+Acceptance Criteria & Regression Guard Evaluation
+        ↓
+Deterministic Experiment Conclusion (VALIDATED / REJECTED / ...)
+```
+
+---
+
+### A. Core Distinctions & Non-Causality Safety Principle
+
+The experiment engine rigorously enforces the boundary between empirical observation and causal inference:
+
+```text
+OBSERVED               (Phase 1–5 diagnostic measurements on baseline artifact)
+EXPERIMENTALLY TESTED  (Phase 8 measurable before/after evidence under controlled intervention)
+HYPOTHESIZED           (Phase 7 expected metric direction prior to experimentation)
+```
+
+> [!CAUTION]
+> **Non-Causal Safety Directive:**
+> Experimental validation measures whether the candidate intervention improves observed evaluation metrics under the specified evaluation configuration and random seed (`42`). It does **not** establish causal validity or guarantee identical production behavior. Model Doctor strictly avoids statements like *"this feature causes errors"* or *"this remediation fixes the model"*, using language such as *"the candidate intervention produced an improvement in F1 on this evaluation dataset"*.
+
+---
+
+### B. Controlled Experiment Types
+
+The system defines 6 deterministic experiment strategies in `ExperimentType`:
+
+| Experiment Type | Category | Transformation & Execution Semantics |
+|---|---|---|
+| `FEATURE_ABLATION` | Feature | Drops a specified feature from the dataset. If the model interface requires the feature and cannot accept an altered schema, returns `NOT_EXECUTABLE` with explicit rationale rather than fabricating predictions. |
+| `FEATURE_TRANSFORMATION` | Feature | Applies deterministic, parameter-bounded transformations: `CLIP` (quantile bounds), `WINSORIZE`, `MISSING_REPLACE` (mean/median/mode), or `STANDARDIZE`. Stores exact parameter provenance. |
+| `MISSING_VALUE_STRESS` | Feature / Data | Controlled missingness injection at deterministic rates (`0.05`, `0.10`, `0.20`) with fixed seed `42` to validate model robustness against data corruption. |
+| `THRESHOLD_COUNTERFACTUAL` | Model Probability | Evaluates model probability scores across a 21-point operating grid ($0.00$ to $1.00$ in steps of $0.05$) without retraining, computing FPR, FNR, Precision, Recall, F1, and Specificity. |
+| `CALIBRATION_COUNTERFACTUAL` | Model Probability | Evaluates post-hoc probability calibration (Platt Scaling / Isotonic Regression) without retraining. Requires an independent calibration data partition; returns `NOT_EXECUTABLE` if independent partition is missing. |
+| `SUBGROUP_COUNTERFACTUAL` | Fairness / Subgroup | Measures candidate performance, error rates, and parity metrics across demographic slices with sample size reporting and confidence intervals. |
+
+---
+
+### C. Experiment Lifecycle State Machine
+
+```text
+      ┌────────────┐
+      │  PROPOSED  │
+      └─────┬──────┘
+            │
+      ┌─────┴──────┐
+      ▼            ▼
+┌───────────┐ ┌──────────────┐
+│  QUEUED   │ │NOT_EXECUTABLE│
+└─────┬─────┘ └──────────────┘
+      │
+      ▼
+┌───────────┐
+│  RUNNING  │──────────┐
+└─────┬─────┘          │
+      ├────────────────┼──────────────┐
+      ▼                ▼              ▼
+┌───────────┐    ┌───────────┐  ┌───────────┐
+│ COMPLETED │    │  FAILED   │  │ CANCELLED │
+└───────────┘    └───────────┘  └───────────┘
+```
+
+1. `PROPOSED`: Experiment registered with intervention config and validation rules.
+2. `QUEUED`: Queued for execution.
+3. `RUNNING`: Intervention applied, candidate dataset constructed, diagnostic run executed.
+4. `COMPLETED`: Diagnostic execution and statistical comparisons completed successfully.
+5. `FAILED`: Unexpected exception occurred during evaluation (failure reason preserved).
+6. `NOT_EXECUTABLE`: Prerequisites unmet (e.g. missing calibration partition or incompatible model input).
+7. `CANCELLED`: User cancelled the running experiment.
+
+---
+
+### D. Data & Model Provenance
+
+Every experiment persists complete, auditable provenance in `DiagnosticExperiment`:
+- `datasetProvenanceJson`: Baseline dataset ID, candidate dataset ID, sample count, feature count, transformations applied, random seed (`42`).
+- `modelProvenanceJson`: Model artifact ID, model framework, task type, feature schema.
+- `interventionConfigJson`: Exact transformation parameters (feature name, transformation type, lower/upper quantiles, missingness rate, decision threshold).
+- `deterministicSeed`: Seed integer used for reproducible sampling and perturbations (`42`).
+
+---
+
+### E. Acceptance Criteria & Regression Guard Evaluator
+
+Phase 8 deterministically evaluates the validation criteria defined during remediation planning:
+
+#### 1. Acceptance Criteria
+Evaluates whether the candidate intervention achieved its primary hypothesis targets (e.g. $\text{PSI} < 0.10$, $\text{F1}$ delta $\ge -0.01$, $\text{ECE}$ decreases).
+
+#### 2. Regression Guards
+Evaluates safety invariants that must not be violated during remediation (e.g. high-confidence error rate increase $\le 0.05$, disparate impact ratio $\ge 0.80$, adversarial flip rate increase $\le 0.05$).
+
+Each rule returns:
+- `criterion` / `guard`: Rule description.
+- `baselineValue`: Baseline run measurement.
+- `candidateValue`: Candidate run measurement.
+- `delta`: Numerical delta ($\Delta$).
+- `operator`: Comparison operator (`<`, `<=`, `>`, `>=`, `DELTA >= x`).
+- `threshold`: Boundary value.
+- `passed`: Boolean validation result.
+- `reason`: Explanation of the outcome.
+
+---
+
+### F. Deterministic Experiment Conclusions
+
+The overall conclusion is synthesized deterministically without heuristic ambiguity:
+
+| Conclusion | Trigger Condition | Interpretation |
+|---|---|---|
+| `VALIDATED` | All Acceptance Criteria **PASS** AND all Regression Guards **PASS**. | Primary hypothesis confirmed; no metric regressions observed. |
+| `PARTIALLY_VALIDATED` | Primary objective improves, some secondary criteria fail, but **NO** critical regression guards fail. | Candidate provides partial benefit; warrants further iteration. |
+| `REJECTED` | Primary objective fails OR any critical Regression Guard **FAILS**. | Intervention failed to achieve objective or caused unacceptable regressions. |
+| `INCONCLUSIVE` | Sample size insufficient or contradictory metric evidence. | Evidence is ambiguous under current test conditions. |
+| `NOT_EXECUTABLE` | Prerequisites unmet (e.g. missing calibration partition). | Experiment cannot be run against current artifact configuration. |
+| `FAILED` | Exception or execution crash occurred. | Pipeline or ML engine failure. |
+
+---
+
+### G. Paired Statistical Validation Methods
+
+Where experiments evaluate predictions on the same evaluation rows, Phase 8 calculates paired statistical evidence:
+
+1. **Prediction Flip Rate:** Percentage of test rows where candidate prediction differs from baseline:
+   $$\text{FlipRate} = \frac{1}{N} \sum_{i=1}^N \mathbb{I}(\hat{y}_{i, \text{baseline}} \neq \hat{y}_{i, \text{candidate}})$$
+2. **Paired Contingency Table ($2 \times 2$):**
+   - Both Correct ($a$)
+   - Baseline Correct, Candidate Error ($b$)
+   - Baseline Error, Candidate Correct ($c$)
+   - Both Error ($d$)
+3. **McNemar's Test with Continuity Correction:**
+   $$\chi^2 = \frac{(|b - c| - 1)^2}{b + c}, \quad p = 1 - F_{\chi^2_1}(\chi^2)$$
+4. **Bootstrap 95% Confidence Intervals (Seed = 42):**
+   Computes mean probability shift and 1,000 bootstrap resamples to report empirical $95\%$ confidence bounds $[\text{CI}_{\text{lower}}, \text{CI}_{\text{upper}}]$.
+
+---
+
+### H. Database Schema: `diagnostic_experiments`
+
+```sql
+CREATE TABLE diagnostic_experiments (
+    id VARCHAR(64) PRIMARY KEY,
+    baseline_run_id VARCHAR(64) NOT NULL REFERENCES diagnostic_runs(id) ON DELETE CASCADE,
+    candidate_run_id VARCHAR(64) REFERENCES diagnostic_runs(id) ON DELETE SET NULL,
+    remediation_id BIGINT REFERENCES diagnostic_remediations(id) ON DELETE SET NULL,
+    experiment_type VARCHAR(64) NOT NULL,
+    status VARCHAR(32) NOT NULL DEFAULT 'PROPOSED',
+    title VARCHAR(255) NOT NULL,
+    description TEXT,
+    target_type VARCHAR(64) NOT NULL,
+    target_key VARCHAR(128) NOT NULL,
+    intervention_config_json JSONB,
+    dataset_provenance_json JSONB,
+    model_provenance_json JSONB,
+    requested_modules_json JSONB,
+    executed_modules_json JSONB,
+    baseline_metrics_json JSONB,
+    candidate_metrics_json JSONB,
+    metric_deltas_json JSONB,
+    statistical_evidence_json JSONB,
+    acceptance_criteria_json JSONB,
+    acceptance_results_json JSONB,
+    regression_guards_json JSONB,
+    regression_results_json JSONB,
+    conclusion VARCHAR(32),
+    conclusion_reason TEXT,
+    deterministic_seed INT DEFAULT 42,
+    error_code VARCHAR(64),
+    error_message TEXT,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    started_at TIMESTAMP WITH TIME ZONE,
+    completed_at TIMESTAMP WITH TIME ZONE,
+    CONSTRAINT uk_experiment_identity UNIQUE (baseline_run_id, experiment_type, remediation_id, target_key)
+);
+CREATE INDEX idx_diag_exp_baseline_run ON diagnostic_experiments(baseline_run_id);
+CREATE INDEX idx_diag_exp_candidate_run ON diagnostic_experiments(candidate_run_id);
+CREATE INDEX idx_diag_exp_remediation ON diagnostic_experiments(remediation_id);
+CREATE INDEX idx_diag_exp_status ON diagnostic_experiments(baseline_run_id, status);
+CREATE INDEX idx_diag_exp_created_at ON diagnostic_experiments(created_at);
+```
+
+---
+
+### I. REST API Reference
+
+| Endpoint | Method | Payload / Params | Response DTO | Description |
+|---|---|---|---|---|
+| `/api/diagnostics/{id}/experiments` | `GET` | - | `List<DiagnosticExperimentDto>` | Returns all experiments associated with the baseline run. |
+| `/api/diagnostics/{id}/experiments/{experimentId}` | `GET` | - | `DiagnosticExperimentDto` | Returns detailed experiment dossier including deltas, evidence, and results. |
+| `/api/diagnostics/{id}/experiments` | `POST` | `CreateExperimentRequestDto` | `DiagnosticExperimentDto` | Creates a new controlled experiment record (idempotent). |
+| `/api/diagnostics/{id}/experiments/{experimentId}/execute` | `POST` | - | `DiagnosticExperimentDto` | Executes the experiment strategy, evaluates candidate run, and computes conclusions. |
+| `/api/diagnostics/{id}/experiments/{experimentId}/cancel` | `POST` | - | `DiagnosticExperimentDto` | Safely cancels a running or queued experiment. |
+| `/api/diagnostics/{id}/experiments/{experimentId}/comparison` | `GET` | - | `DiagnosticComparisonDto` | Returns paired before/after metric comparison integrated with RunComparisonService. |
+
+---
+
+### J. Frontend Workstation: `08 EXPERIMENTAL VALIDATION`
+
+Located at navigation code `08` on the Model Doctor workstation sidebar:
+- **Experiment HUD:** Real-time counters for Total Experiments, Running, Completed, Validated, Rejected, and Inconclusive.
+- **Safety Directive Banner:** Non-causal framing and deterministic validation principles.
+- **Experiment Queue:** Detailed table displaying ID, Type, Target, Remediation Link, Status, Primary Result, Regression Guard Status, and Final Conclusion.
+- **New Experiment Modal:** Configurable launcher for all 6 experiment types with parameter validation (e.g. clipping quantiles, missingness rates, threshold sliders).
+- **Comprehensive Experiment Dossier:**
+  - Full Execution Timeline from creation to validation.
+  - Multi-Pillar Metric Comparison Table (Performance, Calibration, Drift, Error Forensics, Fairness, Robustness) with technical state badges (`IMPROVED`, `REGRESSED`, `NO_MATERIAL_CHANGE`, `INSUFFICIENT_EVIDENCE`).
+  - Paired Statistical Evidence card (Flip Rate, McNemar $\chi^2$ & $p$-value, Bootstrap 95% CI probability shift).
+  - Acceptance Criteria Checklist & Regression Guard Invariant Status.
+  - Complete Data & Model Provenance inspector.
+
+---
+
+## 17. Longitudinal Model Monitoring & Temporal Intelligence Layer
+
+### A. Architectural Overview
+
+Phase 9 transitions Model Doctor from isolated single-run evaluations to continuous, longitudinal intelligence over a logical **model lineage**:
+
+```text
+RAW DIAGNOSTICS (8 Modules)
+        ↓
+CROSS-MODULE CORRELATIONS
+        ↓
+ROOT-CAUSE INVESTIGATION
+        ↓
+EVIDENCE GRAPH
+        ↓
+REMEDIATION HYPOTHESES
+        ↓
+EXPERIMENTAL VALIDATION
+        ↓
+BEFORE / AFTER EVIDENCE
+        ↓
+LONGITUDINAL HISTORY (Lineage Run Windows)
+        ↓
+TEMPORAL SIGNALS & THRESHOLD HISTORIES
+        ↓
+PERSISTENCE & RECURRENCE DETECTION
+        ↓
+TREND ANALYSIS (Slope, R², Mann-Kendall)
+        ↓
+REGIME & STEP CHANGE-POINT DETECTION
+        ↓
+REMEDIATION DURABILITY EVALUATION
+        ↓
+TEMPORAL ALERTS & MONITORING DECISION SUPPORT
+```
+
+### B. Core Principles & Governance
+
+1. **Non-Causality Principle:** Temporal observations reflect deterministic longitudinal associations. Temporal ordering alone does not establish causal direction.
+2. **Immutable Provenance:** Every temporal observation, trend, issue track, alert, and durability assessment retains explicit source IDs (`sourceResultId`, `runId`, `runIndex`, `timestamp`). No aggregation eliminates historical provenance.
+3. **Operational vs. Experimental Run Segregation:** Standard production baseline observations (`runType = BASELINE`) constitute operational monitoring history. Experimental candidates (`runType = EXPERIMENT`) are isolated as comparison overlays and never pollute operational baseline history.
+4. **No LLMs in Decision Path:** All statistical computations, persistence evaluations, change point tests, and alert syntheses are 100% deterministic and auditable.
+5. **No Synthetic Run Interpolation:** Missing runs remain missing (`NOT_OBSERVED`); missing observations are never coerced to zero.
+
+---
+
+### C. Deterministic Metric Registry
+
+A centralized registry defines all metrics eligible for longitudinal analysis across 8 modules:
+
+| Module | Metric Name | Higher is Better | Warning Threshold | Critical Threshold | Standard Unit |
+|---|---|---|---|---|---|
+| `PERFORMANCE` | `f1` | `true` | `0.70` | `0.50` | `score` |
+| `PERFORMANCE` | `roc_auc` | `true` | `0.75` | `0.60` | `auc` |
+| `PERFORMANCE` | `pr_auc` | `true` | `0.60` | `0.40` | `auc` |
+| `PERFORMANCE` | `accuracy` | `true` | `0.80` | `0.65` | `pct` |
+| `PERFORMANCE` | `log_loss` | `false` | `0.50` | `1.00` | `loss` |
+| `PERFORMANCE` | `brier_score` | `false` | `0.20` | `0.35` | `score` |
+| `PERFORMANCE` | `expected_calibration_error` | `false` | `0.08` | `0.15` | `ece` |
+| `DRIFT` | `psi` | `false` | `0.10` | `0.25` | `psi` |
+| `DRIFT` | `max_psi` | `false` | `0.10` | `0.25` | `psi` |
+| `DRIFT` | `wasserstein` | `false` | `0.20` | `0.50` | `dist` |
+| `ERROR_FORENSICS`| `high_confidence_error_rate` | `false` | `0.05` | `0.12` | `rate` |
+| `ERROR_FORENSICS`| `prediction_flip_rate` | `false` | `0.08` | `0.18` | `rate` |
+| `ERROR_FORENSICS`| `error_association` | `false` | `0.20` | `0.40` | `corr` |
+| `BIAS` | `disparate_impact` | `target range [0.80, 1.25]` | `0.80` | `0.65` | `ratio` |
+| `BIAS` | `tpr_gap` | `false` | `0.10` | `0.20` | `gap` |
+| `BIAS` | `fpr_gap` | `false` | `0.08` | `0.15` | `gap` |
+| `ROBUSTNESS` | `flip_rate` | `false` | `0.10` | `0.25` | `rate` |
+| `ROBUSTNESS` | `mean_probability_shift` | `false` | `0.08` | `0.18` | `shift` |
+| `LEAKAGE` | `leakage_score` | `false` | `0.50` | `0.70` | `score` |
+| `DATA_QUALITY` | `missing_rate` | `false` | `0.05` | `0.20` | `pct` |
+
+---
+
+### D. Trend Analysis & Statistical Tests
+
+For every historical metric sequence $y = (y_1, y_2, \dots, y_n)$ across ordered baseline runs:
+- **Linear Trend Slope ($\beta$) & $R^2$:**
+  $$\beta = \frac{\sum (t_i - \bar{t})(y_i - \bar{y})}{\sum (t_i - \bar{t})^2}, \quad R^2 = \frac{(\sum (t_i - \bar{t})(y_i - \bar{y}))^2}{\sum (t_i - \bar{t})^2 \sum (y_i - \bar{y})^2}$$
+- **Non-Parametric Mann-Kendall Trend Test:**
+  $$S = \sum_{k=1}^{n-1} \sum_{j=k+1}^n \text{sgn}(y_j - y_k), \quad \tau = \frac{2S}{n(n-1)}$$
+  $$\text{Var}(S) = \frac{n(n-1)(2n+5)}{18}, \quad Z = \begin{cases} \frac{S-1}{\sqrt{\text{Var}(S)}} & S > 0 \\ 0 & S = 0 \\ \frac{S+1}{\sqrt{\text{Var}(S)}} & S < 0 \end{cases}, \quad p = 2(1 - \Phi(|Z|))$$
+- **Trend Classification:**
+  - `IMPROVING`: Slope is statistically moving in beneficial direction ($R^2 \ge 0.25$ or Mann-Kendall $p < 0.10$).
+  - `DEGRADING`: Slope is moving toward harmful threshold ($R^2 \ge 0.25$ or Mann-Kendall $p < 0.10$).
+  - `STABLE`: Negligible absolute slope ($|\beta| < 0.005$ or $R^2 < 0.25$ with low variance).
+  - `VOLATILE`: High standard deviation / coefficient of variation with fluctuating non-monotonic trajectory.
+  - `INSUFFICIENT_DATA`: Sample size $< 3$ observations.
+
+---
+
+### E. Threshold State Transitions & Issue Track Persistence
+
+1. **Threshold Reconstruction:** Reconstructs historical severity per run (`LOW` -> `MEDIUM` -> `HIGH` -> `CRITICAL`).
+2. **Canonical Issue Tracks:** Aggregates multi-module evidence for specific targets (`FEATURE::income`, `SUBGROUP::gender=Female`, `GLOBAL`).
+3. **Persistence Classification State Machine:**
+   - `PERSISTENT`: Active elevated severity across $\ge 3$ consecutive baseline runs.
+   - `EMERGING`: Issue appears in recent run after not being elevated historically.
+   - `RECURRING`: Issue was elevated, cleared below warning threshold, and later returned.
+   - `TRANSIENT`: Issue appeared for 1 isolated run and resolved.
+   - `RECOVERED`: Previously elevated issue has remained below warning thresholds for $\ge 2$ consecutive runs.
+   - `ESCALATING`: Consecutive increases in severity or degradation magnitude.
+   - `DEESCALATING`: Consecutive decreases in severity toward nominal levels.
+
+---
+
+### F. Step Change-Point Detection
+
+Detects structural behavioral shifts across metric series:
+- Evaluates partition points $k \in [2, n-2]$ splitting history into $(y_1, \dots, y_k)$ and $(y_{k+1}, \dots, y_n)$.
+- Calculates split-weighted mean difference:
+  $$\Delta_k = |\bar{y}_{\text{after}} - \bar{y}_{\text{before}}| \cdot \sqrt{\frac{k(n-k)}{n}}$$
+- Computes confidence levels (`HIGH`, `MEDIUM`, `LOW`) based on signal-to-noise ratio:
+  $$\text{SNR} = \frac{|\bar{y}_{\text{after}} - \bar{y}_{\text{before}}|}{\sigma_{\text{pooled}}}$$
+
+---
+
+### G. Remediation Durability Assessment
+
+Connects Phase 7 remediation recommendations and Phase 8 experimental validations with subsequent operational baseline monitoring:
+- **States:**
+  - `SUSTAINED`: Experimental improvement confirmed and maintained across all subsequent operational baseline runs.
+  - `TEMPORARY`: Experimental improvement faded, metric returned to warning/critical status within follow-up window.
+  - `FAILED_TO_SUSTAIN`: Follow-up baseline run immediately showed regression to pre-experiment degradation levels.
+  - `INSUFFICIENT_FOLLOWUP`: Validated experiment has $< 1$ subsequent operational baseline run recorded.
+  - `NOT_APPLICABLE`: Experiment was not validated or unlinked to candidate execution.
+
+---
+
+### H. Temporal Alert Engine
+
+Deterministic prioritized alert generator emitting:
+- `NEW_DEGRADATION`: Metric or target transitioned from nominal to warning/critical in latest run.
+- `PERSISTENT_DEGRADATION`: Issue has persisted across $\ge 3$ consecutive operational runs.
+- `ESCALATING_DEGRADATION`: Severity is monotonically worsening across recent runs.
+- `RECOVERY`: Previously degraded issue confirmed resolved in recent runs.
+- `REGRESSION_AFTER_RECOVERY`: Issue recurred after prior recovery state.
+- `RECURRING_ISSUE`: Target exhibits intermittent failure cycles across the observation window.
+- `CHANGE_POINT_DETECTED`: Statistically verified step-shift detected in metric trajectory.
+- `REMEDIATION_NOT_SUSTAINED`: Candidate intervention failed to maintain improvements during follow-up monitoring.
+- `MULTI_MODULE_ESCALATION`: Concurrently degrading signals detected across $\ge 2$ independent diagnostic modules.
+
+---
+
+### I. Database Entities & Persistence Schema
+
+```sql
+CREATE TABLE diagnostic_temporal_observations (
+    id BIGSERIAL PRIMARY KEY,
+    model_lineage_id VARCHAR(128) NOT NULL,
+    run_id VARCHAR(64) NOT NULL REFERENCES diagnostic_runs(id) ON DELETE CASCADE,
+    run_type VARCHAR(32) NOT NULL DEFAULT 'BASELINE',
+    run_index INT NOT NULL,
+    timestamp TIMESTAMP WITH TIME ZONE NOT NULL,
+    module VARCHAR(64) NOT NULL,
+    metric_name VARCHAR(64) NOT NULL,
+    target_type VARCHAR(64),
+    target_key VARCHAR(128),
+    metric_value DOUBLE PRECISION NOT NULL,
+    unit VARCHAR(32),
+    severity VARCHAR(32),
+    threshold DOUBLE PRECISION,
+    sample_size INT,
+    source_result_id BIGINT,
+    source_finding_id BIGINT,
+    source_investigation_id BIGINT,
+    source_remediation_id BIGINT,
+    source_experiment_id VARCHAR(64),
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+CREATE INDEX idx_diag_temp_obs_lineage ON diagnostic_temporal_observations(model_lineage_id);
+CREATE INDEX idx_diag_temp_obs_metric ON diagnostic_temporal_observations(model_lineage_id, metric_name, target_key);
+CREATE INDEX idx_diag_temp_obs_run ON diagnostic_temporal_observations(run_id);
+CREATE INDEX idx_diag_temp_obs_time ON diagnostic_temporal_observations(timestamp);
+
+CREATE TABLE diagnostic_issue_tracks (
+    id BIGSERIAL PRIMARY KEY,
+    model_lineage_id VARCHAR(128) NOT NULL,
+    track_fingerprint VARCHAR(128) NOT NULL,
+    target_type VARCHAR(64) NOT NULL,
+    target_key VARCHAR(128) NOT NULL,
+    first_seen_at TIMESTAMP WITH TIME ZONE NOT NULL,
+    last_seen_at TIMESTAMP WITH TIME ZONE NOT NULL,
+    first_seen_run_id VARCHAR(64) NOT NULL,
+    last_seen_run_id VARCHAR(64) NOT NULL,
+    observation_count INT NOT NULL DEFAULT 1,
+    consecutive_count INT NOT NULL DEFAULT 1,
+    current_severity VARCHAR(32) NOT NULL DEFAULT 'LOW',
+    peak_severity VARCHAR(32) NOT NULL DEFAULT 'LOW',
+    status VARCHAR(32) NOT NULL DEFAULT 'EMERGING',
+    modules_involved_json TEXT,
+    metric_names_json TEXT,
+    run_ids_json TEXT,
+    history_json TEXT,
+    remediation_history_json TEXT,
+    durability_status VARCHAR(32),
+    CONSTRAINT uk_issue_track_identity UNIQUE (model_lineage_id, track_fingerprint)
+);
+CREATE INDEX idx_diag_track_lineage ON diagnostic_issue_tracks(model_lineage_id);
+CREATE INDEX idx_diag_track_status ON diagnostic_issue_tracks(model_lineage_id, status);
+
+CREATE TABLE diagnostic_temporal_alerts (
+    id BIGSERIAL PRIMARY KEY,
+    model_lineage_id VARCHAR(128) NOT NULL,
+    run_id VARCHAR(64) NOT NULL REFERENCES diagnostic_runs(id) ON DELETE CASCADE,
+    alert_type VARCHAR(64) NOT NULL,
+    priority VARCHAR(32) NOT NULL DEFAULT 'INFO',
+    target_type VARCHAR(64),
+    target_key VARCHAR(128),
+    metric_name VARCHAR(64),
+    current_value DOUBLE PRECISION,
+    reference_value DOUBLE PRECISION,
+    trigger_description TEXT NOT NULL,
+    confidence VARCHAR(32) NOT NULL DEFAULT 'HIGH',
+    run_ids_json TEXT,
+    acknowledged BOOLEAN NOT NULL DEFAULT FALSE,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+CREATE INDEX idx_diag_temp_alert_lineage ON diagnostic_temporal_alerts(model_lineage_id);
+CREATE INDEX idx_diag_temp_alert_priority ON diagnostic_temporal_alerts(priority);
+
+CREATE TABLE diagnostic_change_points (
+    id BIGSERIAL PRIMARY KEY,
+    model_lineage_id VARCHAR(128) NOT NULL,
+    metric_name VARCHAR(64) NOT NULL,
+    target_key VARCHAR(128),
+    change_run_id VARCHAR(64) NOT NULL,
+    change_timestamp TIMESTAMP WITH TIME ZONE NOT NULL,
+    before_mean DOUBLE PRECISION NOT NULL,
+    after_mean DOUBLE PRECISION NOT NULL,
+    absolute_shift DOUBLE PRECISION NOT NULL,
+    relative_shift DOUBLE PRECISION NOT NULL,
+    confidence_level VARCHAR(32) NOT NULL DEFAULT 'MEDIUM',
+    run_ids_before_json TEXT,
+    run_ids_after_json TEXT,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+CREATE INDEX idx_diag_cp_lineage ON diagnostic_change_points(model_lineage_id);
+CREATE INDEX idx_diag_cp_metric ON diagnostic_change_points(model_lineage_id, metric_name, target_key);
+```
+
+---
+
+### J. REST API Reference
+
+| Endpoint | Method | Payload / Query | Response DTO | Description |
+|---|---|---|---|---|
+| `/api/diagnostics/{id}/temporal/history` | `GET` | `?window=ALL_AVAILABLE` | `ModelLineageHistoryDto` | Retrieves full lineage history, HUD telemetry, metric timelines, issue tracks, alerts, change points, and durability. |
+| `/api/diagnostics/{id}/temporal/metrics` | `GET` | `?window=ALL_AVAILABLE` | `List<TemporalMetricHistoryDto>` | Retrieves time-series metric trajectories with slopes, $R^2$, and Mann-Kendall statistics. |
+| `/api/diagnostics/{id}/temporal/issues` | `GET` | `?window=ALL_AVAILABLE` | `List<IssueTrackDto>` | Retrieves historical target issue tracks with persistence classifications. |
+| `/api/diagnostics/{id}/temporal/alerts` | `GET` | `?window=ALL_AVAILABLE` | `List<TemporalAlertDto>` | Retrieves prioritized temporal alert events. |
+| `/api/diagnostics/{id}/temporal/change-points`| `GET` | `?window=ALL_AVAILABLE` | `List<ChangePointDto>` | Retrieves step change-point detections. |
+| `/api/diagnostics/{id}/temporal/remediations` | `GET` | `?window=ALL_AVAILABLE` | `List<RemediationDurabilityDto>`| Retrieves remediation durability assessments. |
+| `/api/diagnostics/{id}/temporal/recalculate` | `POST` | - | `TemporalRecalculateResponseDto` | Idempotently clears stale derived records and recalculates temporal intelligence from immutable source evidence. |
+| `/api/models/{lineageId}/history` | `GET` | `?window=ALL_AVAILABLE` | `ModelLineageHistoryDto` | Model lineage level endpoint for lineage history. |
+| `/api/models/{lineageId}/temporal/recalculate`| `POST` | - | `TemporalRecalculateResponseDto` | Model lineage level idempotent recalculation trigger. |
+
+---
+
+### K. Frontend Workstation: `09 TEMPORAL INTELLIGENCE`
+
+Located at navigation code `09` on the Model Doctor workstation sidebar:
+- **Top HUD:** Real-time counters for Runs Observed (Baseline vs. Experiment), Active Issues, Persistent Issues, Emerging Issues, Recurring Issues, Active Alerts, and Change Points.
+- **Model History Strip:** Visual chronological pipeline of all evaluated runs with health indicators, completed module tallies, and active run highlighting.
+- **Experiment Overlay Toggle:** Enables overlaying Phase 8 candidate experiments over operational baseline monitoring.
+- **Metric Time-Series View:** Technical time-series inspection with linear trend slope, $R^2$, Mann-Kendall $\tau$ and $p$-value, threshold bands, and change point markers.
+- **Issue Tracks View:** Forensic issue tracking table with persistence badges, module involvement, and consecutive run counters.
+- **Alert Console:** Dense timestamped monitoring event console displaying priority, trigger descriptions, targets, and confidence levels.
+- **Remediation Durability View:** Step pipeline tracking problem $\to$ remediation $\to$ candidate run $\to$ follow-up baseline runs $\to$ durability conclusion (`SUSTAINED`, `TEMPORARY`, `FAILED_TO_SUSTAIN`, `INSUFFICIENT_FOLLOWUP`, `NOT_APPLICABLE`).
+- **Temporal Investigation Dossier:** Dedicated drilldown drawer connecting temporal alerts and issue tracks back to Phase 6 Root-Cause Investigations and Phase 7 Remediations.
 

@@ -11,4 +11,7 @@ import java.util.List;
 public interface DiagnosticRunRepository extends JpaRepository<DiagnosticRun, String> {
     List<DiagnosticRun> findByStatus(DiagnosticStatus status);
     List<DiagnosticRun> findAllByOrderByCreatedAtDesc();
+    List<DiagnosticRun> findByModelNameOrderByCreatedAtAsc(String modelName);
+    List<DiagnosticRun> findByModelNameAndRunTypeOrderByCreatedAtAsc(String modelName, String runType);
+    List<DiagnosticRun> findByModelNameOrderByCreatedAtDesc(String modelName);
 }

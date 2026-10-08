@@ -32,6 +32,8 @@ public class DiagnosticJobService {
     private final ObjectMapper objectMapper;
     private final TransactionTemplate transactionTemplate;
     private final CorrelationAnalysisService correlationAnalysisService;
+    private final InvestigationAnalysisService investigationAnalysisService;
+    private final RemediationAnalysisService remediationAnalysisService;
 
     public DiagnosticJobService(
             DiagnosticRunRepository runRepository,
@@ -40,7 +42,9 @@ public class DiagnosticJobService {
             MlEngineClient mlEngineClient,
             ObjectMapper objectMapper,
             TransactionTemplate transactionTemplate,
-            CorrelationAnalysisService correlationAnalysisService) {
+            CorrelationAnalysisService correlationAnalysisService,
+            InvestigationAnalysisService investigationAnalysisService,
+            RemediationAnalysisService remediationAnalysisService) {
         this.runRepository = runRepository;
         this.resultRepository = resultRepository;
         this.eventRepository = eventRepository;
@@ -48,6 +52,8 @@ public class DiagnosticJobService {
         this.objectMapper = objectMapper;
         this.transactionTemplate = transactionTemplate;
         this.correlationAnalysisService = correlationAnalysisService;
+        this.investigationAnalysisService = investigationAnalysisService;
+        this.remediationAnalysisService = remediationAnalysisService;
     }
 
     /**
@@ -123,11 +129,13 @@ public class DiagnosticJobService {
             // Phase 3: Atomically validate and persist structured results
             DiagnosticRun finalizedRun = transactionTemplate.execute(status -> persistResultsAndFinalize(runId, response, modulesToExecute));
 
-            // Phase 4: Trigger Phase 4 Cross-Module Diagnostic Intelligence & Correlation Analysis
+            // Phase 4, 6 & 7: Trigger Cross-Module Diagnostic Intelligence, Correlations, Root-Cause Investigations & Remediations
             try {
                 correlationAnalysisService.analyzeAndPersist(runId);
+                investigationAnalysisService.analyzeAndPersist(runId);
+                remediationAnalysisService.analyzeAndPersist(runId);
             } catch (Exception corrEx) {
-                log.warn("Failed to generate cross-module correlations for run {}: {}", runId, corrEx.getMessage(), corrEx);
+                log.warn("Failed to generate cross-module correlations / investigations / remediations for run {}: {}", runId, corrEx.getMessage(), corrEx);
             }
 
             return finalizedRun;

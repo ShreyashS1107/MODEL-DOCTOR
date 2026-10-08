@@ -50,6 +50,7 @@ public class ResultNormalizer {
                     case EXPLAINABILITY -> normalizeExplainability(root, norm);
                     case BIAS -> normalizeBias(root, norm);
                     case ROBUSTNESS -> normalizeRobustness(root, norm);
+                    case ERROR_FORENSICS -> normalizeErrorForensics(root, norm);
                 }
             } catch (Exception e) {
                 logger.warn("Failed to normalize raw result for run {} module {}: {}", runId, res.getModule(), e.getMessage());
@@ -122,7 +123,7 @@ public class ResultNormalizer {
         sum.passed = summaryNode.path("passed").asBoolean(true);
         norm.setDriftSummary(sum);
 
-        JsonNode features = root.path("features");
+        JsonNode features = root.has("features") ? root.path("features") : root.path("columns");
         if (features.isArray()) {
             for (JsonNode f : features) {
                 String name = f.path("feature").asText(f.path("name").asText(""));
@@ -144,7 +145,7 @@ public class ResultNormalizer {
                 double ks = f.path("ksPValue").asDouble(1.0);
                 double wasserstein = f.path("wasserstein").asDouble(0.0);
                 boolean detected = f.path("driftDetected").asBoolean(psi >= 0.10 || ks < 0.05);
-                String severity = f.path("severity").asText("LOW");
+                String severity = f.path("driftSeverity").asText(f.path("severity").asText("LOW"));
                 norm.getDriftByFeature().put(name, new NormalizedModuleData.FeatureDriftData(name, psi, ks, wasserstein, detected, severity));
             }
         }
@@ -172,21 +173,25 @@ public class ResultNormalizer {
         NormalizedModuleData.ExplainabilitySummary sum = new NormalizedModuleData.ExplainabilitySummary();
         JsonNode summaryNode = root.path("summary");
         sum.topFeature = summaryNode.path("topFeature").asText("");
-        sum.topFeatureMeanAbsShap = summaryNode.path("topFeatureMeanAbsShap").asDouble(0.0);
+        sum.topFeatureMeanAbsShap = summaryNode.path("topFeatureImportance").asDouble(summaryNode.path("topFeatureMeanAbsShap").asDouble(0.0));
         sum.top1AttributionShare = summaryNode.path("top1AttributionShare").asDouble(0.0);
         sum.top3AttributionShare = summaryNode.path("top3AttributionShare").asDouble(0.0);
         sum.healthScore = summaryNode.path("healthScore").asDouble(100.0);
         sum.passed = summaryNode.path("passed").asBoolean(true);
         norm.setExplainabilitySummary(sum);
 
-        JsonNode globalImp = root.path("globalImportance");
+        JsonNode globalImp = root.has("globalImportance")
+                ? root.path("globalImportance")
+                : (root.has("attributions") ? root.path("attributions") : root.path("features"));
         if (globalImp.isArray()) {
             int rankCounter = 1;
             for (JsonNode f : globalImp) {
                 String name = f.path("feature").asText("");
                 if (name.isBlank()) continue;
                 int rank = f.path("rank").asInt(rankCounter);
-                double meanAbsShap = f.path("meanAbsShap").asDouble(f.path("importance").asDouble(0.0));
+                double meanAbsShap = f.has("meanAbsoluteShap")
+                        ? f.path("meanAbsoluteShap").asDouble(0.0)
+                        : f.path("meanAbsShap").asDouble(f.path("importance").asDouble(0.0));
                 double share = f.path("attributionShare").asDouble(0.0);
                 norm.getImportanceByFeature().put(name, new NormalizedModuleData.FeatureImportanceData(name, rank, meanAbsShap, share));
                 rankCounter++;
@@ -200,7 +205,9 @@ public class ResultNormalizer {
         sum.protectedAttribute = summaryNode.path("protectedAttribute").asText("");
         sum.groupCount = summaryNode.path("groupCount").asInt(0);
         sum.demographicParityGap = summaryNode.path("demographicParityGap").asDouble(0.0);
-        sum.worstDisparateImpactRatio = summaryNode.path("worstDisparateImpactRatio").asDouble(1.0);
+        sum.worstDisparateImpactRatio = summaryNode.has("disparateImpactRatio")
+                ? summaryNode.path("disparateImpactRatio").asDouble(1.0)
+                : summaryNode.path("worstDisparateImpactRatio").asDouble(1.0);
         sum.equalOpportunityGap = summaryNode.path("equalOpportunityGap").asDouble(0.0);
         sum.worstCalibrationGap = summaryNode.path("worstCalibrationGap").asDouble(0.0);
         sum.healthScore = summaryNode.path("healthScore").asDouble(100.0);
@@ -211,7 +218,9 @@ public class ResultNormalizer {
     private void normalizeRobustness(JsonNode root, NormalizedModuleData norm) {
         NormalizedModuleData.RobustnessSummary sum = new NormalizedModuleData.RobustnessSummary();
         JsonNode summaryNode = root.path("summary");
-        sum.topSensitiveFeature = summaryNode.path("topSensitiveFeature").asText("");
+        sum.topSensitiveFeature = summaryNode.has("mostSensitiveFeature")
+                ? summaryNode.path("mostSensitiveFeature").asText("")
+                : summaryNode.path("topSensitiveFeature").asText("");
         sum.gaussianJitter5PctFlipRate = summaryNode.path("gaussianJitter5PctFlipRate").asDouble(0.0);
         sum.boundaryFlipRate = summaryNode.path("boundaryFlipRate").asDouble(0.0);
         sum.healthScore = summaryNode.path("healthScore").asDouble(100.0);
@@ -219,17 +228,155 @@ public class ResultNormalizer {
         norm.setRobustnessSummary(sum);
 
         JsonNode featureSensitivity = root.path("featureSensitivity");
-        JsonNode features = featureSensitivity.path("features");
+        JsonNode features = featureSensitivity.has("features")
+                ? featureSensitivity.path("features")
+                : (root.has("featureSensitivities") ? root.path("featureSensitivities") : root.path("features"));
         if (features.isArray()) {
             int rankCounter = 1;
             for (JsonNode f : features) {
                 String name = f.path("feature").asText("");
                 if (name.isBlank()) continue;
                 int rank = f.path("sensitivityRank").asInt(rankCounter);
-                double flip = f.path("flipRate").asDouble(f.path("perturbationFlipRate").asDouble(0.0));
+                double flip = f.has("predictionFlipRate")
+                        ? f.path("predictionFlipRate").asDouble(0.0)
+                        : f.path("flipRate").asDouble(f.path("perturbationFlipRate").asDouble(0.0));
                 double shift = f.path("meanProbabilityShift").asDouble(0.0);
                 norm.getRobustnessByFeature().put(name, new NormalizedModuleData.FeatureRobustnessData(name, rank, flip, shift));
                 rankCounter++;
+            }
+        }
+    }
+
+    private void normalizeErrorForensics(JsonNode root, NormalizedModuleData norm) {
+        NormalizedModuleData.ErrorForensicsSummary sum = new NormalizedModuleData.ErrorForensicsSummary();
+        JsonNode summaryNode = root.path("summary");
+        JsonNode errSummary = root.path("errorSummary");
+        JsonNode confAnalysis = root.path("confidenceAnalysis");
+
+        sum.totalErrors = errSummary.has("totalErrors")
+                ? errSummary.path("totalErrors").asLong(0)
+                : summaryNode.path("totalErrors").asLong(0);
+        sum.overallErrorRate = errSummary.has("errorRate")
+                ? errSummary.path("errorRate").asDouble(0.0)
+                : summaryNode.path("overallErrorRate").asDouble(0.0);
+
+        sum.highConfidenceErrorCount = confAnalysis.has("highConfidenceErrorCount")
+                ? confAnalysis.path("highConfidenceErrorCount").asLong(0)
+                : summaryNode.path("highConfidenceErrorCount").asLong(0);
+        sum.highConfidenceErrorRate = confAnalysis.has("highConfidenceErrorRate")
+                ? confAnalysis.path("highConfidenceErrorRate").asDouble(0.0)
+                : summaryNode.path("highConfidenceErrorRate").asDouble(0.0);
+        sum.highConfidenceErrorShare = confAnalysis.path("highConfidenceErrorShare").asDouble(0.0);
+
+        sum.falsePositiveCount = errSummary.path("falsePositive").has("count")
+                ? errSummary.path("falsePositive").path("count").asLong(0)
+                : summaryNode.path("fpCount").asLong(0);
+        sum.falseNegativeCount = errSummary.path("falseNegative").has("count")
+                ? errSummary.path("falseNegative").path("count").asLong(0)
+                : summaryNode.path("fnCount").asLong(0);
+
+        sum.falsePositiveRate = errSummary.path("falsePositive").path("rate")
+                .asDouble(errSummary.path("falsePositive").path("falsePositiveRate").asDouble(0.0));
+        sum.falseNegativeRate = errSummary.path("falseNegative").path("rate")
+                .asDouble(errSummary.path("falseNegative").path("falseNegativeRate").asDouble(0.0));
+
+        sum.topErrorFeature = summaryNode.path("topErrorAssociatedFeature").asText("");
+        sum.worstSubgroupDisparityRatio = summaryNode.path("worstSubgroupDisparityRatio").asDouble(1.0);
+        sum.healthScore = summaryNode.path("healthScore").asDouble(100.0);
+        sum.passed = summaryNode.path("passed").asBoolean(true);
+
+        JsonNode calForensics = root.path("calibrationForensics");
+        sum.expectedCalibrationError = calForensics.path("expectedCalibrationError").asDouble(0.0);
+        JsonNode calBins = calForensics.path("bins");
+        if (calBins.isArray()) {
+            for (JsonNode binNode : calBins) {
+                if (binNode.path("isHighError").asBoolean(false) || binNode.path("isSevereGap").asBoolean(false)) {
+                    sum.severeCalibrationBins.add(binNode.path("binIndex").asInt());
+                }
+            }
+        }
+
+        JsonNode subgroupList = root.path("subgroupAnalysis");
+        if (subgroupList.isArray() && subgroupList.size() > 0) {
+            double maxRate = -1.0;
+            double minRate = Double.MAX_VALUE;
+            double maxDisp = 1.0;
+            for (JsonNode sg : subgroupList) {
+                String name = sg.has("group") ? sg.path("group").asText("") : sg.path("subgroup").asText("");
+                double rate = sg.path("errorRate").asDouble(0.0);
+                double disp = sg.path("disparityRatio").asDouble(1.0);
+                if (disp > maxDisp) maxDisp = disp;
+                if (!name.isBlank()) {
+                    sum.subgroupErrorRates.put(name, rate);
+                    if (rate > maxRate) maxRate = rate;
+                    if (rate > 0 && rate < minRate) minRate = rate;
+                }
+            }
+            if (sum.worstSubgroupDisparityRatio <= 1.0 && maxDisp > 1.0) {
+                sum.worstSubgroupDisparityRatio = maxDisp;
+            } else if (sum.worstSubgroupDisparityRatio <= 1.0 && maxRate > 0 && minRate > 0 && minRate < Double.MAX_VALUE) {
+                sum.worstSubgroupDisparityRatio = maxRate / minRate;
+            }
+        }
+
+        norm.setErrorForensicsSummary(sum);
+
+        // Feature associations & separation
+        JsonNode assocs = root.path("featureAssociations");
+        if (assocs.isArray()) {
+            for (JsonNode a : assocs) {
+                String feat = a.path("feature").asText("");
+                if (feat.isBlank()) continue;
+                String type = a.path("featureType").asText(a.path("type").asText("numeric"));
+                double corr = a.has("statistic") ? a.path("statistic").asDouble(0.0) : a.path("value").asDouble(0.0);
+                double absAssoc = a.has("effectSize")
+                        ? Math.abs(a.path("effectSize").asDouble(0.0))
+                        : a.path("absoluteAssociation").asDouble(Math.abs(corr));
+                double pVal = a.has("adjustedPValue")
+                        ? a.path("adjustedPValue").asDouble(1.0)
+                        : a.path("rawPValue").asDouble(1.0);
+                boolean enriched = absAssoc >= 0.15 && pVal < 0.05;
+                norm.getErrorByFeature().put(feat, new NormalizedModuleData.FeatureErrorData(feat, type, corr, absAssoc, pVal, 0.0, 0.0, enriched));
+            }
+        }
+
+        // FP feature separation
+        JsonNode fpDiffs = root.path("falsePositiveAnalysis").has("topSeparations")
+                ? root.path("falsePositiveAnalysis").path("topSeparations")
+                : root.path("falsePositiveAnalysis").path("topFeatureDifferences");
+        if (fpDiffs.isArray()) {
+            for (JsonNode fp : fpDiffs) {
+                String feat = fp.path("feature").asText("");
+                if (feat.isBlank()) continue;
+                double sep = fp.has("standardizedMeanDifference")
+                        ? fp.path("standardizedMeanDifference").asDouble(0.0)
+                        : fp.path("absoluteSeparation").asDouble(0.0);
+                NormalizedModuleData.FeatureErrorData existing = norm.getErrorByFeature().get(feat);
+                if (existing != null) {
+                    existing.fpSeparation = sep;
+                } else {
+                    norm.getErrorByFeature().put(feat, new NormalizedModuleData.FeatureErrorData(feat, fp.path("type").asText("numeric"), 0.0, 0.0, 1.0, sep, 0.0, false));
+                }
+            }
+        }
+
+        // FN feature separation
+        JsonNode fnDiffs = root.path("falseNegativeAnalysis").has("topSeparations")
+                ? root.path("falseNegativeAnalysis").path("topSeparations")
+                : root.path("falseNegativeAnalysis").path("topFeatureDifferences");
+        if (fnDiffs.isArray()) {
+            for (JsonNode fn : fnDiffs) {
+                String feat = fn.path("feature").asText("");
+                if (feat.isBlank()) continue;
+                double sep = fn.has("standardizedMeanDifference")
+                        ? fn.path("standardizedMeanDifference").asDouble(0.0)
+                        : fn.path("absoluteSeparation").asDouble(0.0);
+                NormalizedModuleData.FeatureErrorData existing = norm.getErrorByFeature().get(feat);
+                if (existing != null) {
+                    existing.fnSeparation = sep;
+                } else {
+                    norm.getErrorByFeature().put(feat, new NormalizedModuleData.FeatureErrorData(feat, fn.path("type").asText("numeric"), 0.0, 0.0, 1.0, 0.0, sep, false));
+                }
             }
         }
     }

@@ -15,6 +15,7 @@ public class NormalizedModuleData {
     private final Map<String, FeatureRobustnessData> robustnessByFeature = new HashMap<>();
     private final Map<String, FeatureLeakageData> leakageByFeature = new HashMap<>();
     private final Map<String, FeatureQualityData> qualityByFeature = new HashMap<>();
+    private final Map<String, FeatureErrorData> errorByFeature = new HashMap<>();
 
     // Global module summaries
     private PerformanceSummary performanceSummary;
@@ -23,6 +24,7 @@ public class NormalizedModuleData {
     private DataQualitySummary qualitySummary;
     private ExplainabilitySummary explainabilitySummary;
     private RobustnessSummary robustnessSummary;
+    private ErrorForensicsSummary errorForensicsSummary;
 
     public NormalizedModuleData(String runId) {
         this.runId = runId;
@@ -39,6 +41,7 @@ public class NormalizedModuleData {
     public Map<String, FeatureRobustnessData> getRobustnessByFeature() { return robustnessByFeature; }
     public Map<String, FeatureLeakageData> getLeakageByFeature() { return leakageByFeature; }
     public Map<String, FeatureQualityData> getQualityByFeature() { return qualityByFeature; }
+    public Map<String, FeatureErrorData> getErrorByFeature() { return errorByFeature; }
 
     public Set<String> getAllKnownFeatures() {
         Set<String> all = new LinkedHashSet<>();
@@ -47,6 +50,7 @@ public class NormalizedModuleData {
         all.addAll(robustnessByFeature.keySet());
         all.addAll(leakageByFeature.keySet());
         all.addAll(qualityByFeature.keySet());
+        all.addAll(errorByFeature.keySet());
         return all;
     }
 
@@ -67,6 +71,9 @@ public class NormalizedModuleData {
 
     public RobustnessSummary getRobustnessSummary() { return robustnessSummary; }
     public void setRobustnessSummary(RobustnessSummary robustnessSummary) { this.robustnessSummary = robustnessSummary; }
+
+    public ErrorForensicsSummary getErrorForensicsSummary() { return errorForensicsSummary; }
+    public void setErrorForensicsSummary(ErrorForensicsSummary errorForensicsSummary) { this.errorForensicsSummary = errorForensicsSummary; }
 
     // --- Inner Data Classes ---
 
@@ -148,6 +155,28 @@ public class NormalizedModuleData {
         }
     }
 
+    public static class FeatureErrorData {
+        public String feature;
+        public String type;
+        public double correlation;
+        public double absoluteAssociation;
+        public double adjustedPValue;
+        public double fpSeparation;
+        public double fnSeparation;
+        public boolean isErrorEnriched;
+
+        public FeatureErrorData(String feature, String type, double correlation, double absoluteAssociation, double adjustedPValue, double fpSeparation, double fnSeparation, boolean isErrorEnriched) {
+            this.feature = feature;
+            this.type = type;
+            this.correlation = correlation;
+            this.absoluteAssociation = absoluteAssociation;
+            this.adjustedPValue = adjustedPValue;
+            this.fpSeparation = fpSeparation;
+            this.fnSeparation = fnSeparation;
+            this.isErrorEnriched = isErrorEnriched;
+        }
+    }
+
     public static class PerformanceSummary {
         public double rocAuc;
         public double prAuc;
@@ -205,5 +234,24 @@ public class NormalizedModuleData {
         public double boundaryFlipRate;
         public double healthScore;
         public boolean passed;
+    }
+
+    public static class ErrorForensicsSummary {
+        public long totalErrors;
+        public double overallErrorRate;
+        public long highConfidenceErrorCount;
+        public double highConfidenceErrorRate;
+        public double highConfidenceErrorShare;
+        public long falsePositiveCount;
+        public double falsePositiveRate;
+        public long falseNegativeCount;
+        public double falseNegativeRate;
+        public double expectedCalibrationError;
+        public String topErrorFeature;
+        public double worstSubgroupDisparityRatio;
+        public double healthScore;
+        public boolean passed;
+        public Map<String, Double> subgroupErrorRates = new HashMap<>();
+        public Set<Integer> severeCalibrationBins = new HashSet<>();
     }
 }

@@ -29,6 +29,9 @@ public class DiagnosticService {
     private final DiagnosticJobService jobService;
     private final ArtifactStorageService artifactStorageService;
     private final CorrelationAnalysisService correlationAnalysisService;
+    private final InvestigationAnalysisService investigationAnalysisService;
+    private final RemediationAnalysisService remediationAnalysisService;
+    private final RunComparisonService runComparisonService;
     private final ObjectMapper objectMapper;
 
     public DiagnosticService(
@@ -37,12 +40,18 @@ public class DiagnosticService {
             DiagnosticJobService jobService,
             ArtifactStorageService artifactStorageService,
             CorrelationAnalysisService correlationAnalysisService,
+            InvestigationAnalysisService investigationAnalysisService,
+            RemediationAnalysisService remediationAnalysisService,
+            RunComparisonService runComparisonService,
             ObjectMapper objectMapper) {
         this.runRepository = runRepository;
         this.resultRepository = resultRepository;
         this.jobService = jobService;
         this.artifactStorageService = artifactStorageService;
         this.correlationAnalysisService = correlationAnalysisService;
+        this.investigationAnalysisService = investigationAnalysisService;
+        this.remediationAnalysisService = remediationAnalysisService;
+        this.runComparisonService = runComparisonService;
         this.objectMapper = objectMapper;
     }
 
@@ -391,6 +400,12 @@ public class DiagnosticService {
                     missing.add("Trained model artifact");
                 }
                 break;
+
+            case ERROR_FORENSICS:
+                if (!StringUtils.hasText(request.getTargetColumn())) {
+                    missing.add("Target column (Error Forensics requires ground truth labels)");
+                }
+                break;
         }
 
         boolean compatible = missing.isEmpty();
@@ -643,6 +658,28 @@ public class DiagnosticService {
         log.info("Created diagnostic run {} for model {} (mode: {})", savedRun.getId(), savedRun.getModelName(), savedRun.getExecutionMode());
 
         return mapToRunResponse(savedRun);
+    }
+
+    @Transactional
+    public DiagnosticRun createRunDirect(DiagnosticRun run) {
+        if (run.getId() == null) {
+            run.setId("run_" + UUID.randomUUID().toString().substring(0, 8));
+        }
+        if (run.getStatus() == null) {
+            run.setStatus(DiagnosticStatus.CREATED);
+        }
+        if (run.getCreatedAt() == null) {
+            run.setCreatedAt(Instant.now());
+        }
+        if (run.getModules() != null) {
+            for (DiagnosticRunModule m : run.getModules()) {
+                m.setRun(run);
+            }
+        }
+        DiagnosticRun saved = runRepository.save(run);
+        jobService.recordEvent(saved.getId(), null, "RUN_CREATED",
+                "Experimental candidate run created with " + saved.getModules().size() + " module(s)");
+        return saved;
     }
 
     /**
@@ -904,16 +941,83 @@ public class DiagnosticService {
     }
 
     /**
-     * Phase 4: Retrieves run-level diagnostic summary for workstation.
+     * Phase 4/6: Retrieves run-level diagnostic summary for workstation.
      */
     public RunSummaryDto getRunSummary(String runId) {
         return correlationAnalysisService.getRunSummary(runId);
     }
 
     /**
-     * Phase 4: Explicitly triggers cross-module correlation analysis and returns results.
+     * Phase 4/6/7: Explicitly triggers cross-module correlation analysis, investigation, and remediation recalculation.
      */
     public List<DiagnosticCorrelationDto> recalculateCorrelations(String runId) {
-        return correlationAnalysisService.analyzeAndPersist(runId);
+        List<DiagnosticCorrelationDto> corrs = correlationAnalysisService.analyzeAndPersist(runId);
+        investigationAnalysisService.analyzeAndPersist(runId);
+        remediationAnalysisService.analyzeAndPersist(runId);
+        return corrs;
+    }
+
+    /**
+     * Phase 6: Retrieves ranked root-cause investigation targets for a run.
+     */
+    public List<InvestigationTargetDto> getInvestigations(String runId) {
+        return investigationAnalysisService.getInvestigations(runId);
+    }
+
+    /**
+     * Phase 6: Retrieves the comprehensive investigation dossier for a specific target key.
+     */
+    public InvestigationDossierDto getInvestigationDossier(String runId, String targetKey) {
+        return investigationAnalysisService.getInvestigationDossier(runId, targetKey);
+    }
+
+    /**
+     * Phase 6: Retrieves the full evidence graph nodes, edges, and provenance for a run.
+     */
+    public EvidenceGraphDto getEvidenceGraph(String runId) {
+        return investigationAnalysisService.getEvidenceGraph(runId);
+    }
+
+    /**
+     * Phase 7: Retrieves ranked remediation candidates for a run.
+     */
+    public List<DiagnosticRemediationDto> getRemediations(String runId) {
+        return remediationAnalysisService.getRemediations(runId);
+    }
+
+    /**
+     * Phase 7: Retrieves a specific remediation by ID.
+     */
+    public DiagnosticRemediationDto getRemediationById(String remediationId) {
+        return remediationAnalysisService.getRemediationById(Long.parseLong(remediationId));
+    }
+
+    /**
+     * Phase 7: Recalculates remediations for a run.
+     */
+    public List<DiagnosticRemediationDto> recalculateRemediations(String runId) {
+        return remediationAnalysisService.analyzeAndPersist(runId);
+    }
+
+    /**
+     * Phase 7: Selects a remediation candidate.
+     */
+    public DiagnosticRemediationDto selectRemediation(String remediationId) {
+        return remediationAnalysisService.selectRemediation(Long.parseLong(remediationId));
+    }
+
+    /**
+     * Phase 7: Rejects a remediation candidate with optional reason.
+     */
+    public DiagnosticRemediationDto rejectRemediation(String remediationId, String reason) {
+        return remediationAnalysisService.rejectRemediation(Long.parseLong(remediationId), reason);
+    }
+
+    /**
+     * Phase 7: Compares a baseline run with a candidate run.
+     */
+    public DiagnosticComparisonDto compareRuns(String baselineRunId, String candidateRunId) {
+        return runComparisonService.compareRuns(baselineRunId, candidateRunId);
     }
 }
+

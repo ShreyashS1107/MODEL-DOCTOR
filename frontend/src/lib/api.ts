@@ -3,6 +3,25 @@
  * Orchestrates communication with the Spring Boot Diagnostics Orchestrator.
  */
 
+import {
+  InvestigationTarget,
+  InvestigationDossier,
+  EvidenceGraph,
+  DiagnosticRemediation,
+  DiagnosticComparison,
+  MetricComparisonItem,
+  DiagnosticExperiment,
+  CreateExperimentRequest,
+  ModelLineageHistory,
+  TemporalMetricHistory,
+  IssueTrack,
+  TemporalAlert,
+  ChangePoint,
+  RemediationDurability,
+  TemporalRecalculateResponse,
+} from "@/types/diagnostics";
+
+
 export interface ModelInfoPayload {
   name: string;
   framework: string;
@@ -526,6 +545,197 @@ export interface RunSummary {
   featureProfiles: Record<string, FeatureProfile>;
   isAssociativeOnly: boolean;
   notes: string;
+  investigationTargetCount?: number;
+  criticalInvestigationCount?: number;
+  highInvestigationCount?: number;
+  topInvestigationTarget?: string;
+  topInvestigationScore?: number;
+  evidenceGraphNodeCount?: number;
+  evidenceGraphEdgeCount?: number;
+  remediationCount?: number;
+  criticalRemediationCount?: number;
+  highRemediationCount?: number;
+  selectedRemediationCount?: number;
+  validatedRemediationCount?: number;
+  topRemediationType?: string;
+  topRemediationTarget?: string;
+  remediationAvailable?: boolean;
+}
+
+export interface ErrorSummaryMetric {
+  count: number;
+  rate: number;
+  percentageOfAll?: number;
+  percentageOfPositives?: number;
+  percentageOfNegatives?: number;
+}
+
+export interface ErrorForensicsSummaryData {
+  totalRecords: number;
+  totalErrors: number;
+  errorRate: number;
+  truePositive: ErrorSummaryMetric;
+  trueNegative: ErrorSummaryMetric;
+  falsePositive: ErrorSummaryMetric;
+  falseNegative: ErrorSummaryMetric;
+}
+
+export interface ConfidenceBand {
+  band: string;
+  lowerBound: number;
+  upperBound: number;
+  totalCount: number;
+  errorCount: number;
+  errorRate: number;
+}
+
+export interface ConfidenceAnalysisData {
+  meanIncorrectConfidence: number;
+  medianIncorrectConfidence: number;
+  p90IncorrectConfidence: number;
+  p95IncorrectConfidence: number;
+  maxIncorrectConfidence: number;
+  meanCorrectConfidence?: number;
+  medianCorrectConfidence?: number;
+  highConfidenceErrorCount: number;
+  highConfidenceErrorRate: number;
+  highConfidenceErrorShare: number;
+  confidenceBands: ConfidenceBand[];
+}
+
+export interface FeatureSeparationStat {
+  feature: string;
+  errorMean?: number;
+  nonErrorMean?: number;
+  standardizedMeanDifference: number;
+  mannWhitneyPValue?: number;
+  adjustedPValue?: number;
+  categoryDifferences?: Record<string, any>;
+}
+
+export interface FalsePositiveAnalysisData {
+  fpCount: number;
+  fpRate: number;
+  meanPredictedProbability: number;
+  medianPredictedProbability: number;
+  topSeparations: FeatureSeparationStat[];
+}
+
+export interface FalseNegativeAnalysisData {
+  fnCount: number;
+  fnRate: number;
+  meanPredictedProbability: number;
+  medianPredictedProbability: number;
+  topSeparations: FeatureSeparationStat[];
+}
+
+export interface FeatureAssociationData {
+  feature: string;
+  featureType: "numeric" | "categorical" | string;
+  statisticName: string;
+  statistic: number;
+  effectSize: number;
+  direction?: string;
+  pValue: number;
+  adjustedPValue: number;
+  rank: number;
+}
+
+export interface FeatureRangeData {
+  feature: string;
+  binIndex: number;
+  binLower: number;
+  binUpper: number;
+  recordCount: number;
+  errorCount: number;
+  errorRate: number;
+  falsePositiveRate?: number;
+  falseNegativeRate?: number;
+  meanProbability?: number;
+  isErrorEnriched: boolean;
+  isInsufficientSample: boolean;
+}
+
+export interface HighConfidenceErrorRecordData {
+  stableRowIndex: number;
+  actualClass: number;
+  predictedClass: number;
+  predictedProbability: number;
+  confidence: number;
+  errorType: "FALSE_POSITIVE" | "FALSE_NEGATIVE" | string;
+  forensicPriority: number;
+  keyAssociatedFeatures?: Record<string, any>;
+  segmentMembership?: string;
+}
+
+export interface ThresholdForensicPoint {
+  threshold: number;
+  truePositive: number;
+  trueNegative: number;
+  falsePositive: number;
+  falseNegative: number;
+  precision: number;
+  recall: number;
+  specificity: number;
+  f1: number;
+  falsePositiveRate: number;
+  falseNegativeRate: number;
+}
+
+export interface CalibrationForensicBinData {
+  binIndex: number;
+  lowerBound: number;
+  upperBound: number;
+  sampleCount: number;
+  positiveCount: number;
+  errorCount: number;
+  meanPredictedProbability: number;
+  observedPositiveRate: number;
+  calibrationError: number;
+  isHighError: boolean;
+}
+
+export interface SubgroupErrorData {
+  group: string;
+  sampleCount: number;
+  errorCount: number;
+  errorRate: number;
+  falsePositiveRate: number;
+  falseNegativeRate: number;
+  highConfidenceErrorRate: number;
+  wilsonCiLower: number;
+  wilsonCiUpper: number;
+  disparityRatio: number;
+}
+
+export interface ErrorForensicsResult {
+  schemaVersion: number;
+  module: "ERROR_FORENSICS";
+  sampleCount: number;
+  errorSummary: ErrorForensicsSummaryData;
+  confidenceAnalysis: ConfidenceAnalysisData;
+  falsePositiveAnalysis: FalsePositiveAnalysisData;
+  falseNegativeAnalysis: FalseNegativeAnalysisData;
+  featureAssociations: FeatureAssociationData[];
+  featureRanges: FeatureRangeData[];
+  highConfidenceErrors: HighConfidenceErrorRecordData[];
+  thresholdAnalysis: ThresholdForensicPoint[];
+  calibrationForensics: {
+    expectedCalibrationError: number;
+    bins: CalibrationForensicBinData[];
+  };
+  subgroupAnalysis: SubgroupErrorData[];
+  findings: Array<{
+    findingId: string;
+    title: string;
+    severity: string;
+    summary: string;
+    whyItMatters: string;
+    recommendation: string;
+    isAssociativeOnly: boolean;
+    evidence: Record<string, any>;
+  }>;
+  validationWarnings?: string[];
 }
 
 /**
@@ -559,3 +769,308 @@ export async function recalculateDiagnosticCorrelations(
   }
   return response.json() as Promise<DiagnosticCorrelation[]>;
 }
+
+/**
+ * Retrieves ranked investigation targets for a diagnostic run.
+ */
+export async function getDiagnosticInvestigations(
+  runId: string
+): Promise<InvestigationTarget[]> {
+  return request<InvestigationTarget[]>(`/api/diagnostics/${encodeURIComponent(runId)}/investigations`);
+}
+
+/**
+ * Retrieves the full investigation dossier for a specific investigation target.
+ */
+export async function getDiagnosticInvestigationDossier(
+  runId: string,
+  targetKey: string
+): Promise<InvestigationDossier> {
+  return request<InvestigationDossier>(
+    `/api/diagnostics/${encodeURIComponent(runId)}/investigations/${encodeURIComponent(targetKey)}`
+  );
+}
+
+/**
+ * Retrieves the evidence graph nodes and edges for a diagnostic run.
+ */
+export async function getDiagnosticEvidenceGraph(
+  runId: string
+): Promise<EvidenceGraph> {
+  return request<EvidenceGraph>(`/api/diagnostics/${encodeURIComponent(runId)}/evidence-graph`);
+}
+
+/**
+ * Phase 7: Retrieves ranked remediation candidates for a diagnostic run.
+ */
+export async function getDiagnosticRemediations(
+  runId: string
+): Promise<DiagnosticRemediation[]> {
+  return request<DiagnosticRemediation[]>(`/api/diagnostics/${encodeURIComponent(runId)}/remediations`);
+}
+
+/**
+ * Phase 7: Retrieves a specific remediation by ID.
+ */
+export async function getDiagnosticRemediationById(
+  runId: string,
+  remediationId: number | string
+): Promise<DiagnosticRemediation> {
+  return request<DiagnosticRemediation>(
+    `/api/diagnostics/${encodeURIComponent(runId)}/remediations/${encodeURIComponent(String(remediationId))}`
+  );
+}
+
+/**
+ * Phase 7: Explicitly recalculates remediation candidates for a run.
+ */
+export async function recalculateDiagnosticRemediations(
+  runId: string
+): Promise<DiagnosticRemediation[]> {
+  const url = `${API_BASE_URL}/api/diagnostics/${encodeURIComponent(runId)}/remediations/recalculate`;
+  const response = await fetch(url, { method: "POST" });
+  if (!response.ok) {
+    throw new Error(`Failed to recalculate remediations: ${response.status}`);
+  }
+  return response.json() as Promise<DiagnosticRemediation[]>;
+}
+
+/**
+ * Phase 7: Selects a remediation candidate.
+ */
+export async function selectDiagnosticRemediation(
+  runId: string,
+  remediationId: number | string
+): Promise<DiagnosticRemediation> {
+  const url = `${API_BASE_URL}/api/diagnostics/${encodeURIComponent(runId)}/remediations/${encodeURIComponent(String(remediationId))}/select`;
+  const response = await fetch(url, { method: "POST" });
+  if (!response.ok) {
+    throw new Error(`Failed to select remediation: ${response.status}`);
+  }
+  return response.json() as Promise<DiagnosticRemediation>;
+}
+
+/**
+ * Phase 7: Rejects a remediation candidate with an optional reason.
+ */
+export async function rejectDiagnosticRemediation(
+  runId: string,
+  remediationId: number | string,
+  reason?: string
+): Promise<DiagnosticRemediation> {
+  const queryParam = reason ? `?reason=${encodeURIComponent(reason)}` : "";
+  const url = `${API_BASE_URL}/api/diagnostics/${encodeURIComponent(runId)}/remediations/${encodeURIComponent(String(remediationId))}/reject${queryParam}`;
+  const response = await fetch(url, { method: "POST" });
+  if (!response.ok) {
+    throw new Error(`Failed to reject remediation: ${response.status}`);
+  }
+  return response.json() as Promise<DiagnosticRemediation>;
+}
+
+/**
+ * Phase 7: Compares a baseline run with a candidate run.
+ */
+export async function compareDiagnosticRuns(
+  baselineRunId: string,
+  candidateRunId: string
+): Promise<DiagnosticComparison> {
+  return request<DiagnosticComparison>(
+    `/api/diagnostics/${encodeURIComponent(baselineRunId)}/comparison/${encodeURIComponent(candidateRunId)}`
+  );
+}
+
+/**
+ * Retrieves recent diagnostic runs.
+ */
+export async function getDiagnosticRuns(): Promise<DiagnosticRunRecordResponse[]> {
+  return request<DiagnosticRunRecordResponse[]>("/api/diagnostics/runs");
+}
+
+/**
+ * Phase 8: Retrieves all experiments for a baseline diagnostic run.
+ */
+export async function getDiagnosticExperiments(
+  runId: string
+): Promise<DiagnosticExperiment[]> {
+  return request<DiagnosticExperiment[]>(
+    `/api/diagnostics/${encodeURIComponent(runId)}/experiments`
+  );
+}
+
+/**
+ * Phase 8: Retrieves a specific experiment dossier by ID.
+ */
+export async function getDiagnosticExperimentById(
+  runId: string,
+  experimentId: string
+): Promise<DiagnosticExperiment> {
+  return request<DiagnosticExperiment>(
+    `/api/diagnostics/${encodeURIComponent(runId)}/experiments/${encodeURIComponent(experimentId)}`
+  );
+}
+
+/**
+ * Phase 8: Creates a new experimental validation candidate.
+ */
+export async function createDiagnosticExperiment(
+  runId: string,
+  req: CreateExperimentRequest
+): Promise<DiagnosticExperiment> {
+  return request<DiagnosticExperiment>(
+    `/api/diagnostics/${encodeURIComponent(runId)}/experiments`,
+    {
+      method: "POST",
+      body: JSON.stringify(req),
+    }
+  );
+}
+
+/**
+ * Phase 8: Executes an experiment and evaluates candidate evidence.
+ */
+export async function executeDiagnosticExperiment(
+  runId: string,
+  experimentId: string
+): Promise<DiagnosticExperiment> {
+  return request<DiagnosticExperiment>(
+    `/api/diagnostics/${encodeURIComponent(runId)}/experiments/${encodeURIComponent(experimentId)}/execute`,
+    {
+      method: "POST",
+    }
+  );
+}
+
+/**
+ * Phase 8: Cancels an experiment.
+ */
+export async function cancelDiagnosticExperiment(
+  runId: string,
+  experimentId: string
+): Promise<DiagnosticExperiment> {
+  return request<DiagnosticExperiment>(
+    `/api/diagnostics/${encodeURIComponent(runId)}/experiments/${encodeURIComponent(experimentId)}/cancel`,
+    {
+      method: "POST",
+    }
+  );
+}
+
+// ==========================================
+// Phase 9: Longitudinal Model Monitoring & Temporal Intelligence
+// ==========================================
+
+/**
+ * Phase 9: Retrieves the complete temporal intelligence and lineage history for a diagnostic run.
+ */
+export async function getDiagnosticTemporalHistory(
+  runId: string,
+  window: string = "ALL_AVAILABLE"
+): Promise<ModelLineageHistory> {
+  return request<ModelLineageHistory>(
+    `/api/diagnostics/${encodeURIComponent(runId)}/temporal/history?window=${encodeURIComponent(window)}`
+  );
+}
+
+/**
+ * Phase 9: Retrieves temporal metric histories for a run's model lineage.
+ */
+export async function getDiagnosticTemporalMetrics(
+  runId: string,
+  window: string = "ALL_AVAILABLE"
+): Promise<TemporalMetricHistory[]> {
+  return request<TemporalMetricHistory[]>(
+    `/api/diagnostics/${encodeURIComponent(runId)}/temporal/metrics?window=${encodeURIComponent(window)}`
+  );
+}
+
+/**
+ * Phase 9: Retrieves historical issue tracks for a run's model lineage.
+ */
+export async function getDiagnosticTemporalIssues(
+  runId: string,
+  window: string = "ALL_AVAILABLE"
+): Promise<IssueTrack[]> {
+  return request<IssueTrack[]>(
+    `/api/diagnostics/${encodeURIComponent(runId)}/temporal/issues?window=${encodeURIComponent(window)}`
+  );
+}
+
+/**
+ * Phase 9: Retrieves temporal alerts for a run's model lineage.
+ */
+export async function getDiagnosticTemporalAlerts(
+  runId: string,
+  window: string = "ALL_AVAILABLE"
+): Promise<TemporalAlert[]> {
+  return request<TemporalAlert[]>(
+    `/api/diagnostics/${encodeURIComponent(runId)}/temporal/alerts?window=${encodeURIComponent(window)}`
+  );
+}
+
+/**
+ * Phase 9: Retrieves change point detections for a run's model lineage.
+ */
+export async function getDiagnosticTemporalChangePoints(
+  runId: string,
+  window: string = "ALL_AVAILABLE"
+): Promise<ChangePoint[]> {
+  return request<ChangePoint[]>(
+    `/api/diagnostics/${encodeURIComponent(runId)}/temporal/change-points?window=${encodeURIComponent(window)}`
+  );
+}
+
+/**
+ * Phase 9: Retrieves remediation durability assessments for a run's model lineage.
+ */
+export async function getDiagnosticTemporalRemediations(
+  runId: string,
+  window: string = "ALL_AVAILABLE"
+): Promise<RemediationDurability[]> {
+  return request<RemediationDurability[]>(
+    `/api/diagnostics/${encodeURIComponent(runId)}/temporal/remediations?window=${encodeURIComponent(window)}`
+  );
+}
+
+/**
+ * Phase 9: Idempotently recalculates and persists temporal intelligence for a run's model lineage.
+ */
+export async function recalculateDiagnosticTemporal(
+  runId: string
+): Promise<TemporalRecalculateResponse> {
+  return request<TemporalRecalculateResponse>(
+    `/api/diagnostics/${encodeURIComponent(runId)}/temporal/recalculate`,
+    {
+      method: "POST",
+    }
+  );
+}
+
+/**
+ * Phase 9: Retrieves model lineage history by lineage name.
+ */
+export async function getModelLineageHistory(
+  lineageId: string,
+  window: string = "ALL_AVAILABLE"
+): Promise<ModelLineageHistory> {
+  return request<ModelLineageHistory>(
+    `/api/models/${encodeURIComponent(lineageId)}/history?window=${encodeURIComponent(window)}`
+  );
+}
+
+/**
+ * Phase 9: Idempotently recalculates model lineage temporal intelligence by lineage name.
+ */
+export async function recalculateModelTemporal(
+  lineageId: string
+): Promise<TemporalRecalculateResponse> {
+  return request<TemporalRecalculateResponse>(
+    `/api/models/${encodeURIComponent(lineageId)}/temporal/recalculate`,
+    {
+      method: "POST",
+    }
+  );
+}
+
+
+
+

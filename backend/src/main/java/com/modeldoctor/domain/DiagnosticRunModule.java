@@ -41,6 +41,11 @@ public class DiagnosticRunModule {
 
     public DiagnosticRunModule() {}
 
+    public DiagnosticRunModule(DiagnosticModule module, ModuleExecutionStatus status) {
+        this.module = module;
+        this.status = status;
+    }
+
     public DiagnosticRunModule(Long id, DiagnosticRun run, DiagnosticModule module, ModuleExecutionStatus status,
                                String statusMessage, Instant startedAt, Instant completedAt, Long executionDurationMs) {
         this.id = id;

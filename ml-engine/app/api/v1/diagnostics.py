@@ -13,6 +13,7 @@ from app.diagnostics.performance.engine import PerformanceEngine
 from app.diagnostics.explainability.engine import ExplainabilityEngine
 from app.diagnostics.fairness.engine import FairnessEngine
 from app.diagnostics.robustness.engine import RobustnessEngine
+from app.diagnostics.error_forensics.engine import ErrorForensicsEngine
 from app.schemas.diagnostic_models import (
     DiagnosticJobRequest,
     DiagnosticJobResponse,
@@ -34,12 +35,13 @@ MODULE_CATEGORY_MAP = {
     "BIAS": "fairness",
     "ROBUSTNESS": "robustness",
     "EXPLAINABILITY": "explainability",
+    "ERROR_FORENSICS": "error_forensics",
 }
 
 DEFERRED_MODULES = {"EXPERIMENTS", "LLM_EXPLANATIONS", "REPORTS"}
 
-# Engines that are fully implemented with real statistical calculations in Phase 2B.1 - 2B.6
-IMPLEMENTED_MODULES = {"DATA_QUALITY", "LEAKAGE", "DRIFT", "PERFORMANCE", "EXPLAINABILITY", "FAIRNESS", "BIAS", "ROBUSTNESS"}
+# Engines that are fully implemented with real statistical calculations
+IMPLEMENTED_MODULES = {"DATA_QUALITY", "LEAKAGE", "DRIFT", "PERFORMANCE", "EXPLAINABILITY", "FAIRNESS", "BIAS", "ROBUSTNESS", "ERROR_FORENSICS"}
 
 
 @router.get("/engines", summary="List Registered Diagnostic Engines")
@@ -439,6 +441,59 @@ async def run_diagnostics(request: DiagnosticJobRequest) -> DiagnosticJobRespons
                         module="ROBUSTNESS",
                         status=ModuleExecutionStatus.FAILED,
                         message=f"Execution error in ROBUSTNESS: {str(e)}",
+                        error=str(e),
+                        result={},
+                    )
+                )
+
+        elif mod_upper == "ERROR_FORENSICS":
+            try:
+                err_engine = ErrorForensicsEngine()
+                report = await err_engine.run_diagnostic(
+                    current_data=eval_df,
+                    target_column=request.targetColumn,
+                    baseline_data=baseline_df,
+                    model_artifact=None,
+                    config={
+                        "prediction_column": request.predictionColumn,
+                        "protected_attribute": request.protectedAttribute,
+                        "task_type": request.taskType,
+                        "default_threshold": 0.50,
+                    },
+                )
+                if not report.passed and any(issue.id in ["ERR-EMPTY-DATASET", "ERR-TARGET-MISSING", "ERR-MISSING-PREDICTION", "ERR-INSUFFICIENT-SAMPLES"] for issue in report.issues):
+                    crit_issue = next(issue for issue in report.issues if issue.severity == SeverityLevel.CRITICAL)
+                    module_results.append(
+                        ModuleExecutionResult(
+                            module="ERROR_FORENSICS",
+                            status=ModuleExecutionStatus.FAILED,
+                            message=crit_issue.description,
+                            error=crit_issue.id,
+                            result=report.metadata,
+                        )
+                    )
+                else:
+                    err_rate = report.metadata.get("summary", {}).get("overallErrorRate", 0.0)
+                    hce_count = report.metadata.get("summary", {}).get("highConfidenceErrorCount", 0)
+                    top_assoc = report.metadata.get("summary", {}).get("topErrorAssociatedFeature", "none")
+                    module_results.append(
+                        ModuleExecutionResult(
+                            module="ERROR_FORENSICS",
+                            status=ModuleExecutionStatus.COMPLETED,
+                            message=(
+                                f"Performance & Error Forensics audit completed: {len(report.issues)} findings discovered. "
+                                f"Error Rate: {err_rate * 100:.1f}%, High-Confidence Errors: {hce_count}, Top Error Feature: '{top_assoc}'. Health score: {report.health_score:.1f}."
+                            ),
+                            result=report.metadata,
+                        )
+                    )
+            except Exception as e:
+                logger.error("Error executing ErrorForensicsEngine: %s", str(e), exc_info=True)
+                module_results.append(
+                    ModuleExecutionResult(
+                        module="ERROR_FORENSICS",
+                        status=ModuleExecutionStatus.FAILED,
+                        message=f"Execution error in ERROR_FORENSICS: {str(e)}",
                         error=str(e),
                         result={},
                     )

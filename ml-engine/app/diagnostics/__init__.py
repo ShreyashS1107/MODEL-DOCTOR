@@ -6,6 +6,7 @@ from app.diagnostics.performance.engine import PerformanceEngine
 from app.diagnostics.fairness.engine import FairnessEngine
 from app.diagnostics.robustness.engine import RobustnessEngine
 from app.diagnostics.explainability.engine import ExplainabilityEngine
+from app.diagnostics.error_forensics.engine import ErrorForensicsEngine
 
 AVAILABLE_ENGINES = {
     "data_quality": DataQualityEngine,
@@ -15,6 +16,7 @@ AVAILABLE_ENGINES = {
     "fairness": FairnessEngine,
     "robustness": RobustnessEngine,
     "explainability": ExplainabilityEngine,
+    "error_forensics": ErrorForensicsEngine,
 }
 
 __all__ = [
@@ -26,5 +28,6 @@ __all__ = [
     "FairnessEngine",
     "RobustnessEngine",
     "ExplainabilityEngine",
+    "ErrorForensicsEngine",
     "AVAILABLE_ENGINES",
 ]
