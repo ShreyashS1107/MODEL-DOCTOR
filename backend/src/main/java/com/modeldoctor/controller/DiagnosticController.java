@@ -20,15 +20,24 @@ public class DiagnosticController {
     private final DiagnosticService diagnosticService;
     private final com.modeldoctor.service.ExperimentOrchestrationService experimentService;
     private final com.modeldoctor.service.TemporalAnalysisService temporalService;
+    private final com.modeldoctor.service.ContinuousMonitoringService monitoringService;
+    private final com.modeldoctor.service.IncidentAnalysisService incidentService;
+    private final com.modeldoctor.service.ModelReliabilityService reliabilityService;
 
     @Autowired
     public DiagnosticController(
             DiagnosticService diagnosticService,
             com.modeldoctor.service.ExperimentOrchestrationService experimentService,
-            com.modeldoctor.service.TemporalAnalysisService temporalService) {
+            com.modeldoctor.service.TemporalAnalysisService temporalService,
+            com.modeldoctor.service.ContinuousMonitoringService monitoringService,
+            com.modeldoctor.service.IncidentAnalysisService incidentService,
+            com.modeldoctor.service.ModelReliabilityService reliabilityService) {
         this.diagnosticService = diagnosticService;
         this.experimentService = experimentService;
         this.temporalService = temporalService;
+        this.monitoringService = monitoringService;
+        this.incidentService = incidentService;
+        this.reliabilityService = reliabilityService;
     }
 
     @PostMapping("/validate")
@@ -292,6 +301,90 @@ public class DiagnosticController {
     @Operation(summary = "Recalculate Temporal Intelligence", description = "Idempotently rebuilds temporal observations, issue tracks, change points, and alerts from raw diagnostic results.")
     public ResponseEntity<TemporalRecalculateResponseDto> recalculateTemporalIntelligence(@PathVariable String id) {
         return ResponseEntity.ok(temporalService.recalculateTemporalIntelligence(id));
+    }
+
+    // =========================================================================
+    // Phase 10: Continuous Monitoring & Model Health Decision Engine
+    // =========================================================================
+
+    @GetMapping("/{id}/monitoring/health")
+    @Operation(summary = "Get Model Continuous Health Decision", description = "Retrieves current multidimensional health vector, active alerts, and deterministic health state for the run's model lineage.")
+    public ResponseEntity<ModelHealthDecisionDto> getMonitoringHealth(@PathVariable String id) {
+        return ResponseEntity.ok(monitoringService.getCurrentHealth(id));
+    }
+
+    @GetMapping("/{id}/monitoring/alerts")
+    @Operation(summary = "Get Run Operational Monitoring Alerts", description = "Retrieves operational monitoring alerts for the run's model lineage.")
+    public ResponseEntity<List<OperationalAlertDto>> getMonitoringAlerts(@PathVariable String id) {
+        return ResponseEntity.ok(monitoringService.getAlerts(id));
+    }
+
+    @GetMapping("/{id}/monitoring/history")
+    @Operation(summary = "Get Model Health History Snapshots", description = "Retrieves historical point-in-time health snapshots.")
+    public ResponseEntity<List<DiagnosticHealthSnapshotDto>> getMonitoringHistory(@PathVariable String id) {
+        return ResponseEntity.ok(monitoringService.getHealthHistory(id));
+    }
+
+    @GetMapping("/{id}/monitoring/policy")
+    @Operation(summary = "Get Run Monitoring Policy", description = "Retrieves the monitoring contract configuration for the run's model lineage.")
+    public ResponseEntity<DiagnosticMonitoringPolicyDto> getMonitoringPolicy(@PathVariable String id) {
+        return ResponseEntity.ok(monitoringService.getPolicy(id));
+    }
+
+    @PutMapping("/{id}/monitoring/policy")
+    @Operation(summary = "Update Run Monitoring Policy", description = "Updates the monitoring contract configuration.")
+    public ResponseEntity<DiagnosticMonitoringPolicyDto> updateMonitoringPolicy(
+            @PathVariable String id,
+            @RequestBody DiagnosticMonitoringPolicyDto request) {
+        return ResponseEntity.ok(monitoringService.updatePolicy(id, request));
+    }
+
+    @PostMapping("/{id}/monitoring/recalculate")
+    @Operation(summary = "Recalculate Continuous Monitoring", description = "Idempotently executes full Phase 10 continuous monitoring and health decision pipeline.")
+    public ResponseEntity<MonitoringRecalculateResponseDto> recalculateMonitoring(@PathVariable String id) {
+        return ResponseEntity.ok(monitoringService.recalculateMonitoring(id));
+    }
+
+    // =========================================================================
+    // Phase 11: Incident Correlation & Decision Workspace
+    // =========================================================================
+
+    @GetMapping("/{id}/incidents")
+    @Operation(summary = "Get Run Operational Incidents", description = "Retrieves prioritized operational incidents for the run's model lineage.")
+    public ResponseEntity<List<DiagnosticIncidentDto>> getRunIncidents(
+            @PathVariable String id,
+            @RequestParam(required = false, defaultValue = "true") boolean includeResolved) {
+        return ResponseEntity.ok(incidentService.getIncidents(id, includeResolved));
+    }
+
+    @GetMapping("/{id}/incidents/{incidentId}")
+    @Operation(summary = "Get Run Incident Dossier", description = "Retrieves complete evidence dossier, evidence matrix, contradictory signals, and operator decision for an incident.")
+    public ResponseEntity<IncidentEvidenceDossierDto> getRunIncidentDossier(
+            @PathVariable String id,
+            @PathVariable Long incidentId) {
+        return ResponseEntity.ok(incidentService.getIncidentDossier(id, incidentId));
+    }
+
+    @PostMapping("/{id}/incidents/recalculate")
+    @Operation(summary = "Recalculate Run Incidents", description = "Idempotently correlates active alerts and recalculates incidents for the run's model lineage.")
+    public ResponseEntity<IncidentRecalculateResponseDto> recalculateRunIncidents(@PathVariable String id) {
+        return ResponseEntity.ok(incidentService.recalculateIncidents(id));
+    }
+
+    // =========================================================================
+    // Phase 12: Model Reliability Governance & Fleet Intelligence
+    // =========================================================================
+
+    @GetMapping("/{id}/reliability")
+    @Operation(summary = "Get Run Model Reliability Profile", description = "Retrieves operational reliability profile and dossier for the run's model lineage.")
+    public ResponseEntity<ModelReliabilityProfileDto> getRunReliability(@PathVariable String id) {
+        return ResponseEntity.ok(reliabilityService.getReliabilityProfile(id));
+    }
+
+    @PostMapping("/{id}/reliability/recalculate")
+    @Operation(summary = "Recalculate Run Reliability", description = "Idempotently recalculates model reliability profile for the run's model lineage.")
+    public ResponseEntity<ReliabilityRecalculateResponseDto> recalculateRunReliability(@PathVariable String id) {
+        return ResponseEntity.ok(reliabilityService.recalculateReliability(id));
     }
 
     @GetMapping("/runs")

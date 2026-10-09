@@ -2,8 +2,6 @@ package com.modeldoctor;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.modeldoctor.domain.DiagnosticModule;
-import com.modeldoctor.domain.DiagnosticStatus;
-import com.modeldoctor.domain.ModuleExecutionStatus;
 import com.modeldoctor.dto.*;
 import com.modeldoctor.service.MlEngineClient;
 import org.junit.jupiter.api.Test;
@@ -27,6 +25,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
+@SuppressWarnings("null")
 public class DiagnosticControllerTest {
 
     @Autowired

@@ -11,6 +11,7 @@ import java.time.Instant;
 import java.util.*;
 
 @Component
+@SuppressWarnings("null")
 public class IssueTrackAnalyzer {
 
     private static final Logger logger = LoggerFactory.getLogger(IssueTrackAnalyzer.class);

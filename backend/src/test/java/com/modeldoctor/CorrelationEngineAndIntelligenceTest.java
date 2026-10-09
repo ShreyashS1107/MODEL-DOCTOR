@@ -1,12 +1,10 @@
 package com.modeldoctor;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.modeldoctor.domain.*;
 import com.modeldoctor.dto.DiagnosticCorrelationDto;
 import com.modeldoctor.dto.RunSummaryDto;
 import com.modeldoctor.intelligence.normalization.NormalizedModuleData;
 import com.modeldoctor.intelligence.normalization.ResultNormalizer;
-import com.modeldoctor.intelligence.rules.*;
 import com.modeldoctor.repository.DiagnosticCorrelationRepository;
 import com.modeldoctor.repository.DiagnosticResultRepository;
 import com.modeldoctor.repository.DiagnosticRunRepository;
@@ -26,6 +24,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 @ActiveProfiles("dev")
 @Transactional
+@SuppressWarnings("null")
 public class CorrelationEngineAndIntelligenceTest {
 
     @Autowired
@@ -42,12 +41,6 @@ public class CorrelationEngineAndIntelligenceTest {
 
     @Autowired
     private ResultNormalizer normalizer;
-
-    @Autowired
-    private RuleRegistry ruleRegistry;
-
-    @Autowired
-    private ObjectMapper objectMapper;
 
     private String testRunId;
 

@@ -2,7 +2,6 @@ package com.modeldoctor.intelligence.normalization;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.modeldoctor.domain.DiagnosticModule;
 import com.modeldoctor.domain.DiagnosticResult;
 import com.modeldoctor.domain.ModuleExecutionStatus;
 import org.slf4j.Logger;
@@ -51,6 +50,7 @@ public class ResultNormalizer {
                     case BIAS -> normalizeBias(root, norm);
                     case ROBUSTNESS -> normalizeRobustness(root, norm);
                     case ERROR_FORENSICS -> normalizeErrorForensics(root, norm);
+                    case EXPERIMENTS -> {}
                 }
             } catch (Exception e) {
                 logger.warn("Failed to normalize raw result for run {} module {}: {}", runId, res.getModule(), e.getMessage());

@@ -4,7 +4,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.modeldoctor.domain.*;
 import com.modeldoctor.dto.*;
-import com.modeldoctor.exception.DiagnosticExecutionException;
 import com.modeldoctor.exception.InvalidStatusTransitionException;
 import com.modeldoctor.exception.ResourceNotFoundException;
 import com.modeldoctor.repository.DiagnosticResultRepository;
@@ -21,6 +20,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
+@SuppressWarnings("null")
 public class DiagnosticJobService {
 
     private static final Logger log = LoggerFactory.getLogger(DiagnosticJobService.class);

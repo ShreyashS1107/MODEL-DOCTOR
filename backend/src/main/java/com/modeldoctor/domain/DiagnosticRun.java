@@ -235,6 +235,7 @@ public class DiagnosticRun {
         private String baselineDatasetArtifactId;
         private String evaluationDatasetArtifactId;
         private String executionMode;
+        private String runType = "BASELINE";
         private String modelName;
         private String modelFramework;
         private String taskType;
@@ -259,6 +260,7 @@ public class DiagnosticRun {
         public Builder baselineDatasetArtifactId(String baselineDatasetArtifactId) { this.baselineDatasetArtifactId = baselineDatasetArtifactId; return this; }
         public Builder evaluationDatasetArtifactId(String evaluationDatasetArtifactId) { this.evaluationDatasetArtifactId = evaluationDatasetArtifactId; return this; }
         public Builder executionMode(String executionMode) { this.executionMode = executionMode; return this; }
+        public Builder runType(String runType) { this.runType = runType; return this; }
         public Builder modelName(String modelName) { this.modelName = modelName; return this; }
         public Builder modelFramework(String modelFramework) { this.modelFramework = modelFramework; return this; }
         public Builder taskType(String taskType) { this.taskType = taskType; return this; }
@@ -277,10 +279,14 @@ public class DiagnosticRun {
         public Builder modules(List<DiagnosticRunModule> modules) { this.modules = modules; return this; }
 
         public DiagnosticRun build() {
-            return new DiagnosticRun(id, status, retryCount, modelArtifactId, baselineDatasetArtifactId, evaluationDatasetArtifactId,
+            DiagnosticRun run = new DiagnosticRun(id, status, retryCount, modelArtifactId, baselineDatasetArtifactId, evaluationDatasetArtifactId,
                     executionMode, modelName, modelFramework, taskType, modelStorageUri, evaluationDataset,
                     baselineDataset, targetColumn, predictionColumn, protectedAttribute, createdAt, queuedAt, startedAt, completedAt,
                     executionDurationMs, errorMessage, modules);
+            if (runType != null) {
+                run.setRunType(runType);
+            }
+            return run;
         }
     }
 }

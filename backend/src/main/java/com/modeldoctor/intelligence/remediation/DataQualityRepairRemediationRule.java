@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 import java.util.*;
 
 @Component
+@SuppressWarnings("null")
 public class DataQualityRepairRemediationRule implements DiagnosticRemediationRule {
 
     private final ObjectMapper objectMapper;

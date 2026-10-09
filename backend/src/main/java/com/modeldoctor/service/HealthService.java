@@ -53,7 +53,7 @@ public class HealthService {
         // 2. Python ML Engine Reachability
         try {
             String healthUrl = mlEngineBaseUrl + "/health";
-            String mlHealth = healthPingRestTemplate.getForObject(healthUrl, String.class);
+            healthPingRestTemplate.getForObject(healthUrl, String.class);
             components.put("mlEngine", "UP");
         } catch (Exception e) {
             log.warn("ML Engine health check failed at {}: {}", mlEngineBaseUrl, e.getMessage());

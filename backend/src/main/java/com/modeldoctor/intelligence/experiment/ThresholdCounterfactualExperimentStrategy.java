@@ -7,7 +7,6 @@ import com.modeldoctor.dto.InterventionConfigDto;
 import com.modeldoctor.dto.MetricComparisonDto;
 import com.modeldoctor.dto.StatisticalEvidenceDto;
 import com.modeldoctor.repository.DiagnosticResultRepository;
-import com.modeldoctor.service.MlEngineClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -19,15 +18,12 @@ public class ThresholdCounterfactualExperimentStrategy implements DiagnosticExpe
 
     private static final Logger log = LoggerFactory.getLogger(ThresholdCounterfactualExperimentStrategy.class);
 
-    private final MlEngineClient mlEngineClient;
     private final DiagnosticResultRepository resultRepository;
     private final ObjectMapper objectMapper;
 
     public ThresholdCounterfactualExperimentStrategy(
-            MlEngineClient mlEngineClient,
             DiagnosticResultRepository resultRepository,
             ObjectMapper objectMapper) {
-        this.mlEngineClient = mlEngineClient;
         this.resultRepository = resultRepository;
         this.objectMapper = objectMapper;
     }
@@ -60,7 +56,6 @@ public class ThresholdCounterfactualExperimentStrategy implements DiagnosticExpe
 
             // Extract performance metrics or threshold grid if already computed
             Optional<DiagnosticResult> perfOpt = resultRepository.findByRunIdAndModule(baselineRun.getId(), DiagnosticModule.PERFORMANCE);
-            Optional<DiagnosticResult> errorOpt = resultRepository.findByRunIdAndModule(baselineRun.getId(), DiagnosticModule.ERROR_FORENSICS);
 
             Map<String, Object> baseMetrics = new HashMap<>();
             Map<String, Object> candMetrics = new HashMap<>();

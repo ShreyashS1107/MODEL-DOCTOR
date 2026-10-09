@@ -3,8 +3,6 @@ package com.modeldoctor;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.modeldoctor.domain.*;
 import com.modeldoctor.dto.*;
-import com.modeldoctor.intelligence.normalization.NormalizedModuleData;
-import com.modeldoctor.intelligence.normalization.ResultNormalizer;
 import com.modeldoctor.intelligence.temporal.*;
 import com.modeldoctor.repository.*;
 import com.modeldoctor.service.TemporalAnalysisService;
@@ -34,12 +32,6 @@ public class TemporalIntelligenceEngineTest {
     private DiagnosticResultRepository resultRepository;
 
     @Autowired
-    private DiagnosticRemediationRepository remediationRepository;
-
-    @Autowired
-    private DiagnosticExperimentRepository experimentRepository;
-
-    @Autowired
     private DiagnosticTemporalObservationRepository observationRepository;
 
     @Autowired
@@ -50,9 +42,6 @@ public class TemporalIntelligenceEngineTest {
 
     @Autowired
     private DiagnosticChangePointRepository changePointRepository;
-
-    @Autowired
-    private ResultNormalizer resultNormalizer;
 
     @Autowired
     private TemporalMetricRegistry metricRegistry;
@@ -80,8 +69,6 @@ public class TemporalIntelligenceEngineTest {
 
     @Autowired
     private ObjectMapper objectMapper;
-
-    private final String modelName = "test_fraud_model_v1";
 
     @BeforeEach
     public void setup() {

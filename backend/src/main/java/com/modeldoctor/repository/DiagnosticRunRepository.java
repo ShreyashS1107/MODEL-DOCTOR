@@ -12,6 +12,10 @@ public interface DiagnosticRunRepository extends JpaRepository<DiagnosticRun, St
     List<DiagnosticRun> findByStatus(DiagnosticStatus status);
     List<DiagnosticRun> findAllByOrderByCreatedAtDesc();
     List<DiagnosticRun> findByModelNameOrderByCreatedAtAsc(String modelName);
+    List<DiagnosticRun> findByModelArtifactIdOrderByCreatedAtAsc(String modelArtifactId);
     List<DiagnosticRun> findByModelNameAndRunTypeOrderByCreatedAtAsc(String modelName, String runType);
     List<DiagnosticRun> findByModelNameOrderByCreatedAtDesc(String modelName);
+
+    @org.springframework.data.jpa.repository.Query("SELECT DISTINCT r.modelName FROM DiagnosticRun r WHERE r.modelName IS NOT NULL")
+    List<String> findDistinctModelLineageIds();
 }

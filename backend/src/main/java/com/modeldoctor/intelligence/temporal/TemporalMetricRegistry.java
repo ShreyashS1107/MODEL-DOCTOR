@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 import java.util.*;
 
 @Component
+@SuppressWarnings("null")
 public class TemporalMetricRegistry {
 
     public static class MetricDefinition {

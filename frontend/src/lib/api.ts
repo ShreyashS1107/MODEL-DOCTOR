@@ -19,6 +19,26 @@ import {
   ChangePoint,
   RemediationDurability,
   TemporalRecalculateResponse,
+  ModelHealthDecision,
+  ModelHealthState,
+  DimensionHealthState,
+  HealthDimension,
+  OperationalAlert,
+  DiagnosticAlertEvent,
+  DiagnosticHealthSnapshot,
+  DiagnosticMonitoringPolicy,
+  MonitoringRecalculateResponse,
+  DiagnosticIncident,
+  IncidentEvidenceDossier,
+  IncidentRecalculateResponse,
+  ModelReliabilityProfile,
+  ReliabilityTrajectoryPoint,
+  DiagnosticReliabilityEvent,
+  FleetOverview,
+  FleetRiskRank,
+  FleetPattern,
+  ModelComparison,
+  ReliabilityRecalculateResponse,
 } from "@/types/diagnostics";
 
 
@@ -1070,6 +1090,409 @@ export async function recalculateModelTemporal(
     }
   );
 }
+
+// =========================================================================
+// Phase 10: Continuous Monitoring, Alert Lifecycle & Model Health Decisions
+// =========================================================================
+
+/**
+ * Phase 10: Retrieves current continuous model health decision by lineage ID or run ID.
+ */
+export async function getModelHealth(
+  lineageOrRunId: string
+): Promise<ModelHealthDecision> {
+  return request<ModelHealthDecision>(
+    `/api/models/${encodeURIComponent(lineageOrRunId)}/health`
+  );
+}
+
+/**
+ * Phase 10: Run-scoped alias to retrieve current model health decision.
+ */
+export async function getDiagnosticMonitoringHealth(
+  runId: string
+): Promise<ModelHealthDecision> {
+  return request<ModelHealthDecision>(
+    `/api/diagnostics/${encodeURIComponent(runId)}/monitoring/health`
+  );
+}
+
+/**
+ * Phase 10: Retrieves the persistent monitoring policy / contract.
+ */
+export async function getMonitoringPolicy(
+  lineageOrRunId: string
+): Promise<DiagnosticMonitoringPolicy> {
+  return request<DiagnosticMonitoringPolicy>(
+    `/api/models/${encodeURIComponent(lineageOrRunId)}/monitoring-policy`
+  );
+}
+
+/**
+ * Phase 10: Updates the persistent monitoring policy / contract.
+ */
+export async function updateMonitoringPolicy(
+  lineageOrRunId: string,
+  policy: Partial<DiagnosticMonitoringPolicy>
+): Promise<DiagnosticMonitoringPolicy> {
+  return request<DiagnosticMonitoringPolicy>(
+    `/api/models/${encodeURIComponent(lineageOrRunId)}/monitoring-policy`,
+    {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(policy),
+    }
+  );
+}
+
+/**
+ * Phase 10: Retrieves historical health evaluation snapshots.
+ */
+export async function getMonitoringHistory(
+  lineageOrRunId: string
+): Promise<DiagnosticHealthSnapshot[]> {
+  return request<DiagnosticHealthSnapshot[]>(
+    `/api/models/${encodeURIComponent(lineageOrRunId)}/health/history`
+  );
+}
+
+/**
+ * Phase 10: Retrieves all operational alerts with lifecycle state.
+ */
+export async function getOperationalAlerts(
+  lineageOrRunId: string
+): Promise<OperationalAlert[]> {
+  return request<OperationalAlert[]>(
+    `/api/models/${encodeURIComponent(lineageOrRunId)}/alerts`
+  );
+}
+
+/**
+ * Phase 10: Retrieves a single operational alert by ID.
+ */
+export async function getOperationalAlert(
+  lineageOrRunId: string,
+  alertId: number
+): Promise<OperationalAlert> {
+  return request<OperationalAlert>(
+    `/api/models/${encodeURIComponent(lineageOrRunId)}/alerts/${alertId}`
+  );
+}
+
+/**
+ * Phase 10: Acknowledges an operational alert.
+ */
+export async function acknowledgeOperationalAlert(
+  lineageOrRunId: string,
+  alertId: number,
+  actor: string = "USER"
+): Promise<OperationalAlert> {
+  return request<OperationalAlert>(
+    `/api/models/${encodeURIComponent(lineageOrRunId)}/alerts/${alertId}/acknowledge`,
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ actor }),
+    }
+  );
+}
+
+/**
+ * Phase 10: Transitions an alert to INVESTIGATING.
+ */
+export async function investigateOperationalAlert(
+  lineageOrRunId: string,
+  alertId: number,
+  actor: string = "USER"
+): Promise<OperationalAlert> {
+  return request<OperationalAlert>(
+    `/api/models/${encodeURIComponent(lineageOrRunId)}/alerts/${alertId}/investigate`,
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ actor }),
+    }
+  );
+}
+
+/**
+ * Phase 10: Temporarily suppresses an alert with reason and duration.
+ */
+export async function suppressOperationalAlert(
+  lineageOrRunId: string,
+  alertId: number,
+  reason: string,
+  durationHours: number = 24,
+  actor: string = "USER"
+): Promise<OperationalAlert> {
+  return request<OperationalAlert>(
+    `/api/models/${encodeURIComponent(lineageOrRunId)}/alerts/${alertId}/suppress`,
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ reason, durationHours, actor }),
+    }
+  );
+}
+
+/**
+ * Phase 10: Resolves an operational alert.
+ */
+export async function resolveOperationalAlert(
+  lineageOrRunId: string,
+  alertId: number,
+  reason: string = "Manually resolved by engineer",
+  actor: string = "USER"
+): Promise<OperationalAlert> {
+  return request<OperationalAlert>(
+    `/api/models/${encodeURIComponent(lineageOrRunId)}/alerts/${alertId}/resolve`,
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ reason, actor }),
+    }
+  );
+}
+
+/**
+ * Phase 10: Idempotently recalculates continuous monitoring and health decisions.
+ */
+export async function recalculateMonitoring(
+  lineageOrRunId: string
+): Promise<MonitoringRecalculateResponse> {
+  return request<MonitoringRecalculateResponse>(
+    `/api/models/${encodeURIComponent(lineageOrRunId)}/monitoring/recalculate`,
+    {
+      method: "POST",
+    }
+  );
+}
+
+// =========================================================================
+// Phase 11: Incident Correlation & Decision Workspace API
+// =========================================================================
+
+/**
+ * Phase 11: Retrieves prioritized operational incident queue.
+ */
+export async function getIncidents(
+  lineageOrRunId: string,
+  includeResolved: boolean = true
+): Promise<DiagnosticIncident[]> {
+  return request<DiagnosticIncident[]>(
+    `/api/models/${encodeURIComponent(lineageOrRunId)}/incidents?includeResolved=${includeResolved}`
+  );
+}
+
+/**
+ * Phase 11: Retrieves comprehensive incident evidence dossier.
+ */
+export async function getIncidentDossier(
+  lineageOrRunId: string,
+  incidentId: number
+): Promise<IncidentEvidenceDossier> {
+  return request<IncidentEvidenceDossier>(
+    `/api/models/${encodeURIComponent(lineageOrRunId)}/incidents/${incidentId}`
+  );
+}
+
+/**
+ * Phase 11: Idempotently recalculates alert correlations and forms incidents.
+ */
+export async function recalculateIncidents(
+  lineageOrRunId: string
+): Promise<IncidentRecalculateResponse> {
+  return request<IncidentRecalculateResponse>(
+    `/api/models/${encodeURIComponent(lineageOrRunId)}/incidents/recalculate`,
+    {
+      method: "POST",
+    }
+  );
+}
+
+/**
+ * Phase 11: Transitions incident lifecycle to ACKNOWLEDGED.
+ */
+export async function acknowledgeIncident(
+  lineageOrRunId: string,
+  incidentId: number,
+  actor: string = "USER",
+  note?: string
+): Promise<DiagnosticIncident> {
+  return request<DiagnosticIncident>(
+    `/api/models/${encodeURIComponent(lineageOrRunId)}/incidents/${incidentId}/acknowledge`,
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ actor, note }),
+    }
+  );
+}
+
+/**
+ * Phase 11: Transitions incident lifecycle to INVESTIGATING.
+ */
+export async function investigateIncident(
+  lineageOrRunId: string,
+  incidentId: number,
+  actor: string = "USER",
+  note?: string
+): Promise<DiagnosticIncident> {
+  return request<DiagnosticIncident>(
+    `/api/models/${encodeURIComponent(lineageOrRunId)}/incidents/${incidentId}/investigate`,
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ actor, note }),
+    }
+  );
+}
+
+/**
+ * Phase 11: Transitions incident lifecycle to MITIGATION_PLANNED.
+ */
+export async function planIncidentRemediation(
+  lineageOrRunId: string,
+  incidentId: number,
+  remediationId?: number,
+  actor: string = "USER",
+  planDetails?: string
+): Promise<DiagnosticIncident> {
+  return request<DiagnosticIncident>(
+    `/api/models/${encodeURIComponent(lineageOrRunId)}/incidents/${incidentId}/plan-remediation`,
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ remediationId, actor, planDetails }),
+    }
+  );
+}
+
+/**
+ * Phase 11: Transitions incident lifecycle to VALIDATING.
+ */
+export async function startIncidentValidation(
+  lineageOrRunId: string,
+  incidentId: number,
+  experimentId?: string,
+  actor: string = "USER",
+  validationNotes?: string
+): Promise<DiagnosticIncident> {
+  return request<DiagnosticIncident>(
+    `/api/models/${encodeURIComponent(lineageOrRunId)}/incidents/${incidentId}/start-validation`,
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ experimentId, actor, validationNotes }),
+    }
+  );
+}
+
+/**
+ * Phase 11: Resolves an incident with explanation.
+ */
+export async function resolveIncident(
+  lineageOrRunId: string,
+  incidentId: number,
+  resolutionReason: string = "Manually resolved by operator",
+  actor: string = "USER"
+): Promise<DiagnosticIncident> {
+  return request<DiagnosticIncident>(
+    `/api/models/${encodeURIComponent(lineageOrRunId)}/incidents/${incidentId}/resolve`,
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ resolutionReason, actor }),
+    }
+  );
+}
+
+/**
+ * Phase 11: Suppresses incident notification.
+ */
+export async function suppressIncident(
+  lineageOrRunId: string,
+  incidentId: number,
+  reason: string = "Suppressed by operator",
+  durationHours: number = 24,
+  actor: string = "USER"
+): Promise<DiagnosticIncident> {
+  return request<DiagnosticIncident>(
+    `/api/models/${encodeURIComponent(lineageOrRunId)}/incidents/${incidentId}/suppress`,
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ reason, durationHours, actor }),
+    }
+  );
+}
+
+// ============================================================================
+// Phase 12: Model Reliability Governance & Fleet Intelligence APIs
+// ============================================================================
+
+/**
+ * Phase 12: Retrieves model reliability governance profile.
+ */
+export async function getModelReliability(lineageOrRunId: string): Promise<ModelReliabilityProfile> {
+  return request<ModelReliabilityProfile>(`/api/models/${encodeURIComponent(lineageOrRunId)}/reliability`);
+}
+
+/**
+ * Phase 12: Retrieves longitudinal reliability trajectory.
+ */
+export async function getModelReliabilityHistory(lineageOrRunId: string): Promise<ReliabilityTrajectoryPoint[]> {
+  return request<ReliabilityTrajectoryPoint[]>(`/api/models/${encodeURIComponent(lineageOrRunId)}/reliability/history`);
+}
+
+/**
+ * Phase 12: Retrieves reliability governance timeline events.
+ */
+export async function getModelReliabilityEvents(lineageOrRunId: string): Promise<DiagnosticReliabilityEvent[]> {
+  return request<DiagnosticReliabilityEvent[]>(`/api/models/${encodeURIComponent(lineageOrRunId)}/reliability/events`);
+}
+
+/**
+ * Phase 12: Recalculates model reliability profile.
+ */
+export async function recalculateModelReliability(lineageOrRunId: string): Promise<ReliabilityRecalculateResponse> {
+  return request<ReliabilityRecalculateResponse>(
+    `/api/models/${encodeURIComponent(lineageOrRunId)}/reliability/recalculate`,
+    { method: "POST" }
+  );
+}
+
+/**
+ * Phase 12: Retrieves fleet reliability overview, risk matrix, and recurring patterns.
+ */
+export async function getFleetOverview(): Promise<FleetOverview> {
+  return request<FleetOverview>(`/api/models/reliability/fleet`);
+}
+
+/**
+ * Phase 12: Retrieves ranked fleet risk prioritization list.
+ */
+export async function getFleetRisk(): Promise<FleetRiskRank[]> {
+  return request<FleetRiskRank[]>(`/api/models/reliability/fleet/risk`);
+}
+
+/**
+ * Phase 12: Retrieves recurring cross-model fleet patterns.
+ */
+export async function getFleetPatterns(): Promise<FleetPattern[]> {
+  return request<FleetPattern[]>(`/api/models/reliability/fleet/patterns`);
+}
+
+/**
+ * Phase 12: Compares reliability between two model lineages.
+ */
+export async function compareModelReliability(left: string, right: string): Promise<ModelComparison> {
+  return request<ModelComparison>(
+    `/api/models/reliability/compare?left=${encodeURIComponent(left)}&right=${encodeURIComponent(right)}`
+  );
+}
+
+
 
 
 

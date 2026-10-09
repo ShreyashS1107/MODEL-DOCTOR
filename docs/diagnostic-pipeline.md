@@ -33,14 +33,30 @@ Next.js Frontend (/diagnose, /diagnostic/[id])
                       ↓
                INVESTIGATION
                       ↓
-              EVIDENCE GRAPH
+               EVIDENCE GRAPH
                       ↓
                REMEDIATION
                       ↓
          EXPERIMENTAL VALIDATION
                       ↓
             BEFORE / AFTER EVIDENCE
-                      ↓ HTTP GET /api/diagnostics/{id}/...
+                      ↓
+           TEMPORAL INTELLIGENCE
+                      ↓
+           CONTINUOUS MONITORING
+                      ↓
+                MODEL HEALTH
+                      ↓
+            INCIDENT CORRELATION
+                      ↓
+             EVIDENCE SYNTHESIS
+                      ↓
+         OPERATOR DECISION WORKSPACE
+                      ↓
+         MODEL RELIABILITY GOVERNANCE
+                      ↓
+              FLEET INTELLIGENCE
+                      ↓ HTTP GET /api/models/...
              Next.js Workstation (/diagnostic/[id])
 ```
 
@@ -1691,4 +1707,817 @@ Located at navigation code `09` on the Model Doctor workstation sidebar:
 - **Alert Console:** Dense timestamped monitoring event console displaying priority, trigger descriptions, targets, and confidence levels.
 - **Remediation Durability View:** Step pipeline tracking problem $\to$ remediation $\to$ candidate run $\to$ follow-up baseline runs $\to$ durability conclusion (`SUSTAINED`, `TEMPORARY`, `FAILED_TO_SUSTAIN`, `INSUFFICIENT_FOLLOWUP`, `NOT_APPLICABLE`).
 - **Temporal Investigation Dossier:** Dedicated drilldown drawer connecting temporal alerts and issue tracks back to Phase 6 Root-Cause Investigations and Phase 7 Remediations.
+
+
+
+---
+
+## 10. Phase 10 — Continuous Monitoring, Alert Lifecycle & Model Health Decision Engine
+
+### A. Objective & Design Philosophy
+
+Phase 10 turns Model Doctor's longitudinal intelligence (Phase 9) into an **authoritative operational monitoring and model health decision layer**.
+
+The system answers:
+> *"What is the current operational health state of this model, what active problems require attention, how serious are they, what evidence supports them, and what is the lifecycle state of each alert?"*
+
+#### Strict Architectural Constraints:
+1. **No Autonomous Retraining or Deployment:** Model Doctor evaluates and reports health; it does not autonomously alter models or deploy weights.
+2. **No LLMs in the Decision Path:** All health state classifications, alert fingerprints, and deduplication rules are strictly deterministic and rule-governed.
+3. **No Hidden Health Scores:** If a numeric health index is presented, every deduction point is traced directly to empirical metric evidence.
+4. **No Causal Claims:** Multi-module co-occurrences and issue tracks represent empirical associations and correlations, not proven causal claims.
+5. **Operational Baseline Run Authority:** Only operational `BASELINE` runs determine authoritative model health. Phase 8 `EXPERIMENT` runs are contextual overlays and never create or clear operational health degradation.
+
+---
+
+### B. Monitoring Pipeline Architecture
+
+```text
+RAW DIAGNOSTIC RESULTS (Phases 1-3)
+        ↓
+PHASE 4: Cross-Module Correlations
+        ↓
+PHASE 6: Root-Cause Investigation Targets & Evidence Graph
+        ↓
+PHASE 7: Remediation Hypotheses
+        ↓
+PHASE 8: Experimental Validation
+        ↓
+PHASE 9: Temporal Intelligence (Observations, Trends, Change Points, Issue Tracks)
+        ↓
+┌─────────────────────────────────────────────────────────────┐
+│ PHASE 10: CONTINUOUS MONITORING & HEALTH ENGINE             │
+│                                                             │
+│  1. Monitoring Policy Contract (Lineage-scoped thresholds)  │
+│  2. Multidimensional Health Vector (9 Dimensions)          │
+│  3. Deterministic Health Decision Engine                    │
+│  4. Traceable Health Index (0-100 Base Score)               │
+│  5. Operational Alert Deduplication & Fingerprinting        │
+│  6. Alert Lifecycle State Machine (OPEN -> RESOLVED)        │
+│  7. Hysteresis, Cooldown & Flapping Protection             │
+│  8. Temporary Alert Suppression                             │
+│  9. Immutable Health Snapshots & Historical Timeline        │
+│ 10. Evidence Dossier & Full Provenance Chain                │
+│ 11. Lifecycle Audit Log Stream                              │
+└─────────────────────────────────────────────────────────────┘
+        ↓
+REST API (/api/models/{lineageId}/health, /api/diagnostics/{id}/...)
+        ↓
+MONITORING WORKSTATION (Section 10 CONTINUOUS MONITORING)
+```
+
+---
+
+### C. Monitoring Policy Contract (`DiagnosticMonitoringPolicy`)
+
+Each model lineage maintains a versioned, auditable `DiagnosticMonitoringPolicy` entity:
+- `modelLineage`: Unique model identifier or lineage tag.
+- `enabled`: Global toggle for active monitoring.
+- `observationWindow`: Configurable window (`LAST_5_RUNS`, `LAST_10_RUNS`, `LAST_20_RUNS`, `ALL_AVAILABLE`).
+- `minOperationalRunsRequired`: Minimum baseline runs needed before exiting `UNKNOWN` health state (default: 2).
+- `alertPersistenceRunsRequired`: Runs a condition must persist before escalating severity (default: 2).
+- `recoveryStabilizationRunsRequired`: Consecutive clean runs required before transitioning to `HEALTHY` from `RECOVERING` (default: 2).
+- `alertCooldownRuns`: Suppresses duplicate alert firing for N runs after resolution.
+- `hysteresisEnabled`: Flapping protection preventing rapid boundary bouncing.
+- `allowExperimentsInOverlay`: Contextual display toggle for candidate experiments.
+- `healthEvaluationMode`: Deterministic algorithm identifier (e.g., `DETERMINISTIC_NYQUIST_V1`).
+
+---
+
+### D. Multidimensional Health Vector (9 Health Dimensions)
+
+Model health is never collapsed into an opaque score. The system evaluates 9 independent diagnostic dimensions:
+1. `DATA_QUALITY`: Missing value spikes, schema violations, duplicate anomalies, type mismatches.
+2. `LEAKAGE`: Target leakage correlations, proxy features, identifier memorization.
+3. `DRIFT`: Population Stability Index (PSI), Kolmogorov-Smirnov statistics, Jensen-Shannon divergence.
+4. `PERFORMANCE`: ROC-AUC, PR-AUC, F1-Score, Brier score, log-loss regressions.
+5. `CALIBRATION`: Expected Calibration Error (ECE), over/under-confidence bands.
+6. `ERROR`: Error forensics, high-confidence mistake clusters, subgroup error concentration.
+7. `FAIRNESS`: Disparate impact, demographic parity gaps, equalized odds disparities.
+8. `ROBUSTNESS`: Adversarial perturbation resilience, noise vulnerability, boundary flip rate.
+9. `TEMPORAL`: Degrading longitudinal trajectories, change points, unresolved persistent tracks.
+
+#### Dimension States:
+- `HEALTHY`: All indicators nominal, no active alerts.
+- `WARNING`: Sub-critical elevation or emerging degradation trend.
+- `DEGRADED`: Significant metric breach or persistent sub-critical issue.
+- `CRITICAL`: Severe metric failure, active critical alert, or critical change point.
+- `UNKNOWN`: Insufficient operational data or missing evaluation module.
+
+---
+
+### E. Deterministic Model Health Decision Engine
+
+The overall model health state (`ModelHealthState`) is computed via deterministic hierarchy:
+- `UNKNOWN`: When operational run count < `minOperationalRunsRequired` or required dimensions cannot be evaluated.
+- `CRITICAL`: When any active alert is `CRITICAL`, or 2+ dimensions are `DEGRADED`/`CRITICAL`, or a critical trend is escalating.
+- `DEGRADED`: When high-severity alerts are active, or multiple dimensions are in `WARNING`/`DEGRADED`, or persistent issue tracks remain open.
+- `RECOVERING`: When a previously `CRITICAL`/`DEGRADED` model exhibits nominal latest metrics but has not yet met `recoveryStabilizationRunsRequired`.
+- `HEALTHY`: When data is sufficient, no active critical/high alerts exist, and all dimensions satisfy policy criteria.
+
+---
+
+### F. Traceable Health Index (0–100)
+
+When requested, a transparent composite health index is computed:
+$$\text{Health Index} = \max\left(0, 100 - \sum \text{Deduction Points}\right)$$
+- `CRITICAL` alert: $-30$ pts per instance.
+- `HIGH` alert: $-15$ pts per instance.
+- `WARNING` alert: $-5$ pts per instance.
+- `CRITICAL` dimension: $-25$ pts.
+- `DEGRADED` dimension: $-12$ pts.
+- `WARNING` dimension: $-4$ pts.
+- `UNKNOWN` dimension penalty: $-5$ pts (missing evidence is not assumed healthy).
+- Every deduction item is linked to an explicit `traceableEvidence` identifier.
+
+---
+
+### G. Operational Alert Lifecycle & Deduplication
+
+#### Lifecycle State Machine:
+```text
+      ┌───────────┐
+      │   OPEN    │ ◄────────────────────────┐
+      └─────┬─────┘                          │
+            │                                │ Condition returns
+            ├────────────────┐               │
+            ▼                ▼               │
+    ┌──────────────┐  ┌──────────────┐       │
+    │ ACKNOWLEDGED │  │  SUPPRESSED  │       │
+    └───────┬──────┘  └──────┬───────┘       │
+            │                │ Expiry        │
+            ▼                ▼               │
+    ┌──────────────┐         │               │
+    │INVESTIGATING ├─────────┘               │
+    └───────┬──────┘                         │
+            │                                │
+            ▼                                │
+      ┌───────────┐                          │
+      │ RESOLVED  ├──────────────────────────┘
+      └───────────┘
+```
+
+#### Deterministic Alert Fingerprinting:
+$$\text{Fingerprint} = \text{SHA-256}(\text{lineage} + \text{alertType} + \text{targetKey} + \text{metricName})$$
+- When an alert condition recurs in subsequent runs, the existing alert record is updated, its occurrence and persistence counters are incremented, and its severity is dynamically escalated or de-escalated.
+- If a previously `RESOLVED` alert re-occurs, it transitions to `REOPENED` with a full audit log.
+
+---
+
+### H. Persistence Schema (Spring Data JPA)
+
+```sql
+CREATE TABLE diagnostic_monitoring_policies (
+    id BIGSERIAL PRIMARY KEY,
+    model_lineage VARCHAR(128) NOT NULL UNIQUE,
+    policy_version INT NOT NULL DEFAULT 1,
+    enabled BOOLEAN NOT NULL DEFAULT TRUE,
+    required_dimensions_json TEXT,
+    observation_window VARCHAR(32) NOT NULL DEFAULT 'ALL_AVAILABLE',
+    min_operational_runs INT NOT NULL DEFAULT 2,
+    alert_persistence_runs INT NOT NULL DEFAULT 2,
+    recovery_stabilization_runs INT NOT NULL DEFAULT 2,
+    alert_cooldown_runs INT NOT NULL DEFAULT 1,
+    hysteresis_enabled BOOLEAN NOT NULL DEFAULT TRUE,
+    allow_experiments_overlay BOOLEAN NOT NULL DEFAULT FALSE,
+    health_evaluation_mode VARCHAR(64) NOT NULL DEFAULT 'DETERMINISTIC_NYQUIST_V1',
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    updated_by VARCHAR(64) NOT NULL DEFAULT 'SYSTEM'
+);
+
+CREATE TABLE diagnostic_operational_alerts (
+    id BIGSERIAL PRIMARY KEY,
+    model_lineage VARCHAR(128) NOT NULL,
+    alert_fingerprint VARCHAR(128) NOT NULL,
+    alert_type VARCHAR(64) NOT NULL,
+    current_severity VARCHAR(32) NOT NULL,
+    previous_severity VARCHAR(32),
+    lifecycle_state VARCHAR(32) NOT NULL DEFAULT 'OPEN',
+    target_key VARCHAR(128) NOT NULL,
+    metric_name VARCHAR(64),
+    message TEXT NOT NULL,
+    source_run_id VARCHAR(64) NOT NULL,
+    source_result_id BIGINT,
+    source_temporal_alert_id BIGINT,
+    investigation_target_key VARCHAR(128),
+    remediation_hypothesis_id VARCHAR(64),
+    first_observed_at TIMESTAMP WITH TIME ZONE NOT NULL,
+    last_observed_at TIMESTAMP WITH TIME ZONE NOT NULL,
+    total_occurrences INT NOT NULL DEFAULT 1,
+    persistence_runs INT NOT NULL DEFAULT 1,
+    escalation_count INT NOT NULL DEFAULT 0,
+    recovery_count INT NOT NULL DEFAULT 0,
+    reopen_count INT NOT NULL DEFAULT 0,
+    suppressed_until TIMESTAMP WITH TIME ZONE,
+    suppression_reason TEXT,
+    suppressed_by VARCHAR(64),
+    acknowledged_by VARCHAR(64),
+    acknowledged_at TIMESTAMP WITH TIME ZONE,
+    resolved_by VARCHAR(64),
+    resolved_at TIMESTAMP WITH TIME ZONE,
+    resolution_reason TEXT,
+    CONSTRAINT uk_operational_alert_fingerprint UNIQUE (model_lineage, alert_fingerprint)
+);
+
+CREATE TABLE diagnostic_alert_events (
+    id BIGSERIAL PRIMARY KEY,
+    model_lineage VARCHAR(128) NOT NULL,
+    alert_id BIGINT NOT NULL REFERENCES diagnostic_operational_alerts(id) ON DELETE CASCADE,
+    previous_state VARCHAR(32) NOT NULL,
+    new_state VARCHAR(32) NOT NULL,
+    actor VARCHAR(64) NOT NULL,
+    reason TEXT,
+    timestamp TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE diagnostic_health_snapshots (
+    id BIGSERIAL PRIMARY KEY,
+    model_lineage VARCHAR(128) NOT NULL,
+    operational_run_id VARCHAR(64) NOT NULL REFERENCES diagnostic_runs(id) ON DELETE CASCADE,
+    timestamp TIMESTAMP WITH TIME ZONE NOT NULL,
+    overall_state VARCHAR(32) NOT NULL,
+    health_index INT,
+    dimension_states_json TEXT NOT NULL,
+    active_alert_count INT NOT NULL DEFAULT 0,
+    critical_alert_count INT NOT NULL DEFAULT 0,
+    degraded_dimension_count INT NOT NULL DEFAULT 0,
+    evidence_references_json TEXT,
+    policy_version INT NOT NULL DEFAULT 1,
+    decision_engine_version VARCHAR(32) NOT NULL DEFAULT '1.0'
+);
+```
+
+---
+
+### I. REST API Reference
+
+| Endpoint | Method | Request / Parameters | Response DTO | Description |
+|---|---|---|---|---|
+| `/api/models/{lineageId}/monitoring-policy` | `GET` | - | `DiagnosticMonitoringPolicyDto` | Retrieves the active monitoring contract for a model lineage. |
+| `/api/models/{lineageId}/monitoring-policy` | `PUT` | `DiagnosticMonitoringPolicyDto` | `DiagnosticMonitoringPolicyDto` | Updates and version-bumps the monitoring contract. |
+| `/api/models/{lineageId}/health` | `GET` | - | `ModelHealthDecisionDto` | Obtains current operational health decision, 9D vector, and alerts. |
+| `/api/models/{lineageId}/health/history` | `GET` | `?limit=30` | `List<DiagnosticHealthSnapshotDto>` | Returns chronological immutable health snapshots across runs. |
+| `/api/models/{lineageId}/alerts` | `GET` | `?includeResolved=false` | `List<OperationalAlertDto>` | Retrieves operational alerts filtered by state and severity. |
+| `/api/models/{lineageId}/alerts/{alertId}` | `GET` | - | `OperationalAlertDto` | Retrieves a single operational alert with evidence links. |
+| `/api/models/{lineageId}/alerts/{alertId}/acknowledge` | `POST` | `AcknowledgeAlertRequestDto` | `OperationalAlertDto` | Transitions alert to `ACKNOWLEDGED`. |
+| `/api/models/{lineageId}/alerts/{alertId}/investigate` | `POST` | `InvestigateAlertRequestDto` | `OperationalAlertDto` | Transitions alert to `INVESTIGATING`. |
+| `/api/models/{lineageId}/alerts/{alertId}/suppress` | `POST` | `SuppressAlertRequestDto` | `OperationalAlertDto` | Silences alert for specified hours with reason. |
+| `/api/models/{lineageId}/alerts/{alertId}/resolve` | `POST` | `ResolveAlertRequestDto` | `OperationalAlertDto` | Marks alert `RESOLVED` with rationale. |
+| `/api/models/{lineageId}/monitoring/recalculate` | `POST` | - | `MonitoringRecalculateResponseDto` | Idempotently recalculates operational health from baseline runs. |
+| `/api/diagnostics/{id}/monitoring/health` | `GET` | - | `ModelHealthDecisionDto` | Run-scoped alias for model health decision. |
+| `/api/diagnostics/{id}/monitoring/recalculate` | `POST` | - | `MonitoringRecalculateResponseDto` | Run-scoped alias for monitoring recalculation. |
+
+---
+
+### J. Frontend Workstation: `10 CONTINUOUS MONITORING`
+
+Located at navigation code `10` on the Model Doctor workstation sidebar:
+1. **Header HUD:** Overall health state banner (`HEALTHY`, `DEGRADED`, `CRITICAL`, `RECOVERING`, `UNKNOWN`), Health Index gauge with traceable penalty breakdown popover, active/critical alert tallies, and data sufficiency indicators.
+2. **Health Vector (9 Dimensions Grid):** Dense cards for all 9 diagnostic dimensions displaying status badges, metric evidence, alert counts, and direct links to raw diagnostic modules.
+3. **Operational Alert Queue:** Filterable by lifecycle state and severity with escalation badges (`▲`), persistence counts, and quick actions.
+4. **Alert & Evidence Inspector Drawer:** Complete provenance chain connecting selected alerts to Phase 6 Root-Cause graphs, Phase 7 Remediations, Phase 8 Experiments, and Phase 9 Temporal tracks. Includes interactive lifecycle transition buttons (`ACKNOWLEDGE`, `INVESTIGATE`, `SUPPRESS`, `RESOLVE`).
+5. **Health History Timeline:** Run-by-run immutable snapshot table displaying historical state transitions, health indices, and recorded dimension vectors.
+6. **Policy Configuration Modal:** UI for adjusting observation windows, persistence requirements, stabilization thresholds, and cooldowns.
+7. **Lifecycle Audit Console:** Real-time log stream of all lifecycle transitions and monitoring recalculation events.
+
+---
+
+## 12. Phase 11 — Incident Correlation, Evidence Synthesis & Decision Workspace
+
+### A. Architectural Overview
+
+Phase 11 establishes a persistent, deterministic **Incident Intelligence and Operator Decision Layer** above individual operational alerts and monitoring checks.
+
+While Phase 10 answers:
+> *"Is the model currently healthy, degraded, or critical, and what individual alerts are active?"*
+
+Phase 11 answers the operational decision question:
+> *"Which active signals belong together, how strong is the independent evidence, what has already been investigated or remediated, what experimental evidence exists, and what decision should the operator make next?"*
+
+```text
+RAW DIAGNOSTICS
+      ↓
+CROSS-MODULE CORRELATIONS (Phase 4)
+      ↓
+INVESTIGATION TARGETS & EVIDENCE GRAPH (Phase 6)
+      ↓
+REMEDIATION HYPOTHESES (Phase 7)
+      ↓
+EXPERIMENTAL VALIDATION (Phase 8)
+      ↓
+TEMPORAL INTELLIGENCE & ISSUE TRACKS (Phase 9)
+      ↓
+OPERATIONAL MONITORING & HEALTH DECISION VECTOR (Phase 10)
+      ↓
+┌──────────────────────────────────────────────────────────────┐
+│ PHASE 11: INCIDENT SYNTHESIS & DECISION WORKSPACE            │
+│                                                              │
+│ 1. Deterministic Alert-to-Incident Correlation               │
+│ 2. Transparent Multi-Signal Scoring (0-100)                  │
+│ 3. Independent Module Counting (De-duplicated Evidence)      │
+│ 4. Priority Score Breakdown (Severity + Modules + Temporal)  │
+│ 5. Contradictory Evidence Detection & Confidence Damping     │
+│ 6. Cross-Phase Provenance Linking (Phases 6, 7, 8, 9, 10)    │
+│ 7. Non-Causal Associative Decision Recommendations           │
+│ 8. Auditable Incident Lifecycle Management & Reopening       │
+└──────────────────────────────────────────────────────────────┘
+```
+
+---
+
+### B. Core Principles & Constraints
+
+1. **Explicitly Non-Causal & Evidence-Driven:** The system strictly avoids causal claims (*"caused by"*, *"proven root cause"*). It uses associative terminology (*"supported by"*, *"associated with"*, *"correlated with"*, *"consistent with"*, *"co-occurring"*, *"warrants investigation"*).
+2. **Zero Black-Box / No LLM Decision Loop:** All correlation clustering, priority calculations, contradictory evidence checks, and decision recommendations are 100% deterministic, transparent, and auditable.
+3. **Operational Baseline vs Experiment Isolation:** Alerts originating from counterfactual `EXPERIMENT` runs are excluded from authoritative production incidents to prevent false operational alarms.
+4. **Idempotency & Reopening:** Recalculating incidents over unchanged operational data produces identical incident codes, scores, and alert links with zero duplication. A previously resolved incident that encounters recurring operational signals transitions to `REOPENED` with complete audit history preserved.
+
+---
+
+### C. Deterministic Correlation Scoring Model
+
+Alerts are clustered into candidate incidents using a transparent, bounded [0, 100] correlation score:
+
+| Correlation Signal | Weight | Justification |
+|---|---|---|
+| **Same Target Entity** | `+35` | Direct alignment on the same feature or subgroup slice (e.g. `FEATURE::income`). |
+| **Same Phase 6 Investigation Target** | `+25` | Explicit linkage to the same root-cause hypothesis and evidence neighborhood. |
+| **Same Phase 9 Temporal Issue Track** | `+20` | Co-occurrence within the same persistent longitudinal issue track. |
+| **Shared Source Diagnostic Run** | `+20` | Detected within the same batch evaluation execution. |
+| **Same Diagnostic Module** | `+10` | Co-occurring within the same diagnostic dimension (e.g. `DRIFT`). |
+| **Same Metric Name** | `+10` | Sharing the exact same underlying metric (e.g. `psi`). |
+| **Same Subgroup Slice** | `+15` | Slicing alignment across demographic or categorical partitions. |
+| **Temporal Proximity** | `+10` | Observed in identical operational run. |
+
+**Correlation Rule:**
+- Alerts for identical specific targets (e.g. `FEATURE::income`) are correlated.
+- Alerts for distinct targets (e.g. `FEATURE::income` vs `FEATURE::age`) are **not** grouped unless explicitly linked through a shared investigation target or issue track.
+- Score is clamped to $[0, 100]$.
+
+---
+
+### D. Independent Module Counting
+
+To avoid double-counting evidence when multiple tests flag the same dimension (e.g. Drift PSI, KS-test, and Wasserstein distance all failing on one feature), independent module counting de-duplicates metrics by their diagnostic family:
+
+$$\text{IndependentModules} = \left| \{ \text{normalize}(a.\text{sourceModule}) \mid a \in \text{Cluster} \} \right|$$
+
+For example:
+- `[DRIFT_PSI, DRIFT_KS, DRIFT_WASSERSTEIN]` $\to$ **1 Independent Module**
+- `[DRIFT_PSI, ERROR_RATE, ROBUSTNESS_FLIP]` $\to$ **3 Independent Modules**
+
+---
+
+### E. Incident Priority Score Breakdown
+
+The incident priority score ($0 \dots 100$) is computed transparently across multiple operational factors:
+
+$$\text{TotalPriority} = \min\left(100, S_{\text{sev}} + S_{\text{indep}} + S_{\text{persist}} + S_{\text{health}}\right)$$
+
+1. **Severity Contribution ($S_{\text{sev}}$):**
+   - `CRITICAL`: $+40$ pts
+   - `HIGH`: $+25$ pts
+   - `MEDIUM` / `WARNING`: $+15$ pts
+   - `LOW` / `INFO`: $+5$ pts
+2. **Independent Evidence Contribution ($S_{\text{indep}}$):**
+   - $+10$ pts per independent module (capped at $+40$ pts).
+3. **Persistence & Escalation Contribution ($S_{\text{persist}}$):**
+   - Escalating condition: $+10$ pts.
+   - Persistent across $\ge 2$ consecutive runs: $+5$ pts (capped at $+15$ pts).
+4. **Model Health Impact Contribution ($S_{\text{health}}$):**
+   - Overall model health `CRITICAL`: $+10$ pts.
+   - Overall model health `DEGRADED`: $+5$ pts.
+
+**Priority Tiers:**
+- `CRITICAL`: $\ge 85$
+- `HIGH`: $\ge 65$
+- `MEDIUM`: $\ge 45$
+- `LOW`: $\ge 25$
+- `INFO`: $< 25$
+
+---
+
+### F. Contradictory Evidence & Decision Recommendations
+
+The system actively evaluates divergence across evaluation dimensions:
+- **Divergence Example:** Severe distribution drift is present on an input feature (`DRIFT = CRITICAL`), but operational model accuracy and performance remain completely nominal (`PERFORMANCE = HEALTHY`).
+- **Synthesis:** The system flags `⚠️ CONTRADICTORY EVIDENCE DETECTED`, damps decision confidence from `HIGH` to `MEDIUM`, and recommends `MONITOR` rather than rushing an invasive model retrain.
+
+**Deterministic Decision States:**
+| Recommendation | Trigger Condition | Suggested Next Action |
+|---|---|---|
+| `NO_ACTION` | All signals nominal; no active alerts. | Continue continuous baseline monitoring. |
+| `MONITOR` | Contradictory evidence detected, or candidate remediation validated via Phase 8 experiment. | Observe subsequent operational baseline runs to verify stabilization. |
+| `INVESTIGATE` | Correlated alerts present without an established investigation target. | Formulate Phase 6 root-cause investigation target for primary target. |
+| `REVIEW_REMEDIATION` | Phase 6 investigation established; remediation hypotheses proposed. | Review Phase 7 remediation candidates and select intervention strategy. |
+| `VALIDATE_REMEDIATION` | Remediation hypothesis selected; experimental validation needed. | Launch Phase 8 experiment to verify counterfactual improvement and regression guards. |
+| `REOPEN_INVESTIGATION` | Previously resolved incident condition re-observed in operational runs. | Reopen root-cause investigation target and inspect regression durability logs. |
+| `ESCALATE` | Critical multi-dimensional degradation ($\ge 3$ modules) without an approved remediation. | Escalate to on-call MLOps engineer for immediate triage. |
+
+---
+
+### G. Incident Lifecycle State Machine
+
+```text
+       ┌──────────────┐
+       │     OPEN     │◄───────────────────┐
+       └──────┬───────┘                    │
+              │ acknowledge                │
+              ▼                            │
+       ┌──────────────┐                    │
+       │ ACKNOWLEDGED │                    │
+       └──────┬───────┘                    │
+              │ investigate                │
+              ▼                            │
+       ┌──────────────┐                    │
+       │INVESTIGATING │                    │
+       └──────┬───────┘                    │
+              │ plan-remediation           │
+              ▼                            │ Recurrence
+       ┌──────────────┐                    │ on active alerts
+       │MITIGATION_PLN│                    │
+       └──────┬───────┘                    │
+              │ start-validation           │
+              ▼                            │
+       ┌──────────────┐                    │
+       │  VALIDATING  │                    │
+       └──────┬───────┘                    │
+              │ monitor / stabilize        │
+              ▼                            │
+       ┌──────────────┐                    │
+       │  MONITORING  │                    │
+       └──────┬───────┘                    │
+              │ resolve                    │
+              ▼                            │
+       ┌──────────────┐                    │
+       │   RESOLVED   ├────────────────────┘
+       └──────────────┘ (reopen)
+```
+
+---
+
+### H. Database Schema & Migration
+
+```sql
+CREATE TABLE diagnostic_incidents (
+    id BIGSERIAL PRIMARY KEY,
+    incident_code VARCHAR(64) NOT NULL UNIQUE,
+    model_lineage_id VARCHAR(255) NOT NULL,
+    incident_fingerprint VARCHAR(255) NOT NULL,
+    category VARCHAR(64) NOT NULL,
+    title VARCHAR(255) NOT NULL,
+    current_severity VARCHAR(32) NOT NULL DEFAULT 'MEDIUM',
+    priority_score INT NOT NULL DEFAULT 0,
+    lifecycle_state VARCHAR(32) NOT NULL DEFAULT 'OPEN',
+    primary_target VARCHAR(128) NOT NULL,
+    primary_metric VARCHAR(128),
+    evidence_summary TEXT,
+    decision_recommendation VARCHAR(64) NOT NULL DEFAULT 'INVESTIGATE',
+    decision_confidence VARCHAR(32) NOT NULL DEFAULT 'HIGH',
+    decision_rationale TEXT,
+    independent_module_count INT NOT NULL DEFAULT 1,
+    related_alerts_count INT NOT NULL DEFAULT 1,
+    current_health_state VARCHAR(32) NOT NULL DEFAULT 'HEALTHY',
+    has_contradictory_evidence BOOLEAN NOT NULL DEFAULT FALSE,
+    contradictory_evidence_summary TEXT,
+    investigation_target_key VARCHAR(128),
+    remediation_id BIGINT,
+    experiment_id VARCHAR(64),
+    first_observed_at TIMESTAMP WITH TIME ZONE NOT NULL,
+    last_observed_at TIMESTAMP WITH TIME ZONE NOT NULL,
+    resolved_at TIMESTAMP WITH TIME ZONE,
+    suppressed_until TIMESTAMP WITH TIME ZONE,
+    suppression_reason TEXT,
+    suppressed_by VARCHAR(128),
+    priority_breakdown_json TEXT,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT uk_incident_lineage_fingerprint UNIQUE (model_lineage_id, incident_fingerprint)
+);
+
+CREATE TABLE diagnostic_incident_alerts (
+    id BIGSERIAL PRIMARY KEY,
+    incident_id BIGINT NOT NULL REFERENCES diagnostic_incidents(id) ON DELETE CASCADE,
+    alert_id BIGINT NOT NULL,
+    alert_fingerprint VARCHAR(255) NOT NULL,
+    correlation_score INT NOT NULL DEFAULT 0,
+    correlation_reasons_json TEXT,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE diagnostic_incident_events (
+    id BIGSERIAL PRIMARY KEY,
+    incident_id BIGINT NOT NULL REFERENCES diagnostic_incidents(id) ON DELETE CASCADE,
+    model_lineage_id VARCHAR(255) NOT NULL,
+    previous_state VARCHAR(64) NOT NULL,
+    new_state VARCHAR(64) NOT NULL,
+    actor VARCHAR(128) NOT NULL,
+    action VARCHAR(64) NOT NULL,
+    reason TEXT,
+    evidence_ref VARCHAR(255),
+    timestamp TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+```
+
+---
+
+### I. REST API Reference
+
+| Endpoint | Method | Request Body / Params | Response DTO | Description |
+|---|---|---|---|---|
+| `/api/models/{lineageId}/incidents` | `GET` | `?includeResolved=true` | `List<DiagnosticIncidentDto>` | Returns prioritized incident queue for a model lineage. |
+| `/api/models/{lineageId}/incidents/{incidentId}` | `GET` | - | `IncidentEvidenceDossierDto` | Returns complete evidence dossier, evidence matrix, and decision. |
+| `/api/models/{lineageId}/incidents/recalculate` | `POST` | - | `IncidentRecalculateResponseDto` | Idempotently rebuilds incident clusters from active operational alerts. |
+| `/api/models/{lineageId}/incidents/{incidentId}/acknowledge` | `POST` | `AcknowledgeIncidentRequestDto` | `DiagnosticIncidentDto` | Transitions incident state to `ACKNOWLEDGED`. |
+| `/api/models/{lineageId}/incidents/{incidentId}/investigate` | `POST` | `InvestigateIncidentRequestDto` | `DiagnosticIncidentDto` | Transitions incident state to `INVESTIGATING`. |
+| `/api/models/{lineageId}/incidents/{incidentId}/plan-remediation` | `POST` | `PlanRemediationRequestDto` | `DiagnosticIncidentDto` | Transitions incident state to `MITIGATION_PLANNED`. |
+| `/api/models/{lineageId}/incidents/{incidentId}/start-validation` | `POST` | `StartValidationRequestDto` | `DiagnosticIncidentDto` | Transitions incident state to `VALIDATING`. |
+| `/api/models/{lineageId}/incidents/{incidentId}/resolve` | `POST` | `ResolveIncidentRequestDto` | `DiagnosticIncidentDto` | Transitions incident state to `RESOLVED` with rationale. |
+| `/api/models/{lineageId}/incidents/{incidentId}/suppress` | `POST` | `SuppressIncidentRequestDto` | `DiagnosticIncidentDto` | Temporarily suppresses incident notifications. |
+| `/api/diagnostics/{id}/incidents` | `GET` | `?includeResolved=true` | `List<DiagnosticIncidentDto>` | Run-scoped alias for incident queue. |
+| `/api/diagnostics/{id}/incidents/{incidentId}` | `GET` | - | `IncidentEvidenceDossierDto` | Run-scoped alias for incident dossier. |
+| `/api/diagnostics/{id}/incidents/recalculate` | `POST` | - | `IncidentRecalculateResponseDto` | Run-scoped alias for incident recalculation. |
+
+---
+
+### J. Frontend Workstation: `11 INCIDENT DECISION`
+
+Located at navigation code `11` on the Model Doctor workstation sidebar:
+1. **Top HUD Bar:** Total/Active/Critical/High/Resolved counters, Lineage metadata, status banner, and explicit `RECALCULATE INCIDENTS` action.
+2. **Incident Queue:** Filterable by severity (`CRITICAL`, `HIGH`, `ALL`), lifecycle state (`OPEN`, `INVESTIGATING`, `VALIDATING`, `MONITORING`, `RESOLVED`), and target search bar.
+3. **Selected Incident Dossier:** Displays incident code, category, primary target, priority score with transparent breakdown chips.
+4. **Contradictory Evidence Banner:** Displays detected cross-module conflicts, confidence damping, and recommended actions.
+5. **Dense Evidence Matrix Table:** Multi-column technical matrix showing evidence type, module, metric name, current value, baseline reference, severity, run provenance, and trigger reason.
+6. **Cross-Phase Pipeline Chain:** 3-card bridge connecting target to Phase 6 Root-Cause investigation, Phase 7 Remediation hypotheses, and Phase 8 Validation experiments with direct navigation links.
+7. **Operator Decision Console:** Recommended decision state pill, decision confidence level, full technical rationale, next engineering action, non-causal constraints note, and interactive lifecycle transition action buttons with confirmation modals.
+8. **Incident Audit Trail:** Chronological timeline recording all state changes, actors, timestamps, and justifications.
+
+---
+
+## 14. Phase 12 — Model Reliability Governance & Fleet Intelligence
+
+### A. Architectural Objective & Core Principle
+
+Phase 12 establishes a longitudinal governance and fleet intelligence layer on top of Phases 1–11. While Phase 10 evaluates instantaneous operational health ("*What is the model's current state?*") and Phase 11 correlates operational alerts into actionable incidents ("*What is happening right now and what should the operator do next?*"), Phase 12 answers multi-run governance questions across model operational lifecycles:
+
+* *"How reliable is this model across its operational lifetime?"*
+* *"Is its reliability improving or degrading?"*
+* *"Which model lineages carry the greatest operational risk?"*
+* *"Which models repeatedly experience the same classes of incidents?"*
+* *"Which remediation strategies remain durable over time?"*
+* *"Which models require prioritized operator attention before becoming critical?"*
+
+```text
+RAW DIAGNOSTICS (8 Modules)
+        ↓
+CROSS-MODULE CORRELATIONS (Phase 4)
+        ↓
+ROOT-CAUSE INVESTIGATIONS & EVIDENCE GRAPH (Phase 6)
+        ↓
+REMEDIATION PLANNING (Phase 7)
+        ↓
+EXPERIMENTAL VALIDATION (Phase 8)
+        ↓
+TEMPORAL INTELLIGENCE (Phase 9)
+        ↓
+CONTINUOUS MONITORING & ALERTS (Phase 10)
+        ↓
+MODEL HEALTH DECISION ENGINE (Phase 10)
+        ↓
+INCIDENT CORRELATION & OPERATOR WORKSPACE (Phase 11)
+        ↓
+MODEL RELIABILITY GOVERNANCE (Phase 12)
+        ↓
+FLEET INTELLIGENCE & RISK RANKING (Phase 12)
+```
+
+**Non-Causal Governance Guarantee:** Every governance conclusion is deterministic, auditable, explainable, and derived strictly from operational evidence. Model Doctor does not introduce opaque ML ranking or autonomous actions (it will never automatically retrain, redeploy, delete, or disable models).
+
+---
+
+### B. Reliability Vector & Dimensions
+
+The model reliability profile evaluates operational evidence across 12 distinct dimensions:
+1. `DATA_QUALITY`: Longitudinal schema consistency, missingness drift, and duplicate ratios.
+2. `LEAKAGE`: Emergence of high target-correlation proxies across operational runs.
+3. `DRIFT`: Persistent feature and prediction distribution divergence (PSI/KS).
+4. `PERFORMANCE`: ROC-AUC/F1 stability and degradation against baseline bounds.
+5. `CALIBRATION`: Brier score and calibration curve stability over time.
+6. `ERROR`: Residual disparity and slice error emergence across operational windows.
+7. `FAIRNESS`: Disparate impact and demographic parity compliance across operational cycles.
+8. `ROBUSTNESS`: Gaussian noise flip rate and boundary vulnerability stability.
+9. `TEMPORAL`: Change-point frequency, persistent degradation, and volatility metrics.
+10. `INCIDENT`: Active, critical, reopened, and recurring incident burden.
+11. `RECOVERY`: Rate of successful recovery from degraded operational states and regressions.
+12. `REMEDIATION`: Long-term operational durability of validated remediation strategies.
+
+---
+
+### C. Deterministic Reliability Score, Breakdown & Confidence
+
+#### 1. Score Calculation (0–100 Bounded)
+Reliability score is calculated deterministically with a base score of 100 and traceable positive/negative adjustments:
+
+* **Base Score:** `+100`
+* **Active Critical Incidents:** `-15` per critical incident (capped at `-30`)
+* **Active High Incidents:** `-8` per high incident (capped at `-16`)
+* **Active Medium/Low Incidents:** `-3` per incident (capped at `-9`)
+* **Reopened Incidents:** `-7` per reopened incident (capped at `-14`)
+* **Recurring Incidents:** `-5` per recurring class (capped at `-10`)
+* **Current Health State:** `CRITICAL` (`-20`), `DEGRADED` (`-10`), `AT_RISK` (`-5`)
+* **Degrading Reliability Trend:** `-10`
+* **Remediation Durability Failures:** `-8`
+* **Regression After Recovery:** `-6`
+* **Long Healthy History (5+ consecutive healthy runs):** `+5`
+* **Sustained Remediations (2+ durable remediations):** `+5`
+* **High Recovery Rate (>= 75%):** `+5`
+
+Net score is clamped strictly between `0` and `100`.
+
+#### 2. Reliability Confidence
+Confidence is separated from score to ensure high reliability is not inferred from insufficient data:
+* `HIGH`: $\ge 5$ operational baseline runs, complete evidence spanning multiple dimensions.
+* `MEDIUM`: $3 - 4$ operational baseline runs.
+* `LOW`: $2$ operational baseline runs.
+* `INSUFFICIENT`: $< 2$ operational baseline runs or missing baseline history.
+
+#### 3. Reliability Grade
+Deterministically derived from score and operational state:
+* `A`: Score $\ge 90$ and state is `HEALTHY` or `STABLE`.
+* `B`: Score $75 - 89$ and state is not `CRITICAL`.
+* `C`: Score $60 - 74$ and state is not `CRITICAL`.
+* `D`: Score $40 - 59$.
+* `F`: Score $< 40$ or state is `CRITICAL`.
+
+---
+
+### D. Authoritative Baseline History vs. Experiment Isolation
+
+Only operational `BASELINE` runs form the authoritative reliability trajectory and score. `EXPERIMENT` runs (e.g. Phase 8 remediation validation candidates) are strictly isolated as contextual overlays and never directly alter authoritative operational reliability scores. A remediation is counted as operationally durable only when subsequent baseline operational runs confirm sustained stability.
+
+---
+
+### E. Longitudinal Trajectory & Trend Math
+
+For lineages with $\ge 2$ operational runs, linear regression is performed across trajectory scores over run indices:
+
+$$\beta = \frac{\sum (x_i - \bar{x})(y_i - \bar{y})}{\sum (x_i - \bar{x})^2}, \quad R^2 = 1 - \frac{SS_{\text{res}}}{SS_{\text{tot}}}$$
+
+* `IMPROVING`: $\beta > 0.015$ with $R^2 \ge 0.20$.
+* `DEGRADING`: $\beta < -0.015$ with $R^2 \ge 0.20$.
+* `VOLATILE`: Variance $> 250$ across trajectory points.
+* `STABLE`: Score variance is bounded with $|\beta| \le 0.015$.
+* `INSUFFICIENT_DATA`: Run count $n < 2$.
+
+---
+
+### F. Fleet Intelligence, Risk Ranking & Shared Risk Patterns
+
+#### 1. Prioritized Fleet Risk Ranking
+Fleet models are ranked for operator attention using deterministic multi-tier risk weights:
+1. Critical reliability state (+50)
+2. Active critical incidents (+30 per incident)
+3. Degrading reliability trend (+25)
+4. Active high incidents (+15 per incident)
+5. Repeated incident reopenings (+10 per incident)
+6. Poor remediation durability / failed remediations (+10)
+7. Low/Insufficient confidence with active incidents (+5)
+8. Base score penalty ($100 - \text{score}$)
+
+#### 2. 2D Fleet Risk Matrix
+Visualizes fleet distribution across Current Health (`HEALTHY`, `DEGRADED`, `CRITICAL`) vs. Reliability Trend (`IMPROVING`, `STABLE`, `DEGRADING`):
+* `LOW`: Healthy/Improving, Healthy/Stable, Degraded/Improving.
+* `MEDIUM`: Healthy/Degrading, Degraded/Stable, Critical/Improving.
+* `HIGH`: Degraded/Degrading, Critical/Stable.
+* `CRITICAL`: Critical/Degrading.
+
+#### 3. Cross-Model Recurring Patterns
+Automatically identifies operational patterns appearing across 2 or more distinct model lineages:
+* `RECURRING_DRIFT`: Recurring drift incidents observed across multiple lineages.
+* `RECURRING_CALIBRATION`: Calibration degradation patterns.
+* `RECURRING_INCIDENT_REOPEN`: Incident reopenings observed across lineages.
+* `RECURRING_REMEDIATION_FAILURE`: Failed or temporary remediation durability across models.
+* `FLEET_DEGRADATION`: Multiple lineages concurrently entering degraded or critical states.
+
+Every shared pattern includes the mandatory non-causal interpretation disclaimer:
+> *"A recurring operational pattern exists across multiple model lineages. Causal relationship has not been established."*
+
+---
+
+### G. Database Schema & Migration
+
+```sql
+CREATE TABLE diagnostic_model_reliability (
+    id BIGSERIAL PRIMARY KEY,
+    model_lineage_id VARCHAR(255) NOT NULL,
+    model_name VARCHAR(255) NOT NULL,
+    reliability_score INT NOT NULL DEFAULT 100,
+    reliability_state VARCHAR(64) NOT NULL DEFAULT 'RELIABILITY_UNKNOWN',
+    confidence VARCHAR(32) NOT NULL DEFAULT 'INSUFFICIENT',
+    grade VARCHAR(8) NOT NULL DEFAULT 'UNKNOWN',
+    observation_window VARCHAR(64) NOT NULL DEFAULT 'ALL_AVAILABLE',
+    operational_run_count INT NOT NULL DEFAULT 0,
+    active_incident_count INT NOT NULL DEFAULT 0,
+    critical_incident_count INT NOT NULL DEFAULT 0,
+    historical_incident_count INT NOT NULL DEFAULT 0,
+    recurring_incident_count INT NOT NULL DEFAULT 0,
+    reopened_incident_count INT NOT NULL DEFAULT 0,
+    unresolved_incident_count INT NOT NULL DEFAULT 0,
+    remediation_count INT NOT NULL DEFAULT 0,
+    validated_remediation_count INT NOT NULL DEFAULT 0,
+    failed_remediation_count INT NOT NULL DEFAULT 0,
+    remediation_durability_rate DOUBLE PRECISION DEFAULT 0.0,
+    recovery_rate DOUBLE PRECISION DEFAULT 0.0,
+    regression_rate DOUBLE PRECISION DEFAULT 0.0,
+    trend VARCHAR(32) NOT NULL DEFAULT 'INSUFFICIENT_DATA',
+    trend_slope DOUBLE PRECISION,
+    trend_r_squared DOUBLE PRECISION,
+    governance_recommendation VARCHAR(64) NOT NULL DEFAULT 'INSUFFICIENT_EVIDENCE',
+    governance_rationale TEXT,
+    score_breakdown_json TEXT,
+    trajectory_json TEXT,
+    risk_factors_json TEXT,
+    strengths_json TEXT,
+    last_healthy_run_id VARCHAR(64),
+    last_degraded_run_id VARCHAR(64),
+    last_critical_run_id VARCHAR(64),
+    last_incident_id VARCHAR(64),
+    calculated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT uk_lineage_reliability_window UNIQUE (model_lineage_id, observation_window)
+);
+
+CREATE TABLE diagnostic_reliability_events (
+    id BIGSERIAL PRIMARY KEY,
+    model_lineage_id VARCHAR(255) NOT NULL,
+    event_type VARCHAR(64) NOT NULL,
+    run_id VARCHAR(64),
+    source_type VARCHAR(64) NOT NULL,
+    source_id VARCHAR(128) NOT NULL,
+    severity VARCHAR(32) NOT NULL DEFAULT 'MEDIUM',
+    summary TEXT NOT NULL,
+    evidence_details_json TEXT,
+    timestamp TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE diagnostic_fleet_patterns (
+    id BIGSERIAL PRIMARY KEY,
+    pattern_type VARCHAR(64) NOT NULL UNIQUE,
+    title VARCHAR(255) NOT NULL,
+    description TEXT NOT NULL,
+    affected_lineages_count INT NOT NULL DEFAULT 0,
+    total_incident_count INT NOT NULL DEFAULT 0,
+    confidence VARCHAR(32) NOT NULL DEFAULT 'HIGH',
+    non_causal_disclaimer TEXT NOT NULL,
+    affected_lineages_json TEXT,
+    evidence_summary_json TEXT,
+    first_observed_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    last_observed_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+```
+
+---
+
+### H. REST API Reference
+
+| Endpoint | Method | Params / Body | Response DTO | Description |
+|---|---|---|---|---|
+| `/api/models/{lineageId}/reliability` | `GET` | `?window=ALL_AVAILABLE` | `ModelReliabilityProfileDto` | Retrieves the model lineage reliability profile. |
+| `/api/models/{lineageId}/reliability/history` | `GET` | - | `List<ModelReliabilityProfileDto>` | Retrieves historical reliability snapshots for a lineage. |
+| `/api/models/{lineageId}/reliability/events` | `GET` | - | `List<ReliabilityEventDto>` | Retrieves chronological reliability timeline events. |
+| `/api/models/{lineageId}/reliability/recalculate` | `POST` | `?window=ALL_AVAILABLE` | `ModelReliabilityProfileDto` | Deterministically recalculates and persists reliability profile. |
+| `/api/models/reliability/fleet` | `GET` | - | `FleetOverviewDto` | Returns fleet-wide model profiles, counts, and average metrics. |
+| `/api/models/reliability/fleet/risk` | `GET` | - | `List<FleetRiskRankDto>` | Returns prioritized fleet risk ranking with traceable reasons. |
+| `/api/models/reliability/fleet/patterns` | `GET` | - | `List<FleetPatternDto>` | Returns recurring cross-model patterns with non-causal disclaimer. |
+| `/api/models/reliability/compare` | `GET` | `?left={lineageA}&right={lineageB}` | `ModelComparisonDto` | Side-by-side governance comparison of two model lineages. |
+| `/api/diagnostics/{id}/reliability` | `GET` | `?window=ALL_AVAILABLE` | `ModelReliabilityProfileDto` | Run-scoped alias for model reliability profile. |
+| `/api/diagnostics/{id}/reliability/events` | `GET` | - | `List<ReliabilityEventDto>` | Run-scoped alias for reliability timeline events. |
+| `/api/diagnostics/{id}/reliability/recalculate` | `POST` | `?window=ALL_AVAILABLE` | `ModelReliabilityProfileDto` | Run-scoped alias for reliability recalculation. |
+
+---
+
+### I. Frontend Workstation: `12 MODEL RELIABILITY`
+
+Located at navigation code `12` on the Model Doctor workstation sidebar:
+1. **Control Console Header:** Model lineage metadata, reliability score HUD with letter grade, state pill, trend indicator with statistical parameters ($\beta, R^2, n$), confidence badge, and explicit `RECALCULATE RELIABILITY` trigger.
+2. **Governance Recommendation Dossier:** Deterministic recommendation banner (`NORMAL_OPERATION`, `MONITOR`, `REVIEW_REQUIRED`, `PRIORITY_REVIEW`, `ESCALATE`, `INSUFFICIENT_EVIDENCE`) with detailed technical rationale and audit disclaimer.
+3. **Traceable Score Breakdown:** Itemized audit table showing Base Reliability (`+100`), deductions for active incidents, reopenings, degradations, and positive adjustments for durable remediations and healthy histories.
+4. **Longitudinal Trajectory Chart:** Compact technical line chart mapping operational baseline runs over time, with health states, incident markers, and toggleable `SHOW EXPERIMENTS` overlay.
+5. **Recovery & Durability Metrics:** Metrics grid displaying Degradation Events, Recovered Events, Unresolved Events, Recovery Rate, Regressions After Recovery, Proposed/Validated/Sustained/Temporary/Failed Remediations, and Durability Rate.
+6. **Risk Factors & Strengths:** Side-by-side dense tables listing active risk factors with evidence targets and severity, alongside validated strengths supported by operational history.
+7. **Fleet Risk Ranking & 2D Matrix:** Fleet-wide prioritized attention leaderboard with ranking reasons, coupled with a 2-dimensional risk matrix (Health vs. Trend).
+8. **Cross-Model Shared Patterns:** Tabular view of detected patterns across multiple models with affected lineages, incident counts, and non-causal disclaimer.
+9. **Side-by-Side Model Comparison:** Interactive selector allowing operators to compare two lineages across reliability scores, grades, recovery rates, and governance recommendations without inappropriate metric conflation.
+10. **Reliability Event Timeline:** Chronological event feed with run IDs, source references, severity badges, and timestamps.
+
+---
+
+### J. Limitations & Non-Causal Boundary
+
+1. **No Autonomous Modification:** Model Doctor provides governance recommendations only; it will never automatically retrain, redeploy, delete, or disable models.
+2. **Non-Causal Pattern Correlation:** Shared fleet patterns indicate concurrent or recurring operational observations across lineages, not proven causal dependencies.
+3. **Strict Baseline Authoritativeness:** Experimental validation runs provide candidate evidence only; operational durability requires subsequent baseline confirmation.
+4. **Deterministic Auditing:** All scoring formulas, trend regressions, and recommendations are deterministic, fully traceable, and auditable without black-box ML scoring.
+
 

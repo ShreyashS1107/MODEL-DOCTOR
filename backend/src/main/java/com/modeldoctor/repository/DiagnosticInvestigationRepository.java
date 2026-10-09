@@ -12,6 +12,8 @@ public interface DiagnosticInvestigationRepository extends JpaRepository<Diagnos
 
     List<DiagnosticInvestigation> findByRunIdOrderByPriorityScoreDesc(String runId);
 
+    List<DiagnosticInvestigation> findByTargetKeyOrderByPriorityScoreDesc(String targetKey);
+
     Optional<DiagnosticInvestigation> findByRunIdAndTargetKey(String runId, String targetKey);
 
     void deleteByRunId(String runId);

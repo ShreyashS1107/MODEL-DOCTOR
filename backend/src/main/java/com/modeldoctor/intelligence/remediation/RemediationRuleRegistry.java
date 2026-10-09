@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 import java.util.*;
 
 @Component
+@SuppressWarnings("null")
 public class RemediationRuleRegistry {
 
     private static final Logger logger = LoggerFactory.getLogger(RemediationRuleRegistry.class);

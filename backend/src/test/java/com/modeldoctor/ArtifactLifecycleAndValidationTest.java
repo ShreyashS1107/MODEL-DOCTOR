@@ -1,9 +1,7 @@
 package com.modeldoctor;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.modeldoctor.domain.DiagnosticModule;
-import com.modeldoctor.domain.DiagnosticStatus;
 import com.modeldoctor.dto.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +23,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @ActiveProfiles("dev")
+@SuppressWarnings("null")
 public class ArtifactLifecycleAndValidationTest {
 
     @Autowired

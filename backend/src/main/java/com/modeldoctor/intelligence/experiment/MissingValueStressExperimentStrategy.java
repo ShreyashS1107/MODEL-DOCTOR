@@ -17,6 +17,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Component
+@SuppressWarnings({"unchecked", "null"})
 public class MissingValueStressExperimentStrategy implements DiagnosticExperimentStrategy {
 
     private static final Logger log = LoggerFactory.getLogger(MissingValueStressExperimentStrategy.class);

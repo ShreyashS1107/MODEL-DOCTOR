@@ -11,6 +11,7 @@ import com.modeldoctor.intelligence.normalization.NormalizedModuleData;
 import java.time.Instant;
 import java.util.*;
 
+@SuppressWarnings("null")
 public class RuleEvaluationHelper {
 
     public static DiagnosticCorrelation createCorrelation(

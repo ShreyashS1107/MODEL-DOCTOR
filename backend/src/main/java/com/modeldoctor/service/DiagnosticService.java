@@ -20,6 +20,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
+@SuppressWarnings("null")
 public class DiagnosticService {
 
     private static final Logger log = LoggerFactory.getLogger(DiagnosticService.class);
@@ -65,8 +66,6 @@ public class DiagnosticService {
 
         // 1. Resolve & Validate Model Artifact
         ModelArtifactEntity modelEntity = null;
-        String modelName = null;
-        String modelFramework = "xgboost";
         String taskType = "binary_classification";
         List<String> modelFeatures = null;
 
@@ -77,8 +76,6 @@ public class DiagnosticService {
                     result.addError("DELETED_ARTIFACT_SELECTED", "modelArtifactId", request.getModelArtifactId(),
                             "Model artifact '" + request.getModelArtifactId() + "' is soft-deleted and cannot be used for new diagnostic runs.");
                 }
-                modelName = modelEntity.getOriginalFilename();
-                modelFramework = modelEntity.getFramework();
                 taskType = modelEntity.getTaskType();
 
                 if (StringUtils.hasText(modelEntity.getFeatureNamesJson())) {
@@ -91,10 +88,6 @@ public class DiagnosticService {
                         "Model artifact not found with ID: " + request.getModelArtifactId());
             }
         } else if (request.getModel() != null && StringUtils.hasText(request.getModel().getName())) {
-            modelName = request.getModel().getName();
-            if (StringUtils.hasText(request.getModel().getFramework())) {
-                modelFramework = request.getModel().getFramework();
-            }
             if (StringUtils.hasText(request.getModel().getTaskType())) {
                 taskType = request.getModel().getTaskType();
             }
@@ -406,6 +399,9 @@ public class DiagnosticService {
                     missing.add("Target column (Error Forensics requires ground truth labels)");
                 }
                 break;
+
+            case EXPERIMENTS:
+                break;
         }
 
         boolean compatible = missing.isEmpty();
@@ -618,6 +614,9 @@ public class DiagnosticService {
             }
         }
 
+        String runType = StringUtils.hasText(request.getRunType()) ? request.getRunType() :
+                ("EXPERIMENT".equalsIgnoreCase(executionMode) ? "EXPERIMENT" : "BASELINE");
+
         DiagnosticRun run = DiagnosticRun.builder()
                 .id(generatedId)
                 .status(DiagnosticStatus.CREATED)
@@ -625,6 +624,7 @@ public class DiagnosticService {
                 .baselineDatasetArtifactId(baselineDatasetArtifactId)
                 .evaluationDatasetArtifactId(evaluationDatasetArtifactId)
                 .executionMode(executionMode)
+                .runType(runType)
                 .modelName(modelName)
                 .modelFramework(modelFramework)
                 .taskType(taskType)

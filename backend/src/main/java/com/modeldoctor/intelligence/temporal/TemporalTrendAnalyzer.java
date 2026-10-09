@@ -9,12 +9,6 @@ import java.util.List;
 @Component
 public class TemporalTrendAnalyzer {
 
-    private final TemporalMetricRegistry metricRegistry;
-
-    public TemporalTrendAnalyzer(TemporalMetricRegistry metricRegistry) {
-        this.metricRegistry = metricRegistry;
-    }
-
     public void analyzeTrend(TemporalMetricHistoryDto history) {
         List<TemporalMetricPointDto> points = history.getBaselinePoints();
         if (points == null || points.isEmpty()) {

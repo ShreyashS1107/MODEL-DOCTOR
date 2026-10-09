@@ -30,6 +30,7 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 @Service
+@SuppressWarnings("null")
 public class ArtifactStorageService {
 
     private static final Logger logger = LoggerFactory.getLogger(ArtifactStorageService.class);

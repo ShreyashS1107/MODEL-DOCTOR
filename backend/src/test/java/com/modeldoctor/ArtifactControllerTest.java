@@ -2,7 +2,6 @@ package com.modeldoctor;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.modeldoctor.domain.DiagnosticModule;
-import com.modeldoctor.domain.DiagnosticStatus;
 import com.modeldoctor.dto.CreateDiagnosticRunRequestDto;
 import com.modeldoctor.dto.DatasetArtifactResponseDto;
 import com.modeldoctor.dto.ModelArtifactResponseDto;
@@ -26,6 +25,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
+@SuppressWarnings("null")
 public class ArtifactControllerTest {
 
     @Autowired

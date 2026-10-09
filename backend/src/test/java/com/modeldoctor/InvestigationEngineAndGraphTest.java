@@ -1,13 +1,10 @@
 package com.modeldoctor;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.modeldoctor.domain.*;
 import com.modeldoctor.dto.*;
-import com.modeldoctor.repository.DiagnosticCorrelationRepository;
 import com.modeldoctor.repository.DiagnosticInvestigationRepository;
 import com.modeldoctor.repository.DiagnosticResultRepository;
 import com.modeldoctor.repository.DiagnosticRunRepository;
-import com.modeldoctor.service.CorrelationAnalysisService;
 import com.modeldoctor.service.InvestigationAnalysisService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -33,19 +30,10 @@ public class InvestigationEngineAndGraphTest {
     private DiagnosticResultRepository resultRepository;
 
     @Autowired
-    private DiagnosticCorrelationRepository correlationRepository;
-
-    @Autowired
     private DiagnosticInvestigationRepository investigationRepository;
 
     @Autowired
-    private CorrelationAnalysisService correlationService;
-
-    @Autowired
     private InvestigationAnalysisService investigationService;
-
-    @Autowired
-    private ObjectMapper objectMapper;
 
     private String testRunId;
 

@@ -1,19 +1,22 @@
 export type NavSection =
   | "00_INTELLIGENCE"
+  | "12_RELIABILITY"
+  | "11_INCIDENTS"
+  | "06_INVESTIGATION"
+  | "07_REMEDIATION"
+  | "08_EXPERIMENT"
+  | "09_TEMPORAL"
+  | "10_MONITORING"
   | "01_OVERVIEW"
   | "02_DATA"
   | "03_FORENSICS"
   | "04_DRIFT"
   | "05_PERFORMANCE"
   | "05_ERROR_FORENSICS"
-  | "06_INVESTIGATION"
   | "06_EXPLAIN"
-  | "07_REMEDIATION"
   | "07_BIAS"
-  | "08_EXPERIMENT"
   | "08_ROBUSTNESS"
   | "09_EXPERIMENTS"
-  | "09_TEMPORAL"
   | "10_REPORTS";
 
 export type ViewportTab =
@@ -643,4 +646,643 @@ export interface TemporalRecalculateResponse {
   success: boolean;
   message: string;
 }
+
+// =========================================================================
+// Phase 10: Continuous Monitoring, Alert Lifecycle & Model Health Decision Engine
+// =========================================================================
+
+export type ModelHealthState = "HEALTHY" | "DEGRADED" | "CRITICAL" | "RECOVERING" | "UNKNOWN";
+export type DimensionHealthState = "HEALTHY" | "WARNING" | "DEGRADED" | "CRITICAL" | "UNKNOWN";
+export type HealthDimension =
+  | "DATA_QUALITY"
+  | "LEAKAGE"
+  | "DRIFT"
+  | "PERFORMANCE"
+  | "CALIBRATION"
+  | "ERROR"
+  | "FAIRNESS"
+  | "ROBUSTNESS"
+  | "TEMPORAL";
+
+export type AlertLifecycleState =
+  | "OPEN"
+  | "ACKNOWLEDGED"
+  | "INVESTIGATING"
+  | "SUPPRESSED"
+  | "RESOLVED"
+  | "REOPENED";
+
+export interface MetricEvidenceItem {
+  metricName: string;
+  targetKey: string;
+  value: number;
+  threshold?: number;
+  severity: string;
+  unit?: string;
+  details: string;
+  sourceResultId?: number;
+}
+
+export interface HealthDimensionEvaluation {
+  dimension: HealthDimension;
+  state: DimensionHealthState;
+  summary: string;
+  metricEvidence: MetricEvidenceItem[];
+  alertsCount: number;
+  criticalAlertsCount: number;
+  evaluable: boolean;
+  reason?: string;
+  sourceResultId?: number;
+}
+
+export interface HealthPenalty {
+  category: string;
+  description: string;
+  penaltyPoints: number;
+  traceableEvidence?: string;
+}
+
+export interface HealthIndexBreakdown {
+  score: number;
+  baseScore: number;
+  totalPenalty: number;
+  penalties: HealthPenalty[];
+  isSufficientData: boolean;
+}
+
+export interface OperationalAlert {
+  id: number;
+  modelLineageId: string;
+  alertFingerprint: string;
+  alertType: string;
+  currentSeverity: "CRITICAL" | "HIGH" | "MEDIUM" | "LOW" | "INFO" | string;
+  previousSeverity?: string;
+  severityChange: "NEW" | "ESCALATED" | "DEESCALATED" | "UNCHANGED" | string;
+  lifecycleState: AlertLifecycleState;
+  targetType?: string;
+  targetKey: string;
+  metricName?: string;
+  currentValue?: number;
+  referenceValue?: number;
+  triggerDescription: string;
+  evidenceJson?: string;
+  confidence: string;
+  sourceModule?: string;
+  firstSeenRunId?: string;
+  lastSeenRunId?: string;
+  firstObservedAt: string;
+  lastObservedAt: string;
+  occurrenceCount: number;
+  consecutiveCount: number;
+  escalationCount: number;
+  recoveryCount: number;
+  reopenCount: number;
+  suppressedUntil?: string;
+  suppressionReason?: string;
+  suppressedBy?: string;
+  acknowledgedBy?: string;
+  acknowledgedAt?: string;
+  investigatedBy?: string;
+  investigatedAt?: string;
+  resolvedBy?: string;
+  resolvedAt?: string;
+  resolutionReason?: string;
+  relatedInvestigationTargetKey?: string;
+  relatedRemediationId?: number;
+  relatedExperimentId?: string;
+  relatedIssueTrackId?: number;
+  runIds?: string[];
+  cooldownUntilRunIndex?: number;
+  isCurrentlySuppressed: boolean;
+  allowedActions: string[];
+}
+
+export interface DiagnosticAlertEvent {
+  id: number;
+  modelLineageId: string;
+  alertId: number;
+  alertFingerprint: string;
+  previousState?: string;
+  newState: string;
+  actor: string;
+  action: string;
+  reason?: string;
+  timestamp: string;
+}
+
+export interface DiagnosticHealthSnapshot {
+  id: number;
+  modelLineageId: string;
+  runId: string;
+  timestamp: string;
+  overallState: ModelHealthState;
+  healthIndex?: number;
+  healthIndexBreakdown?: HealthIndexBreakdown;
+  dimensionStates: Record<HealthDimension, HealthDimensionEvaluation>;
+  activeAlertsCount: number;
+  criticalAlertsCount: number;
+  highAlertsCount: number;
+  degradedDimensionsCount: number;
+  unknownDimensionsCount: number;
+  evidenceSummary?: string;
+  policyVersion: number;
+  decisionEngineVersion: string;
+}
+
+export interface DiagnosticMonitoringPolicy {
+  modelLineageId: string;
+  policyVersion: number;
+  enabled: boolean;
+  requiredDimensions?: HealthDimension[];
+  observationWindow: string;
+  minBaselineRunsRequired: number;
+  alertPersistenceThreshold: number;
+  recoveryConsecutiveRuns: number;
+  alertCooldownRuns: number;
+  hysteresisMarginPct: number;
+  experimentOverlayEnabled: boolean;
+  healthEvaluationMode: string;
+  createdAt: string;
+  updatedAt: string;
+  updatedBy?: string;
+}
+
+export interface DataSufficiency {
+  baselineRunsCount: number;
+  requiredBaselineRuns: number;
+  isSufficient: boolean;
+  evaluatedDimensionsCount: number;
+  requiredDimensionsCount: number;
+  explanation: string;
+}
+
+export interface EvidenceDossier {
+  modelLineageId: string;
+  overallState: ModelHealthState;
+  healthIndex?: number;
+  decisionReason: string;
+  evaluatedRunId?: string;
+  evaluatedAt: string;
+  activeAlerts: OperationalAlert[];
+  dimensionEvaluations: Record<HealthDimension, HealthDimensionEvaluation>;
+  relatedInvestigationTargets: any[];
+  relatedRemediations: any[];
+  relatedExperiments: any[];
+  temporalIssueTracks: IssueTrack[];
+}
+
+export interface ModelHealthDecision {
+  modelLineageId: string;
+  operationalRunId?: string;
+  evaluationTimestamp: string;
+  overallState: ModelHealthState;
+  healthIndex?: number;
+  healthIndexBreakdown?: HealthIndexBreakdown;
+  healthVector: Record<HealthDimension, HealthDimensionEvaluation>;
+  activeAlerts: OperationalAlert[];
+  allAlerts: OperationalAlert[];
+  recentEvents: DiagnosticAlertEvent[];
+  history: DiagnosticHealthSnapshot[];
+  policy?: DiagnosticMonitoringPolicy;
+  evidenceDossier?: EvidenceDossier;
+  dataSufficiency?: DataSufficiency;
+  decisionReason?: string;
+}
+
+export interface MonitoringRecalculateResponse {
+  modelLineageId: string;
+  baselineRunsEvaluated: number;
+  activeAlertsCount: number;
+  alertsUpdated: number;
+  snapshotCreated: boolean;
+  overallState: ModelHealthState;
+  healthIndex?: number;
+  success: boolean;
+  message: string;
+}
+
+// =========================================================================
+// Phase 11: Incident Correlation, Evidence Synthesis & Decision Workspace
+// =========================================================================
+
+export type IncidentLifecycleState =
+  | "OPEN"
+  | "ACKNOWLEDGED"
+  | "INVESTIGATING"
+  | "MITIGATION_PLANNED"
+  | "VALIDATING"
+  | "MONITORING"
+  | "RESOLVED"
+  | "REOPENED"
+  | "SUPPRESSED";
+
+export type IncidentCategory =
+  | "DATA_QUALITY_INCIDENT"
+  | "LEAKAGE_INCIDENT"
+  | "DRIFT_INCIDENT"
+  | "PERFORMANCE_INCIDENT"
+  | "CALIBRATION_INCIDENT"
+  | "ERROR_INCIDENT"
+  | "FAIRNESS_INCIDENT"
+  | "ROBUSTNESS_INCIDENT"
+  | "TEMPORAL_DEGRADATION"
+  | "MULTI_MODULE_INCIDENT";
+
+export type IncidentDecisionState =
+  | "NO_ACTION"
+  | "INVESTIGATE"
+  | "REVIEW_REMEDIATION"
+  | "VALIDATE_REMEDIATION"
+  | "MONITOR"
+  | "REOPEN_INVESTIGATION"
+  | "ESCALATE"
+  | "INSUFFICIENT_EVIDENCE";
+
+export type DecisionConfidence = "HIGH" | "MEDIUM" | "LOW" | "INSUFFICIENT";
+
+export interface IncidentPriorityBreakdown {
+  baseScore: number;
+  severityContribution: number;
+  independentEvidenceContribution: number;
+  persistenceContribution: number;
+  healthImpactContribution: number;
+  totalPriorityScore: number;
+  priorityTier: string;
+  explanationItems: string[];
+}
+
+export interface EvidenceMatrixRow {
+  alertType: string;
+  module: string;
+  metric: string;
+  value: string;
+  threshold: string;
+  severity: string;
+  runId: string;
+  resultId?: number;
+  confidence: string;
+  relationshipType: string;
+  triggerDescription: string;
+}
+
+export interface ContradictoryEvidence {
+  hasConflict: boolean;
+  summary: string;
+  conflictingSignals: string[];
+  confidenceImpact: string;
+  recommendedAction: string;
+}
+
+export interface IncidentDecision {
+  recommendation: IncidentDecisionState;
+  confidence: DecisionConfidence;
+  rationale: string;
+  nextAction: string;
+  constraints: string;
+}
+
+export interface IncidentAlertCorrelation {
+  alertId: number;
+  alertFingerprint: string;
+  alertType: string;
+  severity: string;
+  sourceModule: string;
+  targetKey: string;
+  metricName: string;
+  currentValue?: number;
+  referenceValue?: number;
+  correlationScore: number;
+  correlationReasons: string[];
+  triggerDescription: string;
+}
+
+export interface DiagnosticIncidentEvent {
+  id: number;
+  incidentId: number;
+  modelLineageId: string;
+  previousState: string;
+  newState: string;
+  actor: string;
+  action: string;
+  reason: string;
+  evidenceRef?: string;
+  timestamp: string;
+}
+
+export interface DiagnosticIncident {
+  id: number;
+  incidentCode: string;
+  modelLineageId: string;
+  incidentFingerprint: string;
+  title: string;
+  category: IncidentCategory;
+  currentSeverity: string;
+  priorityScore: number;
+  lifecycleState: IncidentLifecycleState;
+  primaryTarget: string;
+  primaryMetric: string;
+  evidenceSummary: string;
+  decisionRecommendation: IncidentDecisionState;
+  decisionConfidence: DecisionConfidence;
+  decisionRationale: string;
+  independentModuleCount: number;
+  relatedAlertsCount: number;
+  currentHealthState: ModelHealthState;
+  hasContradictoryEvidence: boolean;
+  contradictoryEvidenceSummary?: string;
+  investigationTargetKey?: string;
+  remediationId?: number;
+  experimentId?: string;
+  firstObservedAt: string;
+  lastObservedAt: string;
+  resolvedAt?: string;
+  suppressedUntil?: string;
+  suppressionReason?: string;
+  suppressedBy?: string;
+  createdAt: string;
+  updatedAt: string;
+  priorityBreakdown?: IncidentPriorityBreakdown;
+  relatedAlerts?: IncidentAlertCorrelation[];
+  recentEvents?: DiagnosticIncidentEvent[];
+}
+
+export interface IncidentEvidenceDossier {
+  incidentId: number;
+  incidentCode: string;
+  modelLineageId: string;
+  title: string;
+  category: IncidentCategory;
+  currentSeverity: string;
+  priorityScore: number;
+  lifecycleState: IncidentLifecycleState;
+  primaryTarget: string;
+  primaryMetric: string;
+  evidenceSummary: string;
+  independentModuleCount: number;
+  relatedAlertsCount: number;
+  currentHealthState: ModelHealthState;
+  firstObservedAt: string;
+  lastObservedAt: string;
+  resolvedAt?: string;
+  priorityBreakdown?: IncidentPriorityBreakdown;
+  evidenceMatrix: EvidenceMatrixRow[];
+  contradictoryEvidence?: ContradictoryEvidence;
+  decision?: IncidentDecision;
+  investigationTarget?: InvestigationTarget;
+  remediation?: DiagnosticRemediation;
+  experiment?: DiagnosticExperiment;
+  relatedAlerts: IncidentAlertCorrelation[];
+  auditEvents: DiagnosticIncidentEvent[];
+}
+
+export interface IncidentRecalculateResponse {
+  modelLineageId: string;
+  activeAlertsCount: number;
+  incidentsFormedCount: number;
+  incidentsUpdatedCount: number;
+  topIncidentCode?: string;
+  success: boolean;
+  message: string;
+}
+
+// ============================================================================
+// Phase 12: Model Reliability Governance & Fleet Intelligence
+// ============================================================================
+
+export type ModelReliabilityState =
+  | "RELIABILITY_UNKNOWN"
+  | "RELIABILITY_HEALTHY"
+  | "RELIABILITY_STABLE"
+  | "RELIABILITY_DEGRADED"
+  | "RELIABILITY_AT_RISK"
+  | "RELIABILITY_CRITICAL"
+  | "RELIABILITY_RECOVERING";
+
+export type ReliabilityTrend =
+  | "IMPROVING"
+  | "STABLE"
+  | "DEGRADING"
+  | "VOLATILE"
+  | "INSUFFICIENT_DATA";
+
+export type GovernanceRecommendation =
+  | "NORMAL_OPERATION"
+  | "MONITOR"
+  | "REVIEW_REQUIRED"
+  | "PRIORITY_REVIEW"
+  | "ESCALATE"
+  | "INSUFFICIENT_EVIDENCE";
+
+export type FleetPatternType =
+  | "RECURRING_DRIFT"
+  | "RECURRING_CALIBRATION"
+  | "RECURRING_ROBUSTNESS"
+  | "RECURRING_ERROR"
+  | "RECURRING_FAIRNESS"
+  | "RECURRING_REMEDIATION_FAILURE"
+  | "RECURRING_INCIDENT_REOPEN";
+
+export type ReliabilityEventType =
+  | "DEGRADATION"
+  | "RECOVERY"
+  | "REGRESSION"
+  | "INCIDENT_ESCALATION"
+  | "INCIDENT_REOPEN"
+  | "REMEDIATION_SUCCESS"
+  | "REMEDIATION_FAILURE"
+  | "REMEDIATION_NOT_SUSTAINED"
+  | "CHANGE_POINT"
+  | "HEALTH_STATE_CHANGE";
+
+export interface ReliabilityScoreItem {
+  code: string;
+  description: string;
+  points: number;
+  evidence?: string;
+}
+
+export interface ReliabilityScoreBreakdown {
+  baseScore: number;
+  totalDeductions: number;
+  totalBonuses: number;
+  netScore: number;
+  items: ReliabilityScoreItem[];
+}
+
+export interface ReliabilityTrajectoryPoint {
+  runId: string;
+  runType: string;
+  reliabilityScore: number;
+  reliabilityState: ModelReliabilityState;
+  healthState: ModelHealthState;
+  healthIndex?: number;
+  activeIncidentsCount: number;
+  criticalIncidentsCount: number;
+  timestamp: string;
+}
+
+export interface RecoveryProfile {
+  degradationEventsCount: number;
+  recoveredEventsCount: number;
+  unresolvedEventsCount: number;
+  recoveryRate: number;
+  regressionsAfterRecoveryCount: number;
+  repeatedCyclesCount: number;
+  summary: string;
+}
+
+export interface RemediationDurabilitySummary {
+  proposedCount: number;
+  validatedCount: number;
+  sustainedCount: number;
+  temporaryCount: number;
+  failedCount: number;
+  insufficientFollowupCount: number;
+  durabilityRate: number;
+  summary: string;
+}
+
+export interface ReliabilityRiskFactor {
+  severity: "CRITICAL" | "HIGH" | "MEDIUM" | "LOW";
+  category: string;
+  title: string;
+  description: string;
+  evidenceRef?: string;
+}
+
+export interface ReliabilityStrength {
+  category: string;
+  title: string;
+  description: string;
+  evidenceRef?: string;
+}
+
+export interface DiagnosticReliabilityEvent {
+  id: number;
+  modelLineageId: string;
+  eventType: ReliabilityEventType;
+  runId?: string;
+  sourceType: string;
+  sourceId?: string;
+  severity: string;
+  summary: string;
+  timestamp: string;
+}
+
+export interface ModelReliabilityProfile {
+  modelLineageId: string;
+  modelName: string;
+  observationWindow: string;
+  operationalRunCount: number;
+  reliabilityScore: number;
+  reliabilityState: ModelReliabilityState;
+  reliabilityConfidence: DecisionConfidence;
+  currentHealthState?: ModelHealthState;
+  grade: string;
+  trend: ReliabilityTrend;
+  trendSlope?: number;
+  trendR2?: number;
+  governanceRecommendation: GovernanceRecommendation;
+  recommendationReason?: string;
+  scoreBreakdown: ReliabilityScoreBreakdown;
+  trajectory: ReliabilityTrajectoryPoint[];
+  recoveryProfile: RecoveryProfile;
+  remediationDurability: RemediationDurabilitySummary;
+  riskFactors: ReliabilityRiskFactor[];
+  strengths: ReliabilityStrength[];
+  activeIncidentCount: number;
+  criticalIncidentCount: number;
+  historicalIncidentCount: number;
+  recurringIncidentCount: number;
+  reopenedIncidentCount: number;
+  unresolvedIncidentCount: number;
+  remediationCount: number;
+  validatedRemediationCount: number;
+  failedRemediationCount: number;
+  degradedDimensionsCount?: number;
+  recoveryRate?: number;
+  remediationDurabilityRate?: number;
+  lastHealthyRunId?: string;
+  lastDegradedRunId?: string;
+  lastCriticalRunId?: string;
+  lastIncidentCode?: string;
+  recentEvents: DiagnosticReliabilityEvent[];
+  updatedAt: string;
+}
+
+export interface FleetRiskRank {
+  rank: number;
+  modelLineageId: string;
+  modelName: string;
+  reliabilityScore: number;
+  reliabilityState: ModelReliabilityState;
+  reliabilityConfidence: DecisionConfidence;
+  currentHealthState?: ModelHealthState;
+  grade: string;
+  trend: ReliabilityTrend;
+  activeIncidentsCount: number;
+  criticalIncidentsCount: number;
+  governanceRecommendation: GovernanceRecommendation;
+  rankingReasons: string[];
+  riskTier: "CRITICAL" | "HIGH" | "MEDIUM" | "LOW";
+}
+
+export interface FleetRiskMatrixCell {
+  currentHealth: ModelHealthState;
+  trend: ReliabilityTrend;
+  riskLevel: "LOW" | "MEDIUM" | "HIGH" | "CRITICAL";
+  modelLineageIds: string[];
+}
+
+export interface FleetPattern {
+  id?: number;
+  patternType: FleetPatternType;
+  patternKey: string;
+  patternTitle: string;
+  affectedLineages: string[];
+  affectedLineagesCount: number;
+  totalIncidentsCount: number;
+  confidence: DecisionConfidence;
+  description: string;
+  firstObservedAt: string;
+  lastObservedAt: string;
+  nonCausalDisclaimer: string;
+}
+
+export interface FleetOverview {
+  totalLineagesCount: number;
+  healthyLineagesCount: number;
+  stableLineagesCount: number;
+  degradedLineagesCount: number;
+  atRiskLineagesCount: number;
+  criticalLineagesCount: number;
+  recoveringLineagesCount: number;
+  averageReliabilityScore: number;
+  rankedLineages: FleetRiskRank[];
+  riskMatrix: FleetRiskMatrixCell[];
+  recurringPatterns: FleetPattern[];
+  evaluatedAt: string;
+}
+
+export interface ModelComparison {
+  left: ModelReliabilityProfile;
+  right: ModelReliabilityProfile;
+  scoreDelta: number;
+  keyDifferences: string[];
+  governanceComparisonSummary: string;
+}
+
+export interface ReliabilityRecalculateResponse {
+  modelLineageId: string;
+  operationalRunCount: number;
+  reliabilityScore: number;
+  reliabilityState: ModelReliabilityState;
+  confidence: DecisionConfidence;
+  trend: ReliabilityTrend;
+  governanceRecommendation: GovernanceRecommendation;
+  success: boolean;
+  message: string;
+}
+
+
 

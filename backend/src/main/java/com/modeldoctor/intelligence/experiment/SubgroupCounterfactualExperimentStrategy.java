@@ -7,7 +7,6 @@ import com.modeldoctor.dto.InterventionConfigDto;
 import com.modeldoctor.dto.MetricComparisonDto;
 import com.modeldoctor.dto.StatisticalEvidenceDto;
 import com.modeldoctor.repository.DiagnosticResultRepository;
-import com.modeldoctor.service.MlEngineClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -19,15 +18,12 @@ public class SubgroupCounterfactualExperimentStrategy implements DiagnosticExper
 
     private static final Logger log = LoggerFactory.getLogger(SubgroupCounterfactualExperimentStrategy.class);
 
-    private final MlEngineClient mlEngineClient;
     private final DiagnosticResultRepository resultRepository;
     private final ObjectMapper objectMapper;
 
     public SubgroupCounterfactualExperimentStrategy(
-            MlEngineClient mlEngineClient,
             DiagnosticResultRepository resultRepository,
             ObjectMapper objectMapper) {
-        this.mlEngineClient = mlEngineClient;
         this.resultRepository = resultRepository;
         this.objectMapper = objectMapper;
     }

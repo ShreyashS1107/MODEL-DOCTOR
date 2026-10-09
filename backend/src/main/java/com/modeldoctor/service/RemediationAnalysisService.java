@@ -19,6 +19,7 @@ import java.time.Instant;
 import java.util.*;
 
 @Service
+@SuppressWarnings("null")
 public class RemediationAnalysisService {
 
     private static final Logger logger = LoggerFactory.getLogger(RemediationAnalysisService.class);

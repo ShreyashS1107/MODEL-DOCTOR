@@ -16,6 +16,8 @@ public interface DiagnosticExperimentRepository extends JpaRepository<Diagnostic
 
     List<DiagnosticExperiment> findByBaselineRunIdOrderByCreatedAtDesc(String baselineRunId);
 
+    List<DiagnosticExperiment> findByTargetKeyOrderByCreatedAtDesc(String targetKey);
+
     List<DiagnosticExperiment> findByBaselineRunIdIn(List<String> baselineRunIds);
 
     List<DiagnosticExperiment> findByBaselineRunIdAndStatus(String baselineRunId, ExperimentStatus status);

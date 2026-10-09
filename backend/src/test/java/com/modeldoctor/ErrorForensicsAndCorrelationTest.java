@@ -1,6 +1,5 @@
 package com.modeldoctor;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.modeldoctor.domain.*;
 import com.modeldoctor.dto.DiagnosticCorrelationDto;
 import com.modeldoctor.dto.RunSummaryDto;
@@ -45,9 +44,6 @@ public class ErrorForensicsAndCorrelationTest {
 
     @Autowired
     private RuleRegistry ruleRegistry;
-
-    @Autowired
-    private ObjectMapper objectMapper;
 
     private String testRunId;
 

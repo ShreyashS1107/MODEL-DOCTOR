@@ -22,6 +22,9 @@ import { InvestigationView } from "@/components/views/InvestigationView";
 import { RemediationView } from "@/components/views/RemediationView";
 import { ExperimentView } from "@/components/views/ExperimentView";
 import { TemporalView } from "@/components/views/TemporalView";
+import { MonitoringView } from "@/components/views/MonitoringView";
+import { IncidentDecisionView } from "@/components/views/IncidentDecisionView";
+import { ModelReliabilityView } from "@/components/views/ModelReliabilityView";
 import { Modal } from "@/components/ui/Modal";
 import {
   getDiagnosticRun,
@@ -545,6 +548,60 @@ export default function DiagnosticWorkstationPage({
               runSummary={runSummary}
               onSelectSection={setActiveSection}
               onSelectFeature={(featName) => {
+                const node = FEATURE_NODES.find((f) => f.name === featName) || null;
+                setSelectedFeature(node);
+              }}
+              onRefresh={async () => {
+                const summ = await getDiagnosticRunSummary(runIdParam);
+                setRunSummary(summ);
+              }}
+            />
+          </div>
+        );
+      case "10_MONITORING":
+        return (
+          <div className="flex-1 overflow-auto bg-[#090b0e] p-6">
+            <MonitoringView
+              runId={runIdParam}
+              runSummary={runSummary}
+              onSelectSection={setActiveSection}
+              onSelectFeature={(featName) => {
+                const node = FEATURE_NODES.find((f) => f.name === featName) || null;
+                setSelectedFeature(node);
+              }}
+              onRefresh={async () => {
+                const summ = await getDiagnosticRunSummary(runIdParam);
+                setRunSummary(summ);
+              }}
+            />
+          </div>
+        );
+      case "11_INCIDENTS":
+        return (
+          <div className="flex-1 overflow-auto bg-[#090b0e]">
+            <IncidentDecisionView
+              runId={runIdParam}
+              runSummary={runSummary}
+              onSelectSection={setActiveSection}
+              onSelectFeature={(featName) => {
+                const node = FEATURE_NODES.find((f) => f.name === featName) || null;
+                setSelectedFeature(node);
+              }}
+              onRefresh={async () => {
+                const summ = await getDiagnosticRunSummary(runIdParam);
+                setRunSummary(summ);
+              }}
+            />
+          </div>
+        );
+      case "12_RELIABILITY":
+        return (
+          <div className="flex-1 overflow-auto bg-[#090b0e]">
+            <ModelReliabilityView
+              runId={runIdParam}
+              runSummary={runSummary}
+              onSelectSection={setActiveSection}
+              onSelectFeature={(featName: string) => {
                 const node = FEATURE_NODES.find((f) => f.name === featName) || null;
                 setSelectedFeature(node);
               }}

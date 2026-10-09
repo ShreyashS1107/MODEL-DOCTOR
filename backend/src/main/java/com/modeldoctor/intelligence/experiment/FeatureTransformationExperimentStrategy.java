@@ -1,12 +1,9 @@
 package com.modeldoctor.intelligence.experiment;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.modeldoctor.domain.*;
 import com.modeldoctor.dto.InterventionConfigDto;
 import com.modeldoctor.dto.MetricComparisonDto;
 import com.modeldoctor.dto.StatisticalEvidenceDto;
-import com.modeldoctor.repository.DiagnosticResultRepository;
-import com.modeldoctor.service.ArtifactStorageService;
 import com.modeldoctor.service.DiagnosticJobService;
 import com.modeldoctor.service.DiagnosticService;
 import com.modeldoctor.service.MlEngineClient;
@@ -20,6 +17,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Component
+@SuppressWarnings({"unchecked", "null"})
 public class FeatureTransformationExperimentStrategy implements DiagnosticExperimentStrategy {
 
     private static final Logger log = LoggerFactory.getLogger(FeatureTransformationExperimentStrategy.class);
@@ -27,19 +25,16 @@ public class FeatureTransformationExperimentStrategy implements DiagnosticExperi
     private final MlEngineClient mlEngineClient;
     private final DiagnosticService diagnosticService;
     private final DiagnosticJobService diagnosticJobService;
-    private final DiagnosticResultRepository resultRepository;
     private final RunComparisonService runComparisonService;
 
     public FeatureTransformationExperimentStrategy(
             MlEngineClient mlEngineClient,
             DiagnosticService diagnosticService,
             DiagnosticJobService diagnosticJobService,
-            DiagnosticResultRepository resultRepository,
             RunComparisonService runComparisonService) {
         this.mlEngineClient = mlEngineClient;
         this.diagnosticService = diagnosticService;
         this.diagnosticJobService = diagnosticJobService;
-        this.resultRepository = resultRepository;
         this.runComparisonService = runComparisonService;
     }
 

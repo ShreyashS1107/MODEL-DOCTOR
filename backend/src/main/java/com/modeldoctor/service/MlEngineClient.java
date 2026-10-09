@@ -19,6 +19,7 @@ import org.springframework.web.client.RestTemplate;
 import java.time.Duration;
 
 @Service
+@SuppressWarnings({"rawtypes", "unchecked"})
 public class MlEngineClient {
 
     private static final Logger log = LoggerFactory.getLogger(MlEngineClient.class);
@@ -56,13 +57,14 @@ public class MlEngineClient {
                     MlEngineJobResponseDto.class
             );
 
-            if (response.getBody() == null) {
+            MlEngineJobResponseDto body = response.getBody();
+            if (body == null) {
                 throw new DiagnosticExecutionException("Received empty response from Python ML Engine for run " + jobRequest.getRunId());
             }
 
             log.info("Successfully received diagnostic execution response for run {}. Status: {}",
-                    jobRequest.getRunId(), response.getBody().getStatus());
-            return response.getBody();
+                    jobRequest.getRunId(), body.getStatus());
+            return body;
 
         } catch (HttpStatusCodeException ex) {
             String errorMsg = String.format("ML Engine returned HTTP %d: %s", ex.getStatusCode().value(), ex.getResponseBodyAsString());
@@ -76,7 +78,6 @@ public class MlEngineClient {
         }
     }
 
-    @SuppressWarnings("unchecked")
     public java.util.Map<String, Object> applyIntervention(java.util.Map<String, Object> request) {
         String endpoint = mlEngineBaseUrl + "/api/v1/experiments/apply-intervention";
         HttpHeaders headers = new HttpHeaders();
@@ -91,7 +92,6 @@ public class MlEngineClient {
         }
     }
 
-    @SuppressWarnings("unchecked")
     public java.util.Map<String, Object> computeStatisticalComparison(java.util.Map<String, Object> request) {
         String endpoint = mlEngineBaseUrl + "/api/v1/experiments/statistical-comparison";
         HttpHeaders headers = new HttpHeaders();
@@ -106,7 +106,6 @@ public class MlEngineClient {
         }
     }
 
-    @SuppressWarnings("unchecked")
     public java.util.Map<String, Object> evaluateThresholdCounterfactual(java.util.Map<String, Object> request) {
         String endpoint = mlEngineBaseUrl + "/api/v1/experiments/threshold-counterfactual";
         HttpHeaders headers = new HttpHeaders();
@@ -121,7 +120,6 @@ public class MlEngineClient {
         }
     }
 
-    @SuppressWarnings("unchecked")
     public java.util.Map<String, Object> evaluateCalibrationCounterfactual(java.util.Map<String, Object> request) {
         String endpoint = mlEngineBaseUrl + "/api/v1/experiments/calibration-counterfactual";
         HttpHeaders headers = new HttpHeaders();
@@ -136,7 +134,6 @@ public class MlEngineClient {
         }
     }
 
-    @SuppressWarnings("unchecked")
     public java.util.Map<String, Object> evaluateSubgroupCounterfactual(java.util.Map<String, Object> request) {
         String endpoint = mlEngineBaseUrl + "/api/v1/experiments/subgroup-counterfactual";
         HttpHeaders headers = new HttpHeaders();

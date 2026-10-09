@@ -6,7 +6,6 @@ import com.modeldoctor.dto.*;
 import com.modeldoctor.intelligence.experiment.DiagnosticExperimentStrategy;
 import com.modeldoctor.intelligence.experiment.ExperimentStrategyRegistry;
 import com.modeldoctor.intelligence.experiment.PrerequisiteValidationResult;
-import com.modeldoctor.repository.DiagnosticExperimentRepository;
 import com.modeldoctor.repository.DiagnosticRemediationRepository;
 import com.modeldoctor.repository.DiagnosticResultRepository;
 import com.modeldoctor.repository.DiagnosticRunRepository;
@@ -30,6 +29,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 @ActiveProfiles("dev")
 @Transactional
+@SuppressWarnings("null")
 public class ExperimentEngineAndValidationTest {
 
     @Autowired
@@ -49,9 +49,6 @@ public class ExperimentEngineAndValidationTest {
 
     @Autowired
     private DiagnosticRemediationRepository remediationRepository;
-
-    @Autowired
-    private DiagnosticExperimentRepository experimentRepository;
 
     @Autowired
     private ObjectMapper objectMapper;

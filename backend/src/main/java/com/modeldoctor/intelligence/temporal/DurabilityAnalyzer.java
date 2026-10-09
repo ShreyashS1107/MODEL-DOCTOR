@@ -123,7 +123,6 @@ public class DurabilityAnalyzer {
                 dto.setDurabilityStatus("INSUFFICIENT_FOLLOWUP");
                 dto.setAssessment("Intervention validated under experiment; awaiting subsequent operational baseline runs.");
             } else {
-                boolean higherIsBetter = metricRegistry.isHigherIsBetter(targetMetric);
                 boolean allSustained = true;
                 boolean anyRegressed = false;
 

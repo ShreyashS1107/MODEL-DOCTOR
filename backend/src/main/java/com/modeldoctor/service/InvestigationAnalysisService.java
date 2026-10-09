@@ -21,6 +21,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
+@SuppressWarnings("null")
 public class InvestigationAnalysisService {
 
     private static final Logger logger = LoggerFactory.getLogger(InvestigationAnalysisService.class);
@@ -52,8 +53,9 @@ public class InvestigationAnalysisService {
 
     @Transactional
     public List<InvestigationTargetDto> analyzeAndPersist(String runId) {
-        DiagnosticRun run = runRepository.findById(runId)
-                .orElseThrow(() -> new ResourceNotFoundException("Diagnostic run not found: " + runId));
+        if (!runRepository.existsById(runId)) {
+            throw new ResourceNotFoundException("Diagnostic run not found: " + runId);
+        }
 
         List<DiagnosticResult> results = resultRepository.findByRunIdOrderByIdAsc(runId);
         if (results == null || results.isEmpty()) {

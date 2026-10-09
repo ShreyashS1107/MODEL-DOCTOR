@@ -17,6 +17,8 @@ public class CreateDiagnosticRunRequestDto {
 
     private String executionMode; // REAL, BENCHMARK, TEST
 
+    private String runType; // BASELINE, EXPERIMENT
+
     @Valid
     private ModelInfoDto model;
 
@@ -87,6 +89,9 @@ public class CreateDiagnosticRunRequestDto {
     public List<DiagnosticModule> getModules() { return modules; }
     public void setModules(List<DiagnosticModule> modules) { this.modules = modules; }
 
+    public String getRunType() { return runType; }
+    public void setRunType(String runType) { this.runType = runType; }
+
     public static Builder builder() { return new Builder(); }
 
     public static class Builder {
@@ -94,6 +99,7 @@ public class CreateDiagnosticRunRequestDto {
         private String baselineDatasetArtifactId;
         private String evaluationDatasetArtifactId;
         private String executionMode;
+        private String runType;
         private ModelInfoDto model;
         private String evaluationDataset;
         private String baselineDataset;
@@ -106,6 +112,7 @@ public class CreateDiagnosticRunRequestDto {
         public Builder baselineDatasetArtifactId(String baselineDatasetArtifactId) { this.baselineDatasetArtifactId = baselineDatasetArtifactId; return this; }
         public Builder evaluationDatasetArtifactId(String evaluationDatasetArtifactId) { this.evaluationDatasetArtifactId = evaluationDatasetArtifactId; return this; }
         public Builder executionMode(String executionMode) { this.executionMode = executionMode; return this; }
+        public Builder runType(String runType) { this.runType = runType; return this; }
         public Builder model(ModelInfoDto model) { this.model = model; return this; }
         public Builder evaluationDataset(String evaluationDataset) { this.evaluationDataset = evaluationDataset; return this; }
         public Builder baselineDataset(String baselineDataset) { this.baselineDataset = baselineDataset; return this; }
@@ -115,9 +122,11 @@ public class CreateDiagnosticRunRequestDto {
         public Builder modules(List<DiagnosticModule> modules) { this.modules = modules; return this; }
 
         public CreateDiagnosticRunRequestDto build() {
-            return new CreateDiagnosticRunRequestDto(modelArtifactId, baselineDatasetArtifactId, evaluationDatasetArtifactId,
+            CreateDiagnosticRunRequestDto dto = new CreateDiagnosticRunRequestDto(modelArtifactId, baselineDatasetArtifactId, evaluationDatasetArtifactId,
                     executionMode, model, evaluationDataset, baselineDataset, targetColumn,
                     predictionColumn, protectedAttribute, modules);
+            dto.setRunType(runType);
+            return dto;
         }
     }
 }

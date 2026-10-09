@@ -4,10 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.modeldoctor.domain.DiagnosticModule;
 import com.modeldoctor.domain.DiagnosticRun;
 import com.modeldoctor.domain.DiagnosticStatus;
-import com.modeldoctor.domain.ModuleExecutionStatus;
 import com.modeldoctor.dto.*;
-import com.modeldoctor.repository.DiagnosticResultRepository;
-import com.modeldoctor.repository.DiagnosticRunEventRepository;
 import com.modeldoctor.repository.DiagnosticRunRepository;
 import com.modeldoctor.service.MlEngineClient;
 import org.junit.jupiter.api.Test;
@@ -37,6 +34,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
+@SuppressWarnings("null")
 public class ExecutionReliabilityAndJobControlTest {
 
     @Autowired
@@ -47,12 +45,6 @@ public class ExecutionReliabilityAndJobControlTest {
 
     @Autowired
     private DiagnosticRunRepository runRepository;
-
-    @Autowired
-    private DiagnosticResultRepository resultRepository;
-
-    @Autowired
-    private DiagnosticRunEventRepository eventRepository;
 
     @MockBean
     private MlEngineClient mlEngineClient;

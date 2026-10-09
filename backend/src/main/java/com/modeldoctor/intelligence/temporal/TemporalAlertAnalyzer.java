@@ -1,13 +1,10 @@
 package com.modeldoctor.intelligence.temporal;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.modeldoctor.domain.DiagnosticRun;
 import com.modeldoctor.dto.ChangePointDto;
 import com.modeldoctor.dto.IssueTrackDto;
 import com.modeldoctor.dto.RemediationDurabilityDto;
 import com.modeldoctor.dto.TemporalAlertDto;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import java.time.Instant;
@@ -15,13 +12,6 @@ import java.util.*;
 
 @Component
 public class TemporalAlertAnalyzer {
-
-    private static final Logger logger = LoggerFactory.getLogger(TemporalAlertAnalyzer.class);
-    private final ObjectMapper objectMapper;
-
-    public TemporalAlertAnalyzer(ObjectMapper objectMapper) {
-        this.objectMapper = objectMapper;
-    }
 
     public List<TemporalAlertDto> generateAlerts(
             String modelLineageId,

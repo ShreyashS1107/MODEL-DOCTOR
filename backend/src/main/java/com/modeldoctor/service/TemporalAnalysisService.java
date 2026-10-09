@@ -7,8 +7,6 @@ import com.modeldoctor.intelligence.normalization.NormalizedModuleData;
 import com.modeldoctor.intelligence.normalization.ResultNormalizer;
 import com.modeldoctor.intelligence.temporal.*;
 import com.modeldoctor.repository.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,9 +14,8 @@ import java.time.Instant;
 import java.util.*;
 
 @Service
+@SuppressWarnings("null")
 public class TemporalAnalysisService {
-
-    private static final Logger logger = LoggerFactory.getLogger(TemporalAnalysisService.class);
 
     private final DiagnosticRunRepository runRepository;
     private final DiagnosticResultRepository resultRepository;
@@ -85,12 +82,21 @@ public class TemporalAnalysisService {
             return runOpt.get().getModelName();
         }
 
+        // Check if identifier matches a modelArtifactId
+        List<DiagnosticRun> byArt = runRepository.findByModelArtifactIdOrderByCreatedAtAsc(identifier);
+        if (!byArt.isEmpty()) {
+            return byArt.get(0).getModelName();
+        }
+
         return identifier;
     }
 
     public List<DiagnosticRun> getLineageRuns(String modelLineageId) {
         String lineage = resolveModelLineageId(modelLineageId);
         List<DiagnosticRun> runs = runRepository.findByModelNameOrderByCreatedAtAsc(lineage);
+        if (runs.isEmpty()) {
+            runs = runRepository.findByModelArtifactIdOrderByCreatedAtAsc(modelLineageId);
+        }
         if (runs.isEmpty()) {
             // Check if there is a single run with this ID
             Optional<DiagnosticRun> runOpt = runRepository.findById(lineage);

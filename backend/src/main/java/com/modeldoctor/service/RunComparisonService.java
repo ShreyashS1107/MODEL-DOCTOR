@@ -8,17 +8,14 @@ import com.modeldoctor.intelligence.normalization.NormalizedModuleData;
 import com.modeldoctor.intelligence.normalization.ResultNormalizer;
 import com.modeldoctor.repository.DiagnosticResultRepository;
 import com.modeldoctor.repository.DiagnosticRunRepository;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
 @Service
+@SuppressWarnings("null")
 public class RunComparisonService {
-
-    private static final Logger logger = LoggerFactory.getLogger(RunComparisonService.class);
 
     private final DiagnosticRunRepository runRepository;
     private final DiagnosticResultRepository resultRepository;

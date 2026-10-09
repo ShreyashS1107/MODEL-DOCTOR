@@ -1,13 +1,10 @@
 package com.modeldoctor;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.modeldoctor.domain.*;
 import com.modeldoctor.dto.*;
 import com.modeldoctor.repository.DiagnosticRemediationRepository;
 import com.modeldoctor.repository.DiagnosticResultRepository;
 import com.modeldoctor.repository.DiagnosticRunRepository;
-import com.modeldoctor.service.CorrelationAnalysisService;
-import com.modeldoctor.service.InvestigationAnalysisService;
 import com.modeldoctor.service.RemediationAnalysisService;
 import com.modeldoctor.service.RunComparisonService;
 import org.junit.jupiter.api.BeforeEach;
@@ -37,19 +34,10 @@ public class RemediationEngineAndComparisonTest {
     private DiagnosticRemediationRepository remediationRepository;
 
     @Autowired
-    private CorrelationAnalysisService correlationService;
-
-    @Autowired
-    private InvestigationAnalysisService investigationService;
-
-    @Autowired
     private RemediationAnalysisService remediationService;
 
     @Autowired
     private RunComparisonService comparisonService;
-
-    @Autowired
-    private ObjectMapper objectMapper;
 
     private String baselineRunId;
     private String candidateRunId;

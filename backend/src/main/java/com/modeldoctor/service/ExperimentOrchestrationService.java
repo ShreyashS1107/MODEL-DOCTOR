@@ -22,6 +22,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
+@SuppressWarnings("null")
 public class ExperimentOrchestrationService {
 
     private static final Logger log = LoggerFactory.getLogger(ExperimentOrchestrationService.class);
@@ -50,8 +51,9 @@ public class ExperimentOrchestrationService {
 
     @Transactional
     public DiagnosticExperimentDto createExperiment(String baselineRunId, CreateExperimentRequestDto req) {
-        DiagnosticRun baselineRun = runRepository.findById(baselineRunId)
-                .orElseThrow(() -> new ResourceNotFoundException("Baseline diagnostic run not found: " + baselineRunId));
+        if (!runRepository.existsById(baselineRunId)) {
+            throw new ResourceNotFoundException("Baseline diagnostic run not found: " + baselineRunId);
+        }
 
         DiagnosticRemediation remediation = null;
         if (req.getRemediationId() != null) {

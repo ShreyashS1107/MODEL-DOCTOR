@@ -13,10 +13,13 @@ interface NavEntry {
 
 const NAVIGATION_ITEMS: NavEntry[] = [
   { id: "00_INTELLIGENCE", code: "00", label: "DIAGNOSTIC INTEL" },
+  { id: "12_RELIABILITY", code: "12", label: "MODEL RELIABILITY" },
+  { id: "11_INCIDENTS", code: "11", label: "INCIDENT DECISION" },
   { id: "06_INVESTIGATION", code: "06", label: "ROOT-CAUSE INVESTIGATION" },
   { id: "07_REMEDIATION", code: "07", label: "REMEDIATION DECISION" },
   { id: "08_EXPERIMENT", code: "08", label: "EXPERIMENTAL VALIDATION" },
   { id: "09_TEMPORAL", code: "09", label: "TEMPORAL INTELLIGENCE" },
+  { id: "10_MONITORING", code: "10", label: "CONTINUOUS MONITORING" },
   { id: "01_OVERVIEW", code: "01", label: "OVERVIEW" },
   { id: "02_DATA", code: "02", label: "DATA QUALITY", warningCount: 1 },
   { id: "03_FORENSICS", code: "03", label: "DATA LEAKAGE", criticalCount: 1 },
@@ -27,7 +30,7 @@ const NAVIGATION_ITEMS: NavEntry[] = [
   { id: "07_BIAS", code: "07B", label: "FAIRNESS & BIAS", warningCount: 1 },
   { id: "08_ROBUSTNESS", code: "08B", label: "ADVERSARIAL STRESS", warningCount: 1 },
   { id: "09_EXPERIMENTS", code: "09B", label: "EXPERIMENTS" },
-  { id: "10_REPORTS", code: "10", label: "REPORTS" },
+  { id: "10_REPORTS", code: "11", label: "REPORTS" },
 ];
 
 interface WorkstationSidebarProps {

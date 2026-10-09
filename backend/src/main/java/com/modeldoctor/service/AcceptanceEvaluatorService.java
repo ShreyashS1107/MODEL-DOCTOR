@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 @Service
+@SuppressWarnings("null")
 public class AcceptanceEvaluatorService {
 
     public static class EvaluationOutcome {

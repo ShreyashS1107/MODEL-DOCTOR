@@ -1,7 +1,6 @@
 package com.modeldoctor.dto;
 
 import java.util.List;
-import java.util.Map;
 
 public class DatasetSchemaSummaryDto {
     private Long rowCount;
