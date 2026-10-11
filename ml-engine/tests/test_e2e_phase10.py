@@ -1,6 +1,7 @@
 import time
 import json
 import os
+from typing import Any
 import requests
 import pandas as pd
 import numpy as np
@@ -9,10 +10,10 @@ import xgboost as xgb
 BASE_URL = "http://localhost:8080"
 PYTHON_URL = "http://localhost:8000"
 
-def log(msg):
+def log(msg: str) -> None:
     print(f"[E2E Phase 10] {msg}", flush=True)
 
-def wait_for_backend(max_retries=30):
+def wait_for_backend(max_retries: int = 30) -> bool:
     log("Waiting for Spring Boot backend to become ready...")
     for _ in range(max_retries):
         try:
@@ -25,17 +26,17 @@ def wait_for_backend(max_retries=30):
         time.sleep(1)
     raise RuntimeError("Backend did not become ready in time.")
 
-def wait_for_run_completion(run_id, max_seconds=45):
+def wait_for_run_completion(run_id: str, max_seconds: int = 45) -> tuple[str, dict[str, Any] | None]:
     for _ in range(max_seconds):
         r = requests.get(f"{BASE_URL}/api/diagnostics/{run_id}")
         if r.status_code == 200:
             status = r.json().get("status")
             if status in ["COMPLETED", "PARTIAL", "FAILED"]:
-                return status, r.json()
+                return str(status), r.json()
         time.sleep(0.5)
     return "TIMEOUT", None
 
-def setup_phase10_artifacts():
+def setup_phase10_artifacts() -> tuple[str, str, str, str, str, str]:
     os.makedirs("scratch_e2e_10", exist_ok=True)
     np.random.seed(42)
     n = 600
@@ -128,7 +129,7 @@ def setup_phase10_artifacts():
 
     return base_csv, eval_r1_csv, eval_r2_csv, eval_r3_csv, eval_r4_csv, model_path
 
-def test_phase10_end_to_end():
+def test_phase10_end_to_end() -> None:
     log("Starting Phase 10 End-to-End Test (Continuous Monitoring, Alert Lifecycle & Health Decision Engine)...")
     wait_for_backend()
 
@@ -139,13 +140,13 @@ def test_phase10_end_to_end():
     with open(model_path, "rb") as f:
         r_mod = requests.post(f"{BASE_URL}/api/artifacts/models", files={"file": f}, data={"framework": "xgboost", "taskType": "binary_classification"})
     assert r_mod.status_code == 201, f"Failed model upload: {r_mod.text}"
-    model_artifact_id = r_mod.json()["id"]
+    model_artifact_id = str(r_mod.json()["id"])
 
-    def upload_dataset(path):
+    def upload_dataset(path: str) -> str:
         with open(path, "rb") as f:
             r = requests.post(f"{BASE_URL}/api/artifacts/datasets", files={"file": f})
         assert r.status_code == 201, f"Failed dataset upload {path}: {r.text}"
-        return r.json()["id"]
+        return str(r.json()["id"])
 
     base_art_id = upload_dataset(base_csv)
     eval_r1_id = upload_dataset(eval_r1)
@@ -164,7 +165,7 @@ def test_phase10_end_to_end():
         "ROBUSTNESS"
     ]
 
-    def trigger_run(eval_art_id, run_label):
+    def trigger_run(eval_art_id: str, run_label: str) -> str:
         log(f"Launching diagnostic {run_label}...")
         payload = {
             "modelArtifactId": model_artifact_id,
@@ -178,7 +179,7 @@ def test_phase10_end_to_end():
         }
         r_create = requests.post(f"{BASE_URL}/api/diagnostics", json=payload)
         assert r_create.status_code == 201, f"Failed create {run_label}: {r_create.text}"
-        run_id = r_create.json()["id"]
+        run_id = str(r_create.json()["id"])
         
         r_start = requests.post(f"{BASE_URL}/api/diagnostics/{run_id}/run")
         assert r_start.status_code == 200, f"Failed start {run_label}: {r_start.text}"
@@ -233,7 +234,7 @@ def test_phase10_end_to_end():
     log("5. Configuring Phase 10 Monitoring Policy...")
     # Resolve lineage from run 3
     r_run3 = requests.get(f"{BASE_URL}/api/diagnostics/{run_3_id}")
-    lineage_id = r_run3.json().get("modelArtifactId", str(model_artifact_id))
+    lineage_id = r_run3.json().get("modelArtifactId", model_artifact_id)
 
     policy_payload = {
         "modelLineageId": lineage_id,
