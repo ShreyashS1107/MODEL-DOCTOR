@@ -1,0 +1,379 @@
+- generic [ref=f2e1]:
+  - generic [ref=f2e6] [cursor=pointer]:
+    - button "Open Next.js Dev Tools" [ref=f2e7]
+    - generic [ref=f2e11]:
+      - button "Open issues overlay" [ref=f2e12]:
+        - generic [ref=f2e387]:
+          - generic [aria-hidden] [ref=f2e388]: "0"
+          - generic [ref=f2e389]: "1"
+        - generic [ref=f2e390]: Issue
+      - button "Collapse issues badge" [ref=f2e16]
+  - generic [ref=f2e19]:
+    - banner [ref=f2e20]:
+      - generic [ref=f2e21]:
+        - generic [ref=f2e22]:
+          - generic [ref=f2e23]: MODEL DOCTOR
+          - generic [ref=f2e24]: INSTRUMENT v1.0
+        - generic [ref=f2e25]:
+          - generic [ref=f2e26]: "MODEL:"
+          - generic [ref=f2e27]: fraud_model.json
+          - generic [ref=f2e28]: v17.4.2 • xgboost
+        - generic [ref=f2e29]:
+          - generic [ref=f2e30]: "DATASET:"
+          - generic [ref=f2e31]: baseline_dataset.csv
+          - generic [ref=f2e32]: (800 rows, 9 features)
+      - generic [ref=f2e33]:
+        - generic [ref=f2e34]:
+          - generic [ref=f2e35]: "ML ENGINE: READY"
+          - generic [ref=f2e38]: "|"
+          - generic [ref=f2e39]: "ORCHESTRATOR: READY"
+        - generic [ref=f2e42]:
+          - generic [ref=f2e43]: "ACTIVE RUN:"
+          - generic [ref=f2e44]: run_e9d2b3da
+        - generic [ref=f2e45]:
+          - button "COMPARE" [ref=f2e46] [cursor=pointer]
+          - button "EXPORT" [ref=f2e47] [cursor=pointer]
+          - button "RUN DIAGNOSTIC" [ref=f2e48] [cursor=pointer]
+    - generic [ref=f2e49]:
+      - generic [ref=f2e50]:
+        - link "HOME" [ref=f2e51] [cursor=pointer]:
+          - /url: /
+        - generic [ref=f2e52]: /
+        - link "DIAGNOSE SETUP" [ref=f2e53] [cursor=pointer]:
+          - /url: /diagnose
+        - generic [ref=f2e54]: /
+        - generic [ref=f2e55]: RUN run_e9d2b3da
+      - generic [ref=f2e56]:
+        - generic [ref=f2e57]: • COMPLETED
+        - generic [ref=f2e58]: "|"
+        - link "[+ NEW DIAGNOSTIC RUN]" [ref=f2e59] [cursor=pointer]:
+          - /url: /diagnose
+    - generic [ref=f2e60]:
+      - complementary [ref=f2e61]:
+        - generic [ref=f2e62]:
+          - generic [ref=f2e63]: DIAGNOSTIC MODULES
+          - navigation [ref=f2e64]:
+            - button "00 DIAGNOSTIC INTEL" [ref=f2e65] [cursor=pointer]:
+              - generic [ref=f2e66]:
+                - generic [ref=f2e67]: "00"
+                - generic [ref=f2e68]: DIAGNOSTIC INTEL
+            - button "12 MODEL RELIABILITY" [ref=f2e69] [cursor=pointer]:
+              - generic [ref=f2e70]:
+                - generic [ref=f2e71]: "12"
+                - generic [ref=f2e72]: MODEL RELIABILITY
+            - button "11 INCIDENT DECISION" [active] [ref=f2e73] [cursor=pointer]:
+              - generic [ref=f2e74]:
+                - generic [ref=f2e75]: "11"
+                - generic [ref=f2e76]: INCIDENT DECISION
+            - button "06 ROOT-CAUSE INVESTIGATION" [ref=f2e77] [cursor=pointer]:
+              - generic [ref=f2e78]:
+                - generic [ref=f2e79]: "06"
+                - generic [ref=f2e80]: ROOT-CAUSE INVESTIGATION
+            - button "07 REMEDIATION DECISION" [ref=f2e81] [cursor=pointer]:
+              - generic [ref=f2e82]:
+                - generic [ref=f2e83]: "07"
+                - generic [ref=f2e84]: REMEDIATION DECISION
+            - button "08 EXPERIMENTAL VALIDATION" [ref=f2e85] [cursor=pointer]:
+              - generic [ref=f2e86]:
+                - generic [ref=f2e87]: "08"
+                - generic [ref=f2e88]: EXPERIMENTAL VALIDATION
+            - button "09 TEMPORAL INTELLIGENCE" [ref=f2e89] [cursor=pointer]:
+              - generic [ref=f2e90]:
+                - generic [ref=f2e91]: "09"
+                - generic [ref=f2e92]: TEMPORAL INTELLIGENCE
+            - button "10 CONTINUOUS MONITORING" [ref=f2e93] [cursor=pointer]:
+              - generic [ref=f2e94]:
+                - generic [ref=f2e95]: "10"
+                - generic [ref=f2e96]: CONTINUOUS MONITORING
+            - button "01 OVERVIEW" [ref=f2e97] [cursor=pointer]:
+              - generic [ref=f2e98]:
+                - generic [ref=f2e99]: "01"
+                - generic [ref=f2e100]: OVERVIEW
+            - button "02 DATA QUALITY 1" [ref=f2e101] [cursor=pointer]:
+              - generic [ref=f2e102]:
+                - generic [ref=f2e103]: "02"
+                - generic [ref=f2e104]: DATA QUALITY
+              - generic [ref=f2e105]: "1"
+            - button "03 DATA LEAKAGE 1" [ref=f2e107] [cursor=pointer]:
+              - generic [ref=f2e108]:
+                - generic [ref=f2e109]: "03"
+                - generic [ref=f2e110]: DATA LEAKAGE
+              - generic [ref=f2e111]: "1"
+            - button "04 DISTRIBUTION DRIFT 1 1" [ref=f2e113] [cursor=pointer]:
+              - generic [ref=f2e114]:
+                - generic [ref=f2e115]: "04"
+                - generic [ref=f2e116]: DISTRIBUTION DRIFT
+              - generic [ref=f2e117]:
+                - generic [ref=f2e118]: "1"
+                - generic [ref=f2e119]: "1"
+            - button "05 MODEL PERFORMANCE" [ref=f2e120] [cursor=pointer]:
+              - generic [ref=f2e121]:
+                - generic [ref=f2e122]: "05"
+                - generic [ref=f2e123]: MODEL PERFORMANCE
+            - button "05B ERROR FORENSICS" [ref=f2e124] [cursor=pointer]:
+              - generic [ref=f2e125]:
+                - generic [ref=f2e126]: 05B
+                - generic [ref=f2e127]: ERROR FORENSICS
+            - button "06B EXPLAINABILITY" [ref=f2e128] [cursor=pointer]:
+              - generic [ref=f2e129]:
+                - generic [ref=f2e130]: 06B
+                - generic [ref=f2e131]: EXPLAINABILITY
+            - button "07B FAIRNESS & BIAS 1" [ref=f2e132] [cursor=pointer]:
+              - generic [ref=f2e133]:
+                - generic [ref=f2e134]: 07B
+                - generic [ref=f2e135]: FAIRNESS & BIAS
+              - generic [ref=f2e136]: "1"
+            - button "08B ADVERSARIAL STRESS 1" [ref=f2e138] [cursor=pointer]:
+              - generic [ref=f2e139]:
+                - generic [ref=f2e140]: 08B
+                - generic [ref=f2e141]: ADVERSARIAL STRESS
+              - generic [ref=f2e142]: "1"
+            - button "09B EXPERIMENTS" [ref=f2e144] [cursor=pointer]:
+              - generic [ref=f2e145]:
+                - generic [ref=f2e146]: 09B
+                - generic [ref=f2e147]: EXPERIMENTS
+            - button "11 REPORTS" [ref=f2e148] [cursor=pointer]:
+              - generic [ref=f2e149]:
+                - generic [ref=f2e150]: "11"
+                - generic [ref=f2e151]: REPORTS
+        - generic [ref=f2e152]:
+          - generic [ref=f2e153]: "ORCHESTRATOR: JAVA 21"
+          - generic [ref=f2e154]: "ML RUNTIME: PY 3.14 / XGB 2.0"
+          - generic [ref=f2e155]: "LATENCY: 14ms"
+      - generic [ref=f2e634]:
+        - generic [ref=f2e635]:
+          - generic [ref=f2e636]:
+            - generic [ref=f2e637]:
+              - generic [ref=f2e639]: INCIDENT DECISION WORKSPACE
+              - generic [ref=f2e640]: PHASE 11
+            - generic [ref=f2e641]: "|"
+            - generic [ref=f2e642]:
+              - generic [ref=f2e643]: "LINEAGE:"
+              - generic [ref=f2e644]: run_e9d2b3da
+            - generic [ref=f2e645]: "|"
+            - generic [ref=f2e646]:
+              - generic [ref=f2e647]: "ACTIVE:"
+              - generic [ref=f2e648]: "0"
+              - generic [ref=f2e649]: "CRITICAL:"
+              - generic [ref=f2e650]: "0"
+              - generic [ref=f2e651]: "HIGH:"
+              - generic [ref=f2e652]: "0"
+              - generic [ref=f2e653]: "RESOLVED:"
+              - generic [ref=f2e654]: "0"
+          - button "↻ RECALCULATE INCIDENTS" [ref=f2e656] [cursor=pointer]:
+            - generic [ref=f2e657]: ↻
+            - text: RECALCULATE INCIDENTS
+        - generic [ref=f2e658]:
+          - generic [ref=f2e659]:
+            - generic [ref=f2e660]:
+              - generic [ref=f2e661]:
+                - generic [ref=f2e662]: INCIDENT QUEUE (0)
+                - generic [ref=f2e663]:
+                  - button "ALL" [ref=f2e664] [cursor=pointer]
+                  - button "CRITICAL" [ref=f2e665] [cursor=pointer]
+                  - button "HIGH" [ref=f2e666] [cursor=pointer]
+              - textbox "Filter target (e.g. FEATURE::income)..." [ref=f2e668]
+              - generic [ref=f2e669]:
+                - button "ALL" [ref=f2e670] [cursor=pointer]
+                - button "OPEN" [ref=f2e671] [cursor=pointer]
+                - button "INVESTIGATING" [ref=f2e672] [cursor=pointer]
+                - button "VALIDATING" [ref=f2e673] [cursor=pointer]
+                - button "MONITORING" [ref=f2e674] [cursor=pointer]
+                - button "RESOLVED" [ref=f2e675] [cursor=pointer]
+            - generic [ref=f2e676]: No operational incidents matching current filters.
+          - generic [ref=f2e678]: Select an incident from the queue to inspect evidence and operator decision state.
+      - complementary [ref=f2e257]:
+        - generic [ref=f2e258]:
+          - generic [ref=f2e259]: MODEL HEALTH INDEX
+          - generic [ref=f2e260]:
+            - generic [ref=f2e261]:
+              - generic [ref=f2e262]: "87"
+              - generic [ref=f2e263]: / 100
+            - generic [ref=f2e264]: CRITICAL FINDINGS
+          - generic [ref=f2e265]:
+            - generic [ref=f2e266]:
+              - generic [ref=f2e267]: "2"
+              - generic [ref=f2e268]: CRITICAL
+            - generic [ref=f2e269]:
+              - generic [ref=f2e270]: "4"
+              - generic [ref=f2e271]: WARNINGS
+            - generic [ref=f2e272]:
+              - generic [ref=f2e273]: "14"
+              - generic [ref=f2e274]: OBSERVATIONS
+          - generic [ref=f2e275]:
+            - generic [ref=f2e276]:
+              - generic [ref=f2e277]: "Leakage MI Risk:"
+              - generic [ref=f2e278]: 0.131 (FAIL)
+            - generic [ref=f2e279]:
+              - generic [ref=f2e280]: "Max PSI Drift:"
+              - generic [ref=f2e281]: 0.000 (FAIL)
+            - generic [ref=f2e282]:
+              - generic [ref=f2e283]: "Calibration ECE:"
+              - generic [ref=f2e284]: 0.040 (WARN)
+            - generic [ref=f2e285]:
+              - generic [ref=f2e286]: "Disparate Impact:"
+              - generic [ref=f2e287]: 1.000 (WARN)
+            - generic [ref=f2e288]:
+              - generic [ref=f2e289]: "Gaussian Jitter Flip:"
+              - generic [ref=f2e290]: 5.0% (WARN)
+        - generic [ref=f2e291]:
+          - generic [ref=f2e292]:
+            - generic [ref=f2e293]: ARTIFACT PROVENANCE
+            - generic [ref=f2e294]: REAL
+          - generic [ref=f2e295]:
+            - generic [ref=f2e296]:
+              - generic [ref=f2e531]: MODEL
+              - generic [ref=f2e532]: XGBOOST
+            - generic "fraud_model.json" [ref=f2e533]
+            - generic [ref=f2e298]:
+              - generic [ref=f2e534]: NaN KB
+              - generic "a00e5fdea871696ee4fe89a83f4733ccbbc10bc1820d5d23cc9027567ac2a0ad" [ref=f2e535]: "SHA: a00e5fde..."
+          - generic [ref=f2e299]:
+            - generic [ref=f2e300]:
+              - generic [ref=f2e536]: EVALUATION DATASET
+              - generic [ref=f2e537]: CSV
+            - generic "baseline_dataset.csv" [ref=f2e538]
+            - generic [ref=f2e302]: 800 rows • 9 cols
+            - generic "42b7a386f7eb2fdd14815bbe7cd3d49f808b97170de570aaff5b55c783ab37d9" [ref=f2e540]: "SHA: 42b7a386f7..."
+          - generic [ref=f2e541]:
+            - generic [ref=f2e542]:
+              - generic [ref=f2e543]: BASELINE DATASET
+              - generic [ref=f2e544]: CSV
+            - generic "baseline_dataset.csv" [ref=f2e545]
+            - generic [ref=f2e546]:
+              - generic [ref=f2e547]: 800 rows
+              - generic "42b7a386f7eb2fdd14815bbe7cd3d49f808b97170de570aaff5b55c783ab37d9" [ref=f2e548]: "SHA: 42b7a386..."
+        - generic [ref=f2e303]:
+          - generic [ref=f2e304]:
+            - generic [ref=f2e305]: INSPECTOR • FEATURE DETAIL
+            - generic [ref=f2e306]:
+              - generic [ref=f2e307]:
+                - generic [ref=f2e308]:
+                  - generic [ref=f2e309]: transaction_id_hash
+                  - generic [ref=f2e310]: CRITICAL
+                - generic [ref=f2e311]: "TYPE: identifier • ID: f_01"
+              - generic [ref=f2e312]:
+                - generic [ref=f2e313]:
+                  - generic [ref=f2e314]: MUTUAL INFO
+                  - generic [ref=f2e315]: "0.941"
+                - generic [ref=f2e316]:
+                  - generic [ref=f2e317]: CORRELATION
+                  - generic [ref=f2e318]: "0.962"
+                - generic [ref=f2e319]:
+                  - generic [ref=f2e320]: PSI DRIFT
+                  - generic [ref=f2e321]: "0.012"
+                - generic [ref=f2e322]:
+                  - generic [ref=f2e323]: SHAP IMPORTANCE
+                  - generic [ref=f2e324]: 42.1%
+              - generic [ref=f2e325]:
+                - generic [ref=f2e326]:
+                  - generic [ref=f2e327]: DETECTED ANOMALY
+                  - generic [ref=f2e328]: Direct Target Proxy Leakage
+                - generic [ref=f2e329]:
+                  - generic [ref=f2e330]: ROOT CAUSE
+                  - generic [ref=f2e331]: High mutual information (MI = 0.941). Hash generation logic inadvertently encodes fraudulent label flags from the source OLTP table.
+                - generic [ref=f2e332]:
+                  - generic [ref=f2e333]: RECOMMENDATION
+                  - generic [ref=f2e334]: Drop 'transaction_id_hash' from feature store ingestion pipeline before retraining.
+          - generic [ref=f2e335]:
+            - button "ISOLATE & PROBE FEATURE" [ref=f2e336] [cursor=pointer]
+            - button "EXPORT FEATURE JSON" [ref=f2e337] [cursor=pointer]
+    - generic [ref=f2e338]:
+      - generic [ref=f2e339]:
+        - generic [ref=f2e340]:
+          - generic [ref=f2e341]: DIAGNOSTIC EVENT STREAM
+          - generic [ref=f2e342]: (17 entries)
+        - generic [ref=f2e343]:
+          - generic [ref=f2e344]:
+            - button "ALL" [ref=f2e345] [cursor=pointer]
+            - button "CRIT" [ref=f2e346] [cursor=pointer]
+            - button "WARN" [ref=f2e347] [cursor=pointer]
+            - button "INFO" [ref=f2e348] [cursor=pointer]
+          - button "EXPAND" [ref=f2e349] [cursor=pointer]
+      - generic [ref=f2e350]:
+        - generic [ref=f2e549]:
+          - generic [ref=f2e550]: 5:14:12 PM
+          - generic [ref=f2e551]: EVAL
+          - generic [ref=f2e552]: "[ORCHESTRATOR]"
+          - generic [ref=f2e553]: "[RUN_COMPLETED] Diagnostic run completed successfully with all 7 module(s) COMPLETED."
+        - generic [ref=f2e554]:
+          - generic [ref=f2e555]: 5:14:12 PM
+          - generic [ref=f2e556]: EVAL
+          - generic [ref=f2e557]: "[ROBUSTNESS]"
+          - generic [ref=f2e558]: "[MODULE_COMPLETED] Adversarial & Perturbation Robustness audit completed: 1 findings discovered. 5% Noise Flip Rate: 5.0%, Boundary Flip Rate: 92.5%, Top Sensitive Feature: 'user_velocity_6h'. Health score: 95.0."
+        - generic [ref=f2e559]:
+          - generic [ref=f2e560]: 5:14:12 PM
+          - generic [ref=f2e561]: EVAL
+          - generic [ref=f2e562]: "[BIAS]"
+          - generic [ref=f2e563]: "[MODULE_COMPLETED] Bias, Fairness & Disparate Impact audit completed for protected attribute 'is_foreign_ip': 3 findings discovered. Min DIR: 1.0000, DP Gap: 0.1350. Health score: 65.0."
+        - generic [ref=f2e564]:
+          - generic [ref=f2e565]: 5:14:12 PM
+          - generic [ref=f2e566]: EVAL
+          - generic [ref=f2e567]: "[EXPLAINABILITY]"
+          - generic [ref=f2e568]: "[MODULE_COMPLETED] Model Explainability & Feature Attribution audit completed: 1 findings discovered. Top feature: 'transaction_amount', Rank agreement Spearman ρ: 0.96. Health score: 95.0."
+        - generic [ref=f2e569]:
+          - generic [ref=f2e570]: 5:14:12 PM
+          - generic [ref=f2e571]: EVAL
+          - generic [ref=f2e572]: "[PERFORMANCE]"
+          - generic [ref=f2e573]: "[MODULE_COMPLETED] Model Performance audit completed: 1 findings discovered. ROC-AUC: 0.7980, F1: 0.6471, ECE: 0.0396. Health score: 90.0."
+        - generic [ref=f2e574]:
+          - generic [ref=f2e575]: 5:14:12 PM
+          - generic [ref=f2e576]: EVAL
+          - generic [ref=f2e577]: "[DRIFT]"
+          - generic [ref=f2e578]: "[MODULE_COMPLETED] Distribution Drift audit completed: 0 findings discovered. Max PSI: 0.0000. Health score: 100.0."
+        - generic [ref=f2e579]:
+          - generic [ref=f2e580]: 5:14:12 PM
+          - generic [ref=f2e581]: EVAL
+          - generic [ref=f2e582]: "[LEAKAGE]"
+          - generic [ref=f2e583]: "[MODULE_COMPLETED] Data Leakage forensic audit completed: 1 potential leakage findings discovered. Health score: 70.0."
+        - generic [ref=f2e584]:
+          - generic [ref=f2e585]: 5:14:12 PM
+          - generic [ref=f2e586]: EVAL
+          - generic [ref=f2e587]: "[DATA_QUALITY]"
+          - generic [ref=f2e588]: "[MODULE_COMPLETED] Data Quality audit completed: 1 findings discovered. Health score: 96.0."
+        - generic [ref=f2e589]:
+          - generic [ref=f2e590]: 5:14:10 PM
+          - generic [ref=f2e591]: INFO
+          - generic [ref=f2e592]: "[ROBUSTNESS]"
+          - generic [ref=f2e593]: "[MODULE_STARTED] Diagnostic module ROBUSTNESS started probe evaluation."
+        - generic [ref=f2e594]:
+          - generic [ref=f2e595]: 5:14:10 PM
+          - generic [ref=f2e596]: INFO
+          - generic [ref=f2e597]: "[BIAS]"
+          - generic [ref=f2e598]: "[MODULE_STARTED] Diagnostic module BIAS started probe evaluation."
+        - generic [ref=f2e599]:
+          - generic [ref=f2e600]: 5:14:10 PM
+          - generic [ref=f2e601]: INFO
+          - generic [ref=f2e602]: "[EXPLAINABILITY]"
+          - generic [ref=f2e603]: "[MODULE_STARTED] Diagnostic module EXPLAINABILITY started probe evaluation."
+        - generic [ref=f2e604]:
+          - generic [ref=f2e605]: 5:14:10 PM
+          - generic [ref=f2e606]: INFO
+          - generic [ref=f2e607]: "[PERFORMANCE]"
+          - generic [ref=f2e608]: "[MODULE_STARTED] Diagnostic module PERFORMANCE started probe evaluation."
+        - generic [ref=f2e609]:
+          - generic [ref=f2e610]: 5:14:10 PM
+          - generic [ref=f2e611]: INFO
+          - generic [ref=f2e612]: "[DRIFT]"
+          - generic [ref=f2e613]: "[MODULE_STARTED] Diagnostic module DRIFT started probe evaluation."
+        - generic [ref=f2e614]:
+          - generic [ref=f2e615]: 5:14:10 PM
+          - generic [ref=f2e616]: INFO
+          - generic [ref=f2e617]: "[LEAKAGE]"
+          - generic [ref=f2e618]: "[MODULE_STARTED] Diagnostic module LEAKAGE started probe evaluation."
+        - generic [ref=f2e619]:
+          - generic [ref=f2e620]: 5:14:10 PM
+          - generic [ref=f2e621]: INFO
+          - generic [ref=f2e622]: "[DATA_QUALITY]"
+          - generic [ref=f2e623]: "[MODULE_STARTED] Diagnostic module DATA_QUALITY started probe evaluation."
+        - generic [ref=f2e624]:
+          - generic [ref=f2e625]: 5:14:10 PM
+          - generic [ref=f2e626]: INFO
+          - generic [ref=f2e627]: "[ORCHESTRATOR]"
+          - generic [ref=f2e628]: "[RUN_STARTED] Diagnostic execution initiated across 7 module(s)."
+        - generic [ref=f2e629]:
+          - generic [ref=f2e630]: 5:14:10 PM
+          - generic [ref=f2e631]: INFO
+          - generic [ref=f2e632]: "[ORCHESTRATOR]"
+          - generic [ref=f2e633]: "[RUN_CREATED] Diagnostic run created in REAL mode with 7 module(s)"
+  - alert [ref=f2e386]

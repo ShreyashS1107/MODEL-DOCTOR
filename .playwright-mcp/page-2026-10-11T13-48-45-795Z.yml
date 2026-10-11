@@ -1,0 +1,127 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - banner [ref=e3]:
+      - generic [ref=e4]:
+        - link "MODEL DOCTOR v1.0" [ref=e5] [cursor=pointer]:
+          - /url: /
+          - generic [ref=e6]: MODEL DOCTOR
+          - generic [ref=e7]: v1.0
+        - navigation [ref=e8]:
+          - link "OVERVIEW" [ref=e9] [cursor=pointer]:
+            - /url: "#what-it-does"
+          - link "DIAGNOSTIC ENGINES" [ref=e10] [cursor=pointer]:
+            - /url: "#diagnostic-areas"
+          - link "HOW IT WORKS" [ref=e11] [cursor=pointer]:
+            - /url: "#how-it-works"
+          - 'link "SAMPLE RUN #0042" [ref=e12] [cursor=pointer]':
+            - /url: /diagnostic/run_0042
+      - link "START DIAGNOSTIC →" [ref=e14] [cursor=pointer]:
+        - /url: /diagnose
+    - main [ref=e15]:
+      - generic [ref=e16]:
+        - generic [ref=e17]:
+          - generic [ref=e18]: MACHINE LEARNING DIAGNOSTICS & FORENSIC OBSERVABILITY
+          - heading "Find out whether your machine-learning model can actually be trusted." [level=1] [ref=e19]
+          - paragraph [ref=e20]:
+            - text: Model Doctor examines datasets, prediction distributions, and model artifacts to identify hidden failure modes—such as
+            - strong [ref=e21]: data leakage
+            - text: ","
+            - strong [ref=e22]: distribution drift
+            - text: ","
+            - strong [ref=e23]: calibration collapse
+            - text: ", and"
+            - strong [ref=e24]: spurious correlations
+            - text: —that standard test accuracy metrics fail to reveal.
+        - generic [ref=e25]:
+          - link "START DIAGNOSTIC →" [ref=e26] [cursor=pointer]:
+            - /url: /diagnose
+          - link "HOW IT WORKS ↓" [ref=e27] [cursor=pointer]:
+            - /url: "#how-it-works"
+          - 'link "VIEW SAMPLE RUN #0042" [ref=e28] [cursor=pointer]':
+            - /url: /diagnostic/run_0042
+        - generic [ref=e29]:
+          - generic [ref=e30]: $ model-doctor audit --model fraud_classifier_v17 --dataset production_2026_09 --baseline baseline_golden
+          - generic [ref=e31]: "[CRITICAL] Leakage detected in feature 'transaction_id_hash' (Mutual Info: 0.941 > 0.850)"
+          - generic [ref=e32]: "[WARNING] Covariate drift detected in 'user_velocity_6h' (PSI = 0.312 >= 0.250)"
+          - generic [ref=e33]: "[COMPLETE] Audit finished. Health index computed at 73 / 100."
+      - generic [ref=e34]:
+        - generic [ref=e35]: 01 // CORE CONCEPT
+        - heading "Beyond Macro Accuracy" [level=2] [ref=e36]
+        - paragraph [ref=e37]: A model boasting 98% validation accuracy in offline testing can silently collapse in production if it relied on leaked target proxies, memorized dataset artifacts, or encounters shifting population quantiles.
+        - paragraph [ref=e38]: Model Doctor audits the underlying statistical evidence across 7 diagnostic dimensions, providing actionable causal explanations and remediation recommendations before failure impacts users.
+      - generic [ref=e39]:
+        - generic [ref=e40]: 02 // DIAGNOSTIC DOMAINS
+        - heading "7-Engine Forensic Suite" [level=2] [ref=e41]
+        - generic [ref=e42]:
+          - generic [ref=e43]:
+            - generic [ref=e44]:
+              - generic [ref=e45]: DATA QUALITY
+              - generic [ref=e46]: ENGINE 01
+            - paragraph [ref=e47]: Audits structural missingness topology, zero-variance columns, type mismatch anomalies, and multivariate Mahalanobis outliers.
+          - generic [ref=e48]:
+            - generic [ref=e49]:
+              - generic [ref=e50]: DATA LEAKAGE
+              - generic [ref=e51]: ENGINE 02
+            - paragraph [ref=e52]: Calculates target mutual information spikes, detects unstripped surrogate IDs, temporal lookahead bias, and train/eval row hash overlaps.
+          - generic [ref=e53]:
+            - generic [ref=e54]:
+              - generic [ref=e55]: DISTRIBUTION DRIFT
+              - generic [ref=e56]: ENGINE 03
+            - paragraph [ref=e57]: Applies two-sample Kolmogorov-Smirnov continuous tests, Population Stability Index (PSI) deciles, and Wasserstein-1 transport distances.
+          - generic [ref=e58]:
+            - generic [ref=e59]:
+              - generic [ref=e60]: PERFORMANCE & CALIBRATION
+              - generic [ref=e61]: ENGINE 04
+            - paragraph [ref=e62]: Decomposes Expected Calibration Error (ECE), Brier scores, reliability diagrams, and minority-class precision-recall under heavy imbalance.
+          - generic [ref=e63]:
+            - generic [ref=e64]:
+              - generic [ref=e65]: EXPLAINABILITY (SHAP)
+              - generic [ref=e66]: ENGINE 05
+            - paragraph [ref=e67]: Computes TreeSHAP and KernelSHAP global feature impact rankings, second-order interaction indices, and waterfall force plots.
+          - generic [ref=e68]:
+            - generic [ref=e69]:
+              - generic [ref=e70]: BIAS & FAIRNESS
+              - generic [ref=e71]: ENGINE 06
+            - paragraph [ref=e72]: Measures demographic parity differences, equalized odds false-positive gaps, and validates compliance with the 80% disparate impact rule.
+          - generic [ref=e73]:
+            - generic [ref=e74]:
+              - generic [ref=e75]: ADVERSARIAL ROBUSTNESS
+              - generic [ref=e76]: ENGINE 07
+            - paragraph [ref=e77]: Stress-tests prediction stability under Gaussian feature jitter, missingness dropout masking, and class decision boundary proximity.
+      - generic [ref=e78]:
+        - generic [ref=e79]: 03 // EXECUTION LIFECYCLE
+        - heading "Analytical Workflow" [level=2] [ref=e80]
+        - generic [ref=e81]:
+          - generic [ref=e82]:
+            - generic [ref=e83]: STEP 1
+            - generic [ref=e84]: INPUT
+            - paragraph [ref=e85]: Supply evaluation dataset (CSV/Parquet), baseline reference, and model weights.
+          - generic [ref=e86]:
+            - generic [ref=e87]: STEP 2
+            - generic [ref=e88]: ANALYSIS
+            - paragraph [ref=e89]: FastAPI ML Engine executes 7 statistical diagnostic probes concurrently.
+          - generic [ref=e90]:
+            - generic [ref=e91]: STEP 3
+            - generic [ref=e92]: INVESTIGATION
+            - paragraph [ref=e93]: Inspect topology networks, distribution shifts, and root-cause explanations.
+          - generic [ref=e94]:
+            - generic [ref=e95]: STEP 4
+            - generic [ref=e96]: DIAGNOSIS
+            - paragraph [ref=e97]: Generate composite Health Index (0-100) and export certified evidence dossiers.
+      - generic [ref=e98]:
+        - heading "Ready to audit your model?" [level=3] [ref=e99]
+        - paragraph [ref=e100]: Configure a new evaluation partition or inspect existing diagnostic runs in the forensic workstation.
+        - generic [ref=e101]:
+          - link "START A DIAGNOSTIC →" [ref=e102] [cursor=pointer]:
+            - /url: /diagnose
+          - link "EXPLORE SAMPLE WORKSTATION (#0042)" [ref=e103] [cursor=pointer]:
+            - /url: /diagnostic/run_0042
+    - contentinfo [ref=e104]:
+      - generic [ref=e105]: MODEL DOCTOR // SCIENTIFIC ML DIAGNOSTIC INSTRUMENT
+      - generic [ref=e106]:
+        - generic [ref=e107]: JAVA 21 / SPRING BOOT
+        - generic [ref=e108]: •
+        - generic [ref=e109]: PYTHON 3.14 / FASTAPI
+        - generic [ref=e110]: •
+        - generic [ref=e111]: NEXT.JS 15
+  - button "Open Next.js Dev Tools" [ref=e117] [cursor=pointer]

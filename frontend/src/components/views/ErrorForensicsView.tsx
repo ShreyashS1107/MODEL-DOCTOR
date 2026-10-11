@@ -30,17 +30,17 @@ export const ErrorForensicsView: React.FC<ErrorForensicsViewProps> = ({
   if (status === "FAILED") {
     return (
       <div className="space-y-4 font-mono text-xs">
-        <div className="p-4 border border-[#ef4444] bg-[#1a0f0f] text-[#f87171] space-y-2">
+        <div className="p-4 border border-[#F18B78] bg-[#332B3C] text-[#F18B78] space-y-2">
           <div className="flex items-center gap-2">
-            <span className="px-1.5 py-0.5 text-[9px] font-bold bg-[#ef4444] text-black">FAILED</span>
-            <span className="text-sm font-bold text-white uppercase">
+            <span className="px-1.5 py-0.5 text-[9px] font-bold bg-[#F18B78] text-[#211D29]">FAILED</span>
+            <span className="text-sm font-bold text-[#F4EFF6] uppercase">
               PERFORMANCE &amp; ERROR FORENSICS EVALUATION FAILED
             </span>
           </div>
-          <p className="text-xs text-[#fca5a5]">
+          <p className="text-xs text-[#F18B78]/90">
             {statusMessage || "Diagnostic engine encountered a fatal execution failure during record-level error forensics."}
           </p>
-          <div className="text-[10px] text-[#94a3b8] pt-1 border-t border-[#331518]">
+          <div className="text-[10px] text-[#B7ACBD] pt-1 border-t border-[#443849]">
             Diagnostic execution terminated without producing valid error forensic metrics. Synthetic demo data is suppressed for failed live runs.
           </div>
         </div>
@@ -51,12 +51,12 @@ export const ErrorForensicsView: React.FC<ErrorForensicsViewProps> = ({
   if (status === "NOT_IMPLEMENTED") {
     return (
       <div className="space-y-4 font-mono text-xs">
-        <div className="p-4 border border-[#f59e0b] bg-[#16120b] text-[#fde047] space-y-2">
+        <div className="p-4 border border-[#E8B66D] bg-[#332B3C] text-[#E8B66D] space-y-2">
           <div className="flex items-center gap-2">
-            <span className="px-1.5 py-0.5 text-[9px] font-bold bg-[#f59e0b] text-black">DEFERRED</span>
-            <span className="text-sm font-bold text-white uppercase">ERROR FORENSICS DEFERRED</span>
+            <span className="px-1.5 py-0.5 text-[9px] font-bold bg-[#E8B66D] text-[#211D29]">DEFERRED</span>
+            <span className="text-sm font-bold text-[#F4EFF6] uppercase">ERROR FORENSICS DEFERRED</span>
           </div>
-          <p className="text-xs text-[#fef08a]">
+          <p className="text-xs text-[#E8B66D]/90">
             {statusMessage || "Module is registered for execution in analytical pipeline."}
           </p>
         </div>
@@ -163,87 +163,87 @@ export const ErrorForensicsView: React.FC<ErrorForensicsViewProps> = ({
   return (
     <div className="space-y-4 font-mono text-xs">
       {/* 1. Header Banner & Strict Associative Phrasing Notice */}
-      <div className="p-3 border border-[#1f2533] bg-[#0c0e14] flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+      <div className="p-3 border border-[#443849] bg-[#2A2432] flex flex-col sm:flex-row sm:items-center justify-between gap-2">
         <div>
           <div className="flex items-center gap-2">
-            <span className="text-xs text-[#94a3b8] uppercase font-bold">
+            <span className="text-xs text-[#B7ACBD] uppercase font-bold">
               05 ERROR FORENSICS &amp; SEGMENT DISSECTION
             </span>
             {isRealData ? (
-              <span className="px-1.5 py-0.2 text-[9px] font-bold bg-[#10b981]/20 text-[#10b981] border border-[#10b981]/40">
+              <span className="px-1.5 py-0.2 text-[9px] font-bold bg-[#B7D7A8]/20 text-[#B7D7A8] border border-[#B7D7A8]/40">
                 CANONICAL RECORD-LEVEL EVIDENCE
               </span>
             ) : (
-              <span className="px-1.5 py-0.2 text-[9px] font-bold bg-[#f59e0b]/20 text-[#f59e0b] border border-[#f59e0b]/40">
+              <span className="px-1.5 py-0.2 text-[9px] font-bold bg-[#E8B66D]/20 text-[#E8B66D] border border-[#E8B66D]/40">
                 SYNTHETIC FIXTURE
               </span>
             )}
-            <span className="px-1.5 py-0.2 text-[9px] font-mono bg-[#3b82f6]/10 text-[#60a5fa] border border-[#3b82f6]/30">
+            <span className="px-1.5 py-0.2 text-[9px] font-mono bg-[#F18B78]/10 text-[#F18B78] border border-[#F18B78]/30">
               ASSOCIATIVE ONLY — NOT CAUSAL
             </span>
           </div>
-          <div className="text-[11px] text-[#64748b] mt-0.5">
+          <div className="text-[11px] text-[#8E8295] mt-0.5">
             Record-level error decomposition, false positive/negative feature separation, high-confidence error profiling, and threshold sensitivity.
           </div>
         </div>
 
-        <div className="px-2.5 py-1 text-xs font-bold shrink-0 bg-[#141822] text-[#94a3b8] border border-[#1f2533]">
-          TOTAL EVALUATED: <span className="text-white font-bold">{errorSummary.totalRecords.toLocaleString()}</span> RECORDS
+        <div className="px-2.5 py-1 text-xs font-bold shrink-0 bg-[#332B3C] text-[#B7ACBD] border border-[#443849]">
+          TOTAL EVALUATED: <span className="text-[#F4EFF6] font-bold">{errorSummary.totalRecords.toLocaleString()}</span> RECORDS
         </div>
       </div>
 
       {/* 2. Technical Summary HUD Grid */}
       <div className="grid grid-cols-2 sm:grid-cols-5 gap-2">
-        <div className="p-2.5 border border-[#1f2533] bg-[#0c0e14]">
-          <div className="text-[10px] text-[#64748b] uppercase">OVERALL ERROR RATE</div>
+        <div className="p-2.5 border border-[#443849] bg-[#2A2432]">
+          <div className="text-[10px] text-[#8E8295] uppercase">OVERALL ERROR RATE</div>
           <div className={`text-xl font-bold tabular-nums mt-0.5 ${
-            errorSummary.errorRate <= 0.05 ? "text-[#10b981]" : errorSummary.errorRate <= 0.15 ? "text-[#f59e0b]" : "text-[#ef4444]"
+            errorSummary.errorRate <= 0.05 ? "text-[#B7D7A8]" : errorSummary.errorRate <= 0.15 ? "text-[#E8B66D]" : "text-[#F18B78]"
           }`}>
             {(errorSummary.errorRate * 100).toFixed(2)}%
           </div>
-          <div className="text-[10px] text-[#64748b]">
+          <div className="text-[10px] text-[#8E8295]">
             {errorSummary.totalErrors.toLocaleString()} incorrect predictions
           </div>
         </div>
 
-        <div className="p-2.5 border border-[#1f2533] bg-[#0c0e14]">
-          <div className="text-[10px] text-[#64748b] uppercase">FALSE POSITIVES (FP)</div>
-          <div className="text-xl font-bold text-[#f59e0b] tabular-nums mt-0.5">
+        <div className="p-2.5 border border-[#443849] bg-[#2A2432]">
+          <div className="text-[10px] text-[#8E8295] uppercase">FALSE POSITIVES (FP)</div>
+          <div className="text-xl font-bold text-[#E8B66D] tabular-nums mt-0.5">
             {errorSummary.falsePositive.count.toLocaleString()}
           </div>
-          <div className="text-[10px] text-[#64748b]">
+          <div className="text-[10px] text-[#8E8295]">
             Rate: {(errorSummary.falsePositive.rate * 100).toFixed(2)}% of dataset
           </div>
         </div>
 
-        <div className="p-2.5 border border-[#1f2533] bg-[#0c0e14]">
-          <div className="text-[10px] text-[#64748b] uppercase">FALSE NEGATIVES (FN)</div>
-          <div className="text-xl font-bold text-[#ef4444] tabular-nums mt-0.5">
+        <div className="p-2.5 border border-[#443849] bg-[#2A2432]">
+          <div className="text-[10px] text-[#8E8295] uppercase">FALSE NEGATIVES (FN)</div>
+          <div className="text-xl font-bold text-[#F18B78] tabular-nums mt-0.5">
             {errorSummary.falseNegative.count.toLocaleString()}
           </div>
-          <div className="text-[10px] text-[#64748b]">
+          <div className="text-[10px] text-[#8E8295]">
             Rate: {(errorSummary.falseNegative.rate * 100).toFixed(2)}% of dataset
           </div>
         </div>
 
-        <div className="p-2.5 border border-[#1f2533] bg-[#0c0e14]">
-          <div className="text-[10px] text-[#64748b] uppercase">HIGH-CONFIDENCE ERRORS</div>
+        <div className="p-2.5 border border-[#443849] bg-[#2A2432]">
+          <div className="text-[10px] text-[#8E8295] uppercase">HIGH-CONFIDENCE ERRORS</div>
           <div className={`text-xl font-bold tabular-nums mt-0.5 ${
-            confAnalysis.highConfidenceErrorRate >= 0.20 ? "text-[#ef4444]" : confAnalysis.highConfidenceErrorRate >= 0.10 ? "text-[#f59e0b]" : "text-[#10b981]"
+            confAnalysis.highConfidenceErrorRate >= 0.20 ? "text-[#F18B78]" : confAnalysis.highConfidenceErrorRate >= 0.10 ? "text-[#E8B66D]" : "text-[#B7D7A8]"
           }`}>
             {(confAnalysis.highConfidenceErrorRate * 100).toFixed(1)}%
           </div>
-          <div className="text-[10px] text-[#64748b]">
+          <div className="text-[10px] text-[#8E8295]">
             {confAnalysis.highConfidenceErrorCount} mistakes with conf &gt;= 0.75
           </div>
         </div>
 
-        <div className="p-2.5 border border-[#1f2533] bg-[#0c0e14]">
-          <div className="text-[10px] text-[#64748b] uppercase">TOP ERROR FEATURE</div>
-          <div className="text-base font-bold text-[#38bdf8] truncate mt-0.5">
+        <div className="p-2.5 border border-[#443849] bg-[#2A2432]">
+          <div className="text-[10px] text-[#8E8295] uppercase">TOP ERROR FEATURE</div>
+          <div className="text-base font-bold text-[#F18B78] truncate mt-0.5">
             {featureAssociations[0]?.feature || "N/A"}
           </div>
-          <div className="text-[10px] text-[#64748b]">
+          <div className="text-[10px] text-[#8E8295]">
             Stat: {featureAssociations[0]?.statistic?.toFixed(3) || "0.000"} ({featureAssociations[0]?.statisticName || "r_pb"})
           </div>
         </div>
@@ -252,63 +252,63 @@ export const ErrorForensicsView: React.FC<ErrorForensicsViewProps> = ({
       {/* 3. Error Distribution & Confusion Breakdown */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         {/* Confusion Matrix Reconciliation */}
-        <div className="p-3 border border-[#1f2533] bg-[#0c0e14] space-y-3">
-          <div className="flex items-center justify-between border-b border-[#1f2533] pb-2">
-            <span className="text-xs font-bold text-white uppercase">
+        <div className="p-3 border border-[#443849] bg-[#2A2432] space-y-3">
+          <div className="flex items-center justify-between border-b border-[#443849] pb-2">
+            <span className="text-xs font-bold text-[#F4EFF6] uppercase">
               1. RECORD ERROR CLASSIFICATION BREAKDOWN
             </span>
-            <span className="text-[10px] text-[#64748b]">RECONCILED AGAINST PREDICTION LOG</span>
+            <span className="text-[10px] text-[#8E8295]">RECONCILED AGAINST PREDICTION LOG</span>
           </div>
 
           <div className="grid grid-cols-2 gap-2">
-            <div className="p-2.5 bg-[#0f1d18] border border-[#10b981]/40 rounded-sm">
-              <div className="flex justify-between text-[10px] text-[#10b981]">
+            <div className="p-2.5 bg-[#332B3C] border border-[#B7D7A8]/40 rounded-sm">
+              <div className="flex justify-between text-[10px] text-[#B7D7A8]">
                 <span className="font-bold">TRUE POSITIVES (TP)</span>
                 <span>{errorSummary.truePositive.percentageOfAll?.toFixed(2) || (errorSummary.truePositive.rate * 100).toFixed(2)}%</span>
               </div>
-              <div className="text-lg font-bold text-white mt-1 tabular-nums">
+              <div className="text-lg font-bold text-[#F4EFF6] mt-1 tabular-nums">
                 {errorSummary.truePositive.count.toLocaleString()}
               </div>
-              <div className="text-[10px] text-[#6ee7b7] mt-0.5">
+              <div className="text-[10px] text-[#B7D7A8] mt-0.5">
                 Actual: 1 | Predicted: 1
               </div>
             </div>
 
-            <div className="p-2.5 bg-[#26160d] border border-[#f59e0b]/40 rounded-sm">
-              <div className="flex justify-between text-[10px] text-[#f59e0b]">
+            <div className="p-2.5 bg-[#332B3C] border border-[#E8B66D]/40 rounded-sm">
+              <div className="flex justify-between text-[10px] text-[#E8B66D]">
                 <span className="font-bold">FALSE POSITIVES (FP)</span>
                 <span>{errorSummary.falsePositive.percentageOfAll?.toFixed(2) || (errorSummary.falsePositive.rate * 100).toFixed(2)}%</span>
               </div>
-              <div className="text-lg font-bold text-[#fbbf24] mt-1 tabular-nums">
+              <div className="text-lg font-bold text-[#E8B66D] mt-1 tabular-nums">
                 {errorSummary.falsePositive.count.toLocaleString()}
               </div>
-              <div className="text-[10px] text-[#fcd34d] mt-0.5">
+              <div className="text-[10px] text-[#E8B66D]/90 mt-0.5">
                 Actual: 0 | Predicted: 1 (Type I Error)
               </div>
             </div>
 
-            <div className="p-2.5 bg-[#260f12] border border-[#ef4444]/40 rounded-sm">
-              <div className="flex justify-between text-[10px] text-[#ef4444]">
+            <div className="p-2.5 bg-[#332B3C] border border-[#F18B78]/40 rounded-sm">
+              <div className="flex justify-between text-[10px] text-[#F18B78]">
                 <span className="font-bold">FALSE NEGATIVES (FN)</span>
                 <span>{errorSummary.falseNegative.percentageOfAll?.toFixed(2) || (errorSummary.falseNegative.rate * 100).toFixed(2)}%</span>
               </div>
-              <div className="text-lg font-bold text-[#f87171] mt-1 tabular-nums">
+              <div className="text-lg font-bold text-[#F18B78] mt-1 tabular-nums">
                 {errorSummary.falseNegative.count.toLocaleString()}
               </div>
-              <div className="text-[10px] text-[#fca5a5] mt-0.5">
+              <div className="text-[10px] text-[#F18B78]/90 mt-0.5">
                 Actual: 1 | Predicted: 0 (Type II Error)
               </div>
             </div>
 
-            <div className="p-2.5 bg-[#0f1d18] border border-[#10b981]/40 rounded-sm">
-              <div className="flex justify-between text-[10px] text-[#10b981]">
+            <div className="p-2.5 bg-[#332B3C] border border-[#B7D7A8]/40 rounded-sm">
+              <div className="flex justify-between text-[10px] text-[#B7D7A8]">
                 <span className="font-bold">TRUE NEGATIVES (TN)</span>
                 <span>{errorSummary.trueNegative.percentageOfAll?.toFixed(2) || (errorSummary.trueNegative.rate * 100).toFixed(2)}%</span>
               </div>
-              <div className="text-lg font-bold text-white mt-1 tabular-nums">
+              <div className="text-lg font-bold text-[#F4EFF6] mt-1 tabular-nums">
                 {errorSummary.trueNegative.count.toLocaleString()}
               </div>
-              <div className="text-[10px] text-[#6ee7b7] mt-0.5">
+              <div className="text-[10px] text-[#B7D7A8] mt-0.5">
                 Actual: 0 | Predicted: 0
               </div>
             </div>
@@ -316,30 +316,30 @@ export const ErrorForensicsView: React.FC<ErrorForensicsViewProps> = ({
         </div>
 
         {/* Confidence vs Correctness Distribution */}
-        <div className="p-3 border border-[#1f2533] bg-[#0c0e14] space-y-3">
-          <div className="flex items-center justify-between border-b border-[#1f2533] pb-2">
-            <span className="text-xs font-bold text-white uppercase">
+        <div className="p-3 border border-[#443849] bg-[#2A2432] space-y-3">
+          <div className="flex items-center justify-between border-b border-[#443849] pb-2">
+            <span className="text-xs font-bold text-[#F4EFF6] uppercase">
               2. CONFIDENCE ERROR CONCENTRATION
             </span>
-            <span className="text-[10px] text-[#64748b]">CONFIDENCE vs INCORRECT PREDICTIONS</span>
+            <span className="text-[10px] text-[#8E8295]">CONFIDENCE vs INCORRECT PREDICTIONS</span>
           </div>
 
           <div className="grid grid-cols-3 gap-2 text-center">
-            <div className="p-2 bg-[#12161f] border border-[#1f2533]">
-              <div className="text-[9px] text-[#64748b]">MEDIAN ERR CONF</div>
-              <div className="text-base font-bold text-white tabular-nums">
+            <div className="p-2 bg-[#332B3C] border border-[#443849]">
+              <div className="text-[9px] text-[#8E8295]">MEDIAN ERR CONF</div>
+              <div className="text-base font-bold text-[#F4EFF6] tabular-nums">
                 {(confAnalysis.medianIncorrectConfidence * 100).toFixed(1)}%
               </div>
             </div>
-            <div className="p-2 bg-[#12161f] border border-[#1f2533]">
-              <div className="text-[9px] text-[#64748b]">P95 ERR CONF</div>
-              <div className="text-base font-bold text-[#f59e0b] tabular-nums">
+            <div className="p-2 bg-[#332B3C] border border-[#443849]">
+              <div className="text-[9px] text-[#8E8295]">P95 ERR CONF</div>
+              <div className="text-base font-bold text-[#E8B66D] tabular-nums">
                 {(confAnalysis.p95IncorrectConfidence * 100).toFixed(1)}%
               </div>
             </div>
-            <div className="p-2 bg-[#12161f] border border-[#1f2533]">
-              <div className="text-[9px] text-[#64748b]">MAX ERR CONF</div>
-              <div className="text-base font-bold text-[#ef4444] tabular-nums">
+            <div className="p-2 bg-[#332B3C] border border-[#443849]">
+              <div className="text-[9px] text-[#8E8295]">MAX ERR CONF</div>
+              <div className="text-base font-bold text-[#F18B78] tabular-nums">
                 {(confAnalysis.maxIncorrectConfidence * 100).toFixed(1)}%
               </div>
             </div>
@@ -347,19 +347,19 @@ export const ErrorForensicsView: React.FC<ErrorForensicsViewProps> = ({
 
           {/* Confidence Bands */}
           <div className="space-y-1.5 pt-1">
-            <div className="text-[10px] text-[#94a3b8] font-bold">ERROR DENSITY BY PREDICTION CONFIDENCE BAND</div>
+            <div className="text-[10px] text-[#B7ACBD] font-bold">ERROR DENSITY BY PREDICTION CONFIDENCE BAND</div>
             {confAnalysis.confidenceBands?.map((b, idx) => (
               <div key={idx} className="space-y-0.5">
                 <div className="flex justify-between text-[10px]">
-                  <span className="text-white">{b.band}</span>
-                  <span className="text-[#94a3b8]">
+                  <span className="text-[#F4EFF6]">{b.band}</span>
+                  <span className="text-[#B7ACBD]">
                     {b.errorCount.toLocaleString()} errors / {b.totalCount.toLocaleString()} ({((b.errorRate || 0) * 100).toFixed(1)}% err rate)
                   </span>
                 </div>
-                <div className="w-full h-1.5 bg-[#181d28] rounded-full overflow-hidden">
+                <div className="w-full h-1.5 bg-[#1C1824] rounded-full overflow-hidden">
                   <div
                     className={`h-full ${
-                      b.errorRate >= 0.25 ? "bg-[#ef4444]" : b.errorRate >= 0.10 ? "bg-[#f59e0b]" : "bg-[#3b82f6]"
+                      b.errorRate >= 0.25 ? "bg-[#F18B78]" : b.errorRate >= 0.10 ? "bg-[#E8B66D]" : "bg-[#B7D7A8]"
                     }`}
                     style={{ width: `${Math.min(100, (b.errorRate || 0) * 100 * 2.5)}%` }}
                   />
@@ -371,17 +371,17 @@ export const ErrorForensicsView: React.FC<ErrorForensicsViewProps> = ({
       </div>
 
       {/* 4. Error-Associated Feature Matrix */}
-      <div className="p-3 border border-[#1f2533] bg-[#0c0e14] space-y-2">
-        <div className="flex items-center justify-between border-b border-[#1f2533] pb-2">
+      <div className="p-3 border border-[#443849] bg-[#2A2432] space-y-2">
+        <div className="flex items-center justify-between border-b border-[#443849] pb-2">
           <div>
-            <span className="text-xs font-bold text-white uppercase">
+            <span className="text-xs font-bold text-[#F4EFF6] uppercase">
               3. ERROR-ASSOCIATED FEATURE MATRIX
             </span>
-            <span className="text-[10px] text-[#64748b] ml-2">
+            <span className="text-[10px] text-[#8E8295] ml-2">
               POINT-BISERIAL r_pb &amp; CRAMER&apos;S V WITH BENJAMINI-HOCHBERG FDR CORRECTION
             </span>
           </div>
-          <span className="text-[10px] text-[#64748b]">
+          <span className="text-[10px] text-[#8E8295]">
             {featureAssociations.length} FEATURES RANKED
           </span>
         </div>
@@ -389,7 +389,7 @@ export const ErrorForensicsView: React.FC<ErrorForensicsViewProps> = ({
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse text-[11px]">
             <thead>
-              <tr className="border-b border-[#1f2533] text-[#64748b]">
+              <tr className="border-b border-[#443849] text-[#8E8295]">
                 <th className="py-1.5 px-2">RANK</th>
                 <th className="py-1.5 px-2">FEATURE</th>
                 <th className="py-1.5 px-2">TYPE</th>
@@ -400,38 +400,38 @@ export const ErrorForensicsView: React.FC<ErrorForensicsViewProps> = ({
                 <th className="py-1.5 px-2">STATUS</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-[#161b26]">
+            <tbody className="divide-y divide-[#443849]">
               {featureAssociations.map((fa, i) => (
-                <tr key={i} className="hover:bg-[#12161f] transition-colors">
-                  <td className="py-1.5 px-2 text-[#64748b] font-bold">#{fa.rank || i + 1}</td>
-                  <td className="py-1.5 px-2 text-white font-bold">{fa.feature}</td>
-                  <td className="py-1.5 px-2 text-[#94a3b8] uppercase">{fa.featureType}</td>
+                <tr key={i} className="hover:bg-[#332B3C] transition-colors">
+                  <td className="py-1.5 px-2 text-[#8E8295] font-bold">#{fa.rank || i + 1}</td>
+                  <td className="py-1.5 px-2 text-[#F4EFF6] font-bold">{fa.feature}</td>
+                  <td className="py-1.5 px-2 text-[#B7ACBD] uppercase">{fa.featureType}</td>
                   <td className="py-1.5 px-2 tabular-nums">
-                    <span className="text-white font-bold">{fa.statistic?.toFixed(4)}</span>
-                    <span className="text-[#64748b] text-[9px] ml-1">({fa.statisticName})</span>
+                    <span className="text-[#F4EFF6] font-bold">{fa.statistic?.toFixed(4)}</span>
+                    <span className="text-[#8E8295] text-[9px] ml-1">({fa.statisticName})</span>
                   </td>
-                  <td className="py-1.5 px-2 tabular-nums text-white">
+                  <td className="py-1.5 px-2 tabular-nums text-[#F4EFF6]">
                     {fa.effectSize?.toFixed(4)}
                   </td>
                   <td className="py-1.5 px-2">
                     <span className={`px-1.5 py-0.2 text-[9px] rounded ${
-                      fa.direction === "positive" ? "bg-[#f59e0b]/20 text-[#fbbf24]" : "bg-[#3b82f6]/20 text-[#60a5fa]"
+                      fa.direction === "positive" ? "bg-[#E8B66D]/20 text-[#E8B66D]" : "bg-[#B7D7A8]/20 text-[#B7D7A8]"
                     }`}>
                       {fa.direction || "N/A"}
                     </span>
                   </td>
                   <td className="py-1.5 px-2 tabular-nums">
-                    <span className={fa.adjustedPValue < 0.01 ? "text-[#10b981] font-bold" : "text-[#94a3b8]"}>
+                    <span className={fa.adjustedPValue < 0.01 ? "text-[#B7D7A8] font-bold" : "text-[#B7ACBD]"}>
                       {fa.adjustedPValue < 0.0001 ? "< 0.0001" : fa.adjustedPValue?.toFixed(4)}
                     </span>
                   </td>
                   <td className="py-1.5 px-2">
                     {fa.effectSize >= 0.20 && fa.adjustedPValue < 0.05 ? (
-                      <span className="px-1.5 py-0.5 text-[9px] font-bold bg-[#ef4444]/20 text-[#f87171] border border-[#ef4444]/40">
+                      <span className="px-1.5 py-0.5 text-[9px] font-bold bg-[#F18B78]/20 text-[#F18B78] border border-[#F18B78]/40">
                         ERROR-ENRICHED
                       </span>
                     ) : (
-                      <span className="px-1.5 py-0.5 text-[9px] text-[#94a3b8] bg-[#1a202c]">
+                      <span className="px-1.5 py-0.5 text-[9px] text-[#B7ACBD] bg-[#332B3C]">
                         MODERATE
                       </span>
                     )}
@@ -444,23 +444,23 @@ export const ErrorForensicsView: React.FC<ErrorForensicsViewProps> = ({
       </div>
 
       {/* 5. Quantile Feature Range Error Forensics */}
-      <div className="p-3 border border-[#1f2533] bg-[#0c0e14] space-y-3">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-[#1f2533] pb-2">
+      <div className="p-3 border border-[#443849] bg-[#2A2432] space-y-3">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-[#443849] pb-2">
           <div>
-            <span className="text-xs font-bold text-white uppercase">
+            <span className="text-xs font-bold text-[#F4EFF6] uppercase">
               4. QUANTILE FEATURE RANGE ERROR CONCENTRATION
             </span>
-            <span className="text-[10px] text-[#64748b] ml-2">
+            <span className="text-[10px] text-[#8E8295] ml-2">
               5 DETERMINISTIC QUANTILE BINS PER FEATURE (MIN SAMPLE N=30)
             </span>
           </div>
 
           <div className="flex items-center gap-2">
-            <span className="text-[10px] text-[#64748b]">FILTER FEATURE:</span>
+            <span className="text-[10px] text-[#8E8295]">FILTER FEATURE:</span>
             <select
               value={selectedFeatureFilter}
               onChange={(e) => setSelectedFeatureFilter(e.target.value)}
-              className="bg-[#141822] text-white border border-[#222633] px-2 py-1 text-xs outline-none cursor-pointer"
+              className="bg-[#332B3C] text-[#F4EFF6] border border-[#443849] px-2 py-1 text-xs outline-none cursor-pointer"
             >
               <option value="ALL">ALL FEATURES ({uniqueFeatures.length})</option>
               {uniqueFeatures.map((f) => (
@@ -473,7 +473,7 @@ export const ErrorForensicsView: React.FC<ErrorForensicsViewProps> = ({
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse text-[11px]">
             <thead>
-              <tr className="border-b border-[#1f2533] text-[#64748b]">
+              <tr className="border-b border-[#443849] text-[#8E8295]">
                 <th className="py-1.5 px-2">FEATURE</th>
                 <th className="py-1.5 px-2">BIN RANGE</th>
                 <th className="py-1.5 px-2">RECORDS</th>
@@ -484,39 +484,39 @@ export const ErrorForensicsView: React.FC<ErrorForensicsViewProps> = ({
                 <th className="py-1.5 px-2">STATUS</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-[#161b26]">
+            <tbody className="divide-y divide-[#443849]">
               {filteredRanges.map((r, i) => (
-                <tr key={i} className="hover:bg-[#12161f] transition-colors">
-                  <td className="py-1.5 px-2 text-white font-bold">{r.feature}</td>
-                  <td className="py-1.5 px-2 text-[#38bdf8] font-mono">
+                <tr key={i} className="hover:bg-[#332B3C] transition-colors">
+                  <td className="py-1.5 px-2 text-[#F4EFF6] font-bold">{r.feature}</td>
+                  <td className="py-1.5 px-2 text-[#F18B78] font-mono">
                     [{r.binLower?.toFixed(2)}, {r.binUpper?.toFixed(2)})
                   </td>
-                  <td className="py-1.5 px-2 text-[#94a3b8] tabular-nums">{r.recordCount?.toLocaleString()}</td>
-                  <td className="py-1.5 px-2 text-white font-bold tabular-nums">{r.errorCount?.toLocaleString()}</td>
+                  <td className="py-1.5 px-2 text-[#B7ACBD] tabular-nums">{r.recordCount?.toLocaleString()}</td>
+                  <td className="py-1.5 px-2 text-[#F4EFF6] font-bold tabular-nums">{r.errorCount?.toLocaleString()}</td>
                   <td className="py-1.5 px-2 tabular-nums">
                     <span className={`font-bold ${
-                      r.errorRate >= 0.05 ? "text-[#ef4444]" : r.errorRate >= 0.02 ? "text-[#f59e0b]" : "text-[#10b981]"
+                      r.errorRate >= 0.05 ? "text-[#F18B78]" : r.errorRate >= 0.02 ? "text-[#E8B66D]" : "text-[#B7D7A8]"
                     }`}>
                       {(r.errorRate * 100).toFixed(2)}%
                     </span>
                   </td>
-                  <td className="py-1.5 px-2 text-[#f59e0b] tabular-nums">
+                  <td className="py-1.5 px-2 text-[#E8B66D] tabular-nums">
                     {r.falsePositiveRate !== undefined ? `${(r.falsePositiveRate * 100).toFixed(2)}%` : "-"}
                   </td>
-                  <td className="py-1.5 px-2 text-[#ef4444] tabular-nums">
+                  <td className="py-1.5 px-2 text-[#F18B78] tabular-nums">
                     {r.falseNegativeRate !== undefined ? `${(r.falseNegativeRate * 100).toFixed(2)}%` : "-"}
                   </td>
                   <td className="py-1.5 px-2">
                     {r.isInsufficientSample ? (
-                      <span className="px-1.5 py-0.2 text-[9px] bg-[#334155] text-[#94a3b8]">
+                      <span className="px-1.5 py-0.2 text-[9px] bg-[#332B3C] text-[#8E8295]">
                         INSUFFICIENT SAMPLE
                       </span>
                     ) : r.isErrorEnriched ? (
-                      <span className="px-1.5 py-0.2 text-[9px] font-bold bg-[#ef4444]/20 text-[#f87171] border border-[#ef4444]/40">
+                      <span className="px-1.5 py-0.2 text-[9px] font-bold bg-[#F18B78]/20 text-[#F18B78] border border-[#F18B78]/40">
                         ENRICHED ({">"}1.5x MEAN)
                       </span>
                     ) : (
-                      <span className="px-1.5 py-0.2 text-[9px] text-[#10b981] bg-[#10b981]/10">
+                      <span className="px-1.5 py-0.2 text-[9px] text-[#B7D7A8] bg-[#B7D7A8]/10">
                         NOMINAL
                       </span>
                     )}
@@ -529,23 +529,23 @@ export const ErrorForensicsView: React.FC<ErrorForensicsViewProps> = ({
       </div>
 
       {/* 6. Bounded High-Confidence Error Records Queue */}
-      <div className="p-3 border border-[#1f2533] bg-[#0c0e14] space-y-3">
-        <div className="flex items-center justify-between border-b border-[#1f2533] pb-2">
+      <div className="p-3 border border-[#443849] bg-[#2A2432] space-y-3">
+        <div className="flex items-center justify-between border-b border-[#443849] pb-2">
           <div>
-            <span className="text-xs font-bold text-white uppercase">
+            <span className="text-xs font-bold text-[#F4EFF6] uppercase">
               5. HIGH-CONFIDENCE ERROR RECORDS (TOP {highConfErrors.length} PRIORITIZED)
             </span>
-            <span className="text-[10px] text-[#64748b] ml-2">
+            <span className="text-[10px] text-[#8E8295] ml-2">
               DETERMINISTIC RANKING BY CONFIDENCE &amp; THRESHOLD DISTANCE
             </span>
           </div>
-          <span className="text-[10px] text-[#64748b]">CLICK ROW FOR DOSSIER</span>
+          <span className="text-[10px] text-[#8E8295]">CLICK ROW FOR DOSSIER</span>
         </div>
 
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse text-[11px]">
             <thead>
-              <tr className="border-b border-[#1f2533] text-[#64748b]">
+              <tr className="border-b border-[#443849] text-[#8E8295]">
                 <th className="py-1.5 px-2">ROW ID</th>
                 <th className="py-1.5 px-2">ERROR TYPE</th>
                 <th className="py-1.5 px-2">ACTUAL</th>
@@ -556,32 +556,32 @@ export const ErrorForensicsView: React.FC<ErrorForensicsViewProps> = ({
                 <th className="py-1.5 px-2">ACTION</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-[#161b26]">
+            <tbody className="divide-y divide-[#443849]">
               {highConfErrors.map((rec, i) => (
                 <tr
                   key={i}
                   onClick={() => setSelectedRecord(rec)}
                   className={`cursor-pointer transition-colors ${
-                    selectedRecord?.stableRowIndex === rec.stableRowIndex ? "bg-[#182236] border-l-2 border-[#3b82f6]" : "hover:bg-[#12161f]"
+                    selectedRecord?.stableRowIndex === rec.stableRowIndex ? "bg-[#332B3C] border-l-2 border-[#F18B78]" : "hover:bg-[#332B3C]"
                   }`}
                 >
-                  <td className="py-1.5 px-2 font-mono text-[#38bdf8] font-bold">#{rec.stableRowIndex}</td>
+                  <td className="py-1.5 px-2 font-mono text-[#F18B78] font-bold">#{rec.stableRowIndex}</td>
                   <td className="py-1.5 px-2">
                     <span className={`px-1.5 py-0.2 text-[9px] font-bold rounded ${
-                      rec.errorType === "FALSE_POSITIVE" ? "bg-[#f59e0b]/20 text-[#fbbf24] border border-[#f59e0b]/40" : "bg-[#ef4444]/20 text-[#f87171] border border-[#ef4444]/40"
+                      rec.errorType === "FALSE_POSITIVE" ? "bg-[#E8B66D]/20 text-[#E8B66D] border border-[#E8B66D]/40" : "bg-[#F18B78]/20 text-[#F18B78] border border-[#F18B78]/40"
                     }`}>
                       {rec.errorType}
                     </span>
                   </td>
-                  <td className="py-1.5 px-2 text-white font-bold">{rec.actualClass}</td>
-                  <td className="py-1.5 px-2 text-[#94a3b8]">{rec.predictedClass}</td>
-                  <td className="py-1.5 px-2 font-mono tabular-nums text-white">
+                  <td className="py-1.5 px-2 text-[#F4EFF6] font-bold">{rec.actualClass}</td>
+                  <td className="py-1.5 px-2 text-[#B7ACBD]">{rec.predictedClass}</td>
+                  <td className="py-1.5 px-2 font-mono tabular-nums text-[#F4EFF6]">
                     {rec.predictedProbability?.toFixed(4)}
                   </td>
-                  <td className="py-1.5 px-2 font-mono tabular-nums text-[#f59e0b] font-bold">
+                  <td className="py-1.5 px-2 font-mono tabular-nums text-[#E8B66D] font-bold">
                     {(rec.confidence * 100).toFixed(1)}%
                   </td>
-                  <td className="py-1.5 px-2 font-mono tabular-nums text-[#38bdf8] font-bold">
+                  <td className="py-1.5 px-2 font-mono tabular-nums text-[#F18B78] font-bold">
                     {rec.forensicPriority?.toFixed(4)}
                   </td>
                   <td className="py-1.5 px-2">
@@ -590,7 +590,7 @@ export const ErrorForensicsView: React.FC<ErrorForensicsViewProps> = ({
                         e.stopPropagation();
                         setSelectedRecord(rec);
                       }}
-                      className="px-2 py-0.5 bg-[#141822] hover:bg-[#1a202c] text-[#38bdf8] border border-[#222633] text-[10px]"
+                      className="px-2 py-0.5 bg-[#332B3C] hover:bg-[#443849] text-[#F18B78] border border-[#443849] text-[10px] font-bold"
                     >
                       INSPECT
                     </button>
@@ -603,34 +603,34 @@ export const ErrorForensicsView: React.FC<ErrorForensicsViewProps> = ({
 
         {/* Selected Record Inspector Slide-over */}
         {selectedRecord && (
-          <div className="p-3 bg-[#0e1117] border border-[#3b82f6]/40 space-y-2 mt-2">
-            <div className="flex items-center justify-between border-b border-[#1f2533] pb-1.5">
-              <span className="text-xs font-bold text-white uppercase">
+          <div className="p-3 bg-[#1C1824] border border-[#F18B78]/40 space-y-2 mt-2">
+            <div className="flex items-center justify-between border-b border-[#443849] pb-1.5">
+              <span className="text-xs font-bold text-[#F4EFF6] uppercase">
                 RECORD #{selectedRecord.stableRowIndex} EVIDENCE DOSSIER
               </span>
               <button
                 onClick={() => setSelectedRecord(null)}
-                className="text-[#64748b] hover:text-white text-xs font-bold"
+                className="text-[#8E8295] hover:text-[#F4EFF6] text-xs font-bold"
               >
                 ✕ CLOSE
               </button>
             </div>
 
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-[10px]">
-              <div><span className="text-[#64748b]">ACTUAL CLASS:</span> <span className="text-white font-bold">{selectedRecord.actualClass}</span></div>
-              <div><span className="text-[#64748b]">PREDICTED PROB:</span> <span className="text-[#38bdf8] font-bold">{selectedRecord.predictedProbability?.toFixed(4)}</span></div>
-              <div><span className="text-[#64748b]">CONFIDENCE:</span> <span className="text-[#f59e0b] font-bold">{(selectedRecord.confidence * 100).toFixed(1)}%</span></div>
-              <div><span className="text-[#64748b]">ERROR TYPE:</span> <span className="text-[#f87171] font-bold">{selectedRecord.errorType}</span></div>
+              <div><span className="text-[#8E8295]">ACTUAL CLASS:</span> <span className="text-[#F4EFF6] font-bold">{selectedRecord.actualClass}</span></div>
+              <div><span className="text-[#8E8295]">PREDICTED PROB:</span> <span className="text-[#F18B78] font-bold">{selectedRecord.predictedProbability?.toFixed(4)}</span></div>
+              <div><span className="text-[#8E8295]">CONFIDENCE:</span> <span className="text-[#E8B66D] font-bold">{(selectedRecord.confidence * 100).toFixed(1)}%</span></div>
+              <div><span className="text-[#8E8295]">ERROR TYPE:</span> <span className="text-[#F18B78] font-bold">{selectedRecord.errorType}</span></div>
             </div>
 
             {selectedRecord.keyAssociatedFeatures && (
-              <div className="pt-2 border-t border-[#1f2533]">
-                <div className="text-[10px] text-[#94a3b8] font-bold mb-1">KEY FEATURE VALUES:</div>
+              <div className="pt-2 border-t border-[#443849]">
+                <div className="text-[10px] text-[#B7ACBD] font-bold mb-1">KEY FEATURE VALUES:</div>
                 <div className="flex flex-wrap gap-2">
                   {Object.entries(selectedRecord.keyAssociatedFeatures).map(([k, v]) => (
-                    <div key={k} className="px-2 py-1 bg-[#141822] border border-[#1f2533] text-[10px]">
-                      <span className="text-[#64748b]">{k}: </span>
-                      <span className="text-white font-mono font-bold">{String(v)}</span>
+                    <div key={k} className="px-2 py-1 bg-[#332B3C] border border-[#443849] text-[10px]">
+                      <span className="text-[#8E8295]">{k}: </span>
+                      <span className="text-[#F4EFF6] font-mono font-bold">{String(v)}</span>
                     </div>
                   ))}
                 </div>
@@ -641,19 +641,19 @@ export const ErrorForensicsView: React.FC<ErrorForensicsViewProps> = ({
       </div>
 
       {/* 7. Threshold Error Tradeoff & Sensitivity Analysis */}
-      <div className="p-3 border border-[#1f2533] bg-[#0c0e14] space-y-3">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-[#1f2533] pb-2">
+      <div className="p-3 border border-[#443849] bg-[#2A2432] space-y-3">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-[#443849] pb-2">
           <div>
-            <span className="text-xs font-bold text-white uppercase">
+            <span className="text-xs font-bold text-[#F4EFF6] uppercase">
               6. THRESHOLD SENSITIVITY &amp; ERROR BURDEN SHIFT
             </span>
-            <span className="text-[10px] text-[#64748b] ml-2">
+            <span className="text-[10px] text-[#8E8295] ml-2">
               EXAMINE FP vs FN TRADEOFFS ACROSS 21 DECISION THRESHOLDS
             </span>
           </div>
 
           <div className="flex items-center gap-2">
-            <span className="text-[10px] text-[#64748b]">THRESHOLD:</span>
+            <span className="text-[10px] text-[#8E8295]">THRESHOLD:</span>
             <input
               type="range"
               min="0.05"
@@ -661,39 +661,39 @@ export const ErrorForensicsView: React.FC<ErrorForensicsViewProps> = ({
               step="0.05"
               value={selectedThresholdVal}
               onChange={(e) => setSelectedThresholdVal(parseFloat(e.target.value))}
-              className="w-32 accent-[#3b82f6] cursor-pointer"
+              className="w-32 accent-[#F18B78] cursor-pointer"
             />
-            <span className="text-xs text-white font-bold font-mono">
+            <span className="text-xs text-[#F4EFF6] font-bold font-mono">
               {selectedThresholdVal.toFixed(2)}
             </span>
           </div>
         </div>
 
         {/* Active Threshold KPI Banner */}
-        <div className="p-2.5 bg-[#12161f] border border-[#1f2533] grid grid-cols-2 sm:grid-cols-6 gap-2 text-center">
+        <div className="p-2.5 bg-[#332B3C] border border-[#443849] grid grid-cols-2 sm:grid-cols-6 gap-2 text-center">
           <div>
-            <div className="text-[9px] text-[#64748b]">PRECISION</div>
-            <div className="text-sm font-bold text-white">{activeThresholdPoint?.precision?.toFixed(3)}</div>
+            <div className="text-[9px] text-[#8E8295]">PRECISION</div>
+            <div className="text-sm font-bold text-[#F4EFF6]">{activeThresholdPoint?.precision?.toFixed(3)}</div>
           </div>
           <div>
-            <div className="text-[9px] text-[#64748b]">RECALL (TPR)</div>
-            <div className="text-sm font-bold text-white">{activeThresholdPoint?.recall?.toFixed(3)}</div>
+            <div className="text-[9px] text-[#8E8295]">RECALL (TPR)</div>
+            <div className="text-sm font-bold text-[#F4EFF6]">{activeThresholdPoint?.recall?.toFixed(3)}</div>
           </div>
           <div>
-            <div className="text-[9px] text-[#64748b]">F1 SCORE</div>
-            <div className="text-sm font-bold text-[#38bdf8]">{activeThresholdPoint?.f1?.toFixed(3)}</div>
+            <div className="text-[9px] text-[#8E8295]">F1 SCORE</div>
+            <div className="text-sm font-bold text-[#B7D7A8]">{activeThresholdPoint?.f1?.toFixed(3)}</div>
           </div>
           <div>
-            <div className="text-[9px] text-[#64748b]">FALSE POSITIVES</div>
-            <div className="text-sm font-bold text-[#f59e0b]">{activeThresholdPoint?.falsePositive?.toLocaleString()}</div>
+            <div className="text-[9px] text-[#8E8295]">FALSE POSITIVES</div>
+            <div className="text-sm font-bold text-[#E8B66D]">{activeThresholdPoint?.falsePositive?.toLocaleString()}</div>
           </div>
           <div>
-            <div className="text-[9px] text-[#64748b]">FALSE NEGATIVES</div>
-            <div className="text-sm font-bold text-[#ef4444]">{activeThresholdPoint?.falseNegative?.toLocaleString()}</div>
+            <div className="text-[9px] text-[#8E8295]">FALSE NEGATIVES</div>
+            <div className="text-sm font-bold text-[#F18B78]">{activeThresholdPoint?.falseNegative?.toLocaleString()}</div>
           </div>
           <div>
-            <div className="text-[9px] text-[#64748b]">FPR / FNR</div>
-            <div className="text-sm font-bold text-[#94a3b8]">
+            <div className="text-[9px] text-[#8E8295]">FPR / FNR</div>
+            <div className="text-sm font-bold text-[#B7ACBD]">
               {(activeThresholdPoint?.falsePositiveRate * 100).toFixed(1)}% / {(activeThresholdPoint?.falseNegativeRate * 100).toFixed(1)}%
             </div>
           </div>
@@ -702,7 +702,7 @@ export const ErrorForensicsView: React.FC<ErrorForensicsViewProps> = ({
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse text-[10px]">
             <thead>
-              <tr className="border-b border-[#1f2533] text-[#64748b]">
+              <tr className="border-b border-[#443849] text-[#8E8295]">
                 <th className="py-1 px-2">THRESHOLD</th>
                 <th className="py-1 px-2">TP</th>
                 <th className="py-1 px-2">TN</th>
@@ -716,7 +716,7 @@ export const ErrorForensicsView: React.FC<ErrorForensicsViewProps> = ({
                 <th className="py-1 px-2">FNR</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-[#161b26]">
+            <tbody className="divide-y divide-[#443849]">
               {thresholdGrid.map((tp, idx) => {
                 const isSelected = Math.abs(tp.threshold - selectedThresholdVal) < 0.03;
                 return (
@@ -724,18 +724,18 @@ export const ErrorForensicsView: React.FC<ErrorForensicsViewProps> = ({
                     key={idx}
                     onClick={() => setSelectedThresholdVal(tp.threshold)}
                     className={`cursor-pointer transition-colors ${
-                      isSelected ? "bg-[#182236] font-bold text-white" : "hover:bg-[#12161f] text-[#94a3b8]"
+                      isSelected ? "bg-[#332B3C] font-bold text-[#F4EFF6]" : "hover:bg-[#332B3C] text-[#B7ACBD]"
                     }`}
                   >
-                    <td className="py-1 px-2 font-mono text-[#38bdf8]">{tp.threshold?.toFixed(2)}</td>
+                    <td className="py-1 px-2 font-mono text-[#F18B78]">{tp.threshold?.toFixed(2)}</td>
                     <td className="py-1 px-2 tabular-nums">{tp.truePositive?.toLocaleString()}</td>
                     <td className="py-1 px-2 tabular-nums">{tp.trueNegative?.toLocaleString()}</td>
-                    <td className="py-1 px-2 tabular-nums text-[#f59e0b]">{tp.falsePositive?.toLocaleString()}</td>
-                    <td className="py-1 px-2 tabular-nums text-[#ef4444]">{tp.falseNegative?.toLocaleString()}</td>
+                    <td className="py-1 px-2 tabular-nums text-[#E8B66D]">{tp.falsePositive?.toLocaleString()}</td>
+                    <td className="py-1 px-2 tabular-nums text-[#F18B78]">{tp.falseNegative?.toLocaleString()}</td>
                     <td className="py-1 px-2 tabular-nums">{tp.precision?.toFixed(3)}</td>
                     <td className="py-1 px-2 tabular-nums">{tp.recall?.toFixed(3)}</td>
                     <td className="py-1 px-2 tabular-nums">{tp.specificity?.toFixed(3)}</td>
-                    <td className="py-1 px-2 tabular-nums text-white font-bold">{tp.f1?.toFixed(3)}</td>
+                    <td className="py-1 px-2 tabular-nums text-[#B7D7A8] font-bold">{tp.f1?.toFixed(3)}</td>
                     <td className="py-1 px-2 tabular-nums">{(tp.falsePositiveRate * 100).toFixed(1)}%</td>
                     <td className="py-1 px-2 tabular-nums">{(tp.falseNegativeRate * 100).toFixed(1)}%</td>
                   </tr>
@@ -747,17 +747,17 @@ export const ErrorForensicsView: React.FC<ErrorForensicsViewProps> = ({
       </div>
 
       {/* 8. Subgroup Error Disparity & Reliability Gaps */}
-      <div className="p-3 border border-[#1f2533] bg-[#0c0e14] space-y-3">
-        <div className="flex items-center justify-between border-b border-[#1f2533] pb-2">
+      <div className="p-3 border border-[#443849] bg-[#2A2432] space-y-3">
+        <div className="flex items-center justify-between border-b border-[#443849] pb-2">
           <div>
-            <span className="text-xs font-bold text-white uppercase">
+            <span className="text-xs font-bold text-[#F4EFF6] uppercase">
               7. SUBGROUP ERROR DISPARITY FORENSICS
             </span>
-            <span className="text-[10px] text-[#64748b] ml-2">
+            <span className="text-[10px] text-[#8E8295] ml-2">
               95% WILSON SCORE CONFIDENCE INTERVALS REUSING BIAS SUBGROUP DEFINITIONS
             </span>
           </div>
-          <span className="text-[10px] text-[#64748b]">
+          <span className="text-[10px] text-[#8E8295]">
             SEE BIAS MODULE FOR FAIRNESS METRICS
           </span>
         </div>
@@ -765,7 +765,7 @@ export const ErrorForensicsView: React.FC<ErrorForensicsViewProps> = ({
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse text-[11px]">
             <thead>
-              <tr className="border-b border-[#1f2533] text-[#64748b]">
+              <tr className="border-b border-[#443849] text-[#8E8295]">
                 <th className="py-1.5 px-2">SUBGROUP</th>
                 <th className="py-1.5 px-2">SAMPLE SIZE (N)</th>
                 <th className="py-1.5 px-2">ERROR COUNT</th>
@@ -777,26 +777,26 @@ export const ErrorForensicsView: React.FC<ErrorForensicsViewProps> = ({
                 <th className="py-1.5 px-2">DISPARITY RATIO</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-[#161b26]">
+            <tbody className="divide-y divide-[#443849]">
               {subgroupAnalysis.map((sg, i) => (
-                <tr key={i} className="hover:bg-[#12161f] transition-colors">
-                  <td className="py-1.5 px-2 text-white font-bold uppercase">{sg.group}</td>
-                  <td className="py-1.5 px-2 text-[#94a3b8] tabular-nums">{sg.sampleCount?.toLocaleString()}</td>
-                  <td className="py-1.5 px-2 text-white font-bold tabular-nums">{sg.errorCount?.toLocaleString()}</td>
+                <tr key={i} className="hover:bg-[#332B3C] transition-colors">
+                  <td className="py-1.5 px-2 text-[#F4EFF6] font-bold uppercase">{sg.group}</td>
+                  <td className="py-1.5 px-2 text-[#B7ACBD] tabular-nums">{sg.sampleCount?.toLocaleString()}</td>
+                  <td className="py-1.5 px-2 text-[#F4EFF6] font-bold tabular-nums">{sg.errorCount?.toLocaleString()}</td>
                   <td className="py-1.5 px-2 tabular-nums">
-                    <span className={`font-bold ${sg.errorRate >= 0.05 ? "text-[#ef4444]" : "text-[#10b981]"}`}>
+                    <span className={`font-bold ${sg.errorRate >= 0.05 ? "text-[#F18B78]" : "text-[#B7D7A8]"}`}>
                       {(sg.errorRate * 100).toFixed(2)}%
                     </span>
                   </td>
-                  <td className="py-1.5 px-2 text-[#64748b] font-mono">
+                  <td className="py-1.5 px-2 text-[#8E8295] font-mono">
                     [{(sg.wilsonCiLower * 100).toFixed(2)}%, {(sg.wilsonCiUpper * 100).toFixed(2)}%]
                   </td>
-                  <td className="py-1.5 px-2 text-[#f59e0b] tabular-nums">{(sg.falsePositiveRate * 100).toFixed(2)}%</td>
-                  <td className="py-1.5 px-2 text-[#ef4444] tabular-nums">{(sg.falseNegativeRate * 100).toFixed(2)}%</td>
-                  <td className="py-1.5 px-2 text-[#38bdf8] tabular-nums">{(sg.highConfidenceErrorRate * 100).toFixed(2)}%</td>
+                  <td className="py-1.5 px-2 text-[#E8B66D] tabular-nums">{(sg.falsePositiveRate * 100).toFixed(2)}%</td>
+                  <td className="py-1.5 px-2 text-[#F18B78] tabular-nums">{(sg.falseNegativeRate * 100).toFixed(2)}%</td>
+                  <td className="py-1.5 px-2 text-[#F18B78] tabular-nums">{(sg.highConfidenceErrorRate * 100).toFixed(2)}%</td>
                   <td className="py-1.5 px-2 tabular-nums">
                     <span className={`px-1.5 py-0.2 text-[9px] font-bold rounded ${
-                      sg.disparityRatio >= 1.5 ? "bg-[#ef4444]/20 text-[#f87171] border border-[#ef4444]/40" : "bg-[#10b981]/10 text-[#10b981]"
+                      sg.disparityRatio >= 1.5 ? "bg-[#F18B78]/20 text-[#F18B78] border border-[#F18B78]/40" : "bg-[#B7D7A8]/10 text-[#B7D7A8]"
                     }`}>
                       {sg.disparityRatio?.toFixed(2)}x
                     </span>
@@ -810,12 +810,12 @@ export const ErrorForensicsView: React.FC<ErrorForensicsViewProps> = ({
 
       {/* 9. Forensic Findings Dossier */}
       {findings.length > 0 && (
-        <div className="p-3 border border-[#1f2533] bg-[#0c0e14] space-y-2">
-          <div className="flex items-center justify-between border-b border-[#1f2533] pb-2">
-            <span className="text-xs font-bold text-white uppercase">
+        <div className="p-3 border border-[#443849] bg-[#2A2432] space-y-2">
+          <div className="flex items-center justify-between border-b border-[#443849] pb-2">
+            <span className="text-xs font-bold text-[#F4EFF6] uppercase">
               8. DETERMINISTIC ERROR FORENSIC FINDINGS
             </span>
-            <span className="text-[10px] text-[#64748b]">
+            <span className="text-[10px] text-[#8E8295]">
               {findings.length} FINDINGS DETECTED
             </span>
           </div>
@@ -824,28 +824,28 @@ export const ErrorForensicsView: React.FC<ErrorForensicsViewProps> = ({
             {findings.map((f, i) => (
               <div
                 key={i}
-                className="p-2.5 bg-[#12161f] border border-[#1f2533] space-y-1.5"
+                className="p-2.5 bg-[#332B3C] border border-[#443849] space-y-1.5"
               >
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <span className={`px-1.5 py-0.2 text-[9px] font-bold ${
-                      f.severity === "CRITICAL" ? "bg-[#ef4444] text-black" : f.severity === "HIGH" ? "bg-[#f59e0b] text-black" : "bg-[#3b82f6] text-black"
+                      f.severity === "CRITICAL" ? "bg-[#F18B78] text-[#211D29]" : f.severity === "HIGH" ? "bg-[#E8B66D] text-[#211D29]" : "bg-[#B7D7A8] text-[#211D29]"
                     }`}>
                       {f.severity}
                     </span>
-                    <span className="text-xs font-bold text-white">{f.title}</span>
+                    <span className="text-xs font-bold text-[#F4EFF6]">{f.title}</span>
                   </div>
-                  <span className="text-[10px] text-[#64748b] font-mono">{f.findingId}</span>
+                  <span className="text-[10px] text-[#8E8295] font-mono">{f.findingId}</span>
                 </div>
-                <p className="text-xs text-[#cbd5e1]">{f.summary}</p>
+                <p className="text-xs text-[#B7ACBD]">{f.summary}</p>
                 {f.whyItMatters && (
-                  <div className="text-[10px] text-[#94a3b8]">
-                    <span className="text-[#64748b] font-bold">WHY IT MATTERS: </span>
+                  <div className="text-[10px] text-[#B7ACBD]">
+                    <span className="text-[#8E8295] font-bold">WHY IT MATTERS: </span>
                     {f.whyItMatters}
                   </div>
                 )}
                 {f.evidence && (
-                  <div className="text-[10px] text-[#64748b] font-mono bg-[#090b0e] p-1.5 rounded border border-[#181d28]">
+                  <div className="text-[10px] text-[#8E8295] font-mono bg-[#1C1824] p-1.5 rounded border border-[#443849]">
                     EVIDENCE: {JSON.stringify(f.evidence)}
                   </div>
                 )}
@@ -857,3 +857,4 @@ export const ErrorForensicsView: React.FC<ErrorForensicsViewProps> = ({
     </div>
   );
 };
+

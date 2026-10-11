@@ -105,60 +105,60 @@ export const TemporalView: React.FC<TemporalViewProps> = ({
   const getSeverityBadge = (severity: string) => {
     switch (severity?.toUpperCase()) {
       case "CRITICAL":
-        return "bg-rose-950/80 text-rose-300 border-rose-800/80";
+        return "bg-[#F18B78]/20 text-[#F18B78] border-[#F18B78]/40";
       case "HIGH":
       case "WARNING":
-        return "bg-amber-950/80 text-amber-300 border-amber-800/80";
+        return "bg-[#E8B66D]/20 text-[#E8B66D] border-[#E8B66D]/40";
       case "MEDIUM":
       case "OBSERVATION":
-        return "bg-yellow-950/80 text-yellow-300 border-yellow-800/80";
+        return "bg-[#E8B66D]/15 text-[#E8B66D] border-[#E8B66D]/30";
       case "LOW":
       case "NOMINAL":
       case "RECOVERED":
-        return "bg-emerald-950/80 text-emerald-300 border-emerald-800/80";
+        return "bg-[#B7D7A8]/20 text-[#B7D7A8] border-[#B7D7A8]/40";
       default:
-        return "bg-slate-900 text-slate-400 border-slate-700";
+        return "bg-[#332B3C] text-[#B7ACBD] border-[#443849]";
     }
   };
 
   const getStatusBadge = (status: string) => {
     switch (status?.toUpperCase()) {
       case "PERSISTENT":
-        return "bg-purple-950/80 text-purple-300 border-purple-800/80";
+        return "bg-[#332B3C] text-[#B7ACBD] border-[#443849]";
       case "EMERGING":
-        return "bg-cyan-950/80 text-cyan-300 border-cyan-800/80";
+        return "bg-[#F18B78]/20 text-[#F18B78] border-[#F18B78]/40";
       case "RECURRING":
-        return "bg-orange-950/80 text-orange-300 border-orange-800/80";
+        return "bg-[#E8B66D]/20 text-[#E8B66D] border-[#E8B66D]/40";
       case "ESCALATING":
-        return "bg-rose-950/80 text-rose-300 border-rose-800/80";
+        return "bg-[#F18B78]/25 text-[#F18B78] border-[#F18B78]/50";
       case "RECOVERED":
-        return "bg-emerald-950/80 text-emerald-300 border-emerald-800/80";
+        return "bg-[#B7D7A8]/20 text-[#B7D7A8] border-[#B7D7A8]/40";
       case "TRANSIENT":
-        return "bg-slate-900 text-slate-400 border-slate-700";
+        return "bg-[#1C1824] text-[#8E8295] border-[#443849]";
       default:
-        return "bg-zinc-900 text-zinc-400 border-zinc-700";
+        return "bg-[#2A2432] text-[#8E8295] border-[#443849]";
     }
   };
 
   const getDurabilityBadge = (status: string) => {
     switch (status?.toUpperCase()) {
       case "SUSTAINED":
-        return "bg-emerald-950/80 text-emerald-300 border-emerald-800/80";
+        return "bg-[#B7D7A8]/20 text-[#B7D7A8] border-[#B7D7A8]/40";
       case "TEMPORARY":
       case "FAILED_TO_SUSTAIN":
-        return "bg-rose-950/80 text-rose-300 border-rose-800/80";
+        return "bg-[#F18B78]/20 text-[#F18B78] border-[#F18B78]/40";
       case "INSUFFICIENT_FOLLOWUP":
-        return "bg-amber-950/80 text-amber-300 border-amber-800/80";
+        return "bg-[#E8B66D]/20 text-[#E8B66D] border-[#E8B66D]/40";
       default:
-        return "bg-slate-900 text-slate-400 border-slate-700";
+        return "bg-[#332B3C] text-[#8E8295] border-[#443849]";
     }
   };
 
   if (isLoading && !history) {
     return (
       <div className="flex h-96 items-center justify-center">
-        <div className="flex flex-col items-center gap-3 text-slate-400">
-          <div className="h-8 w-8 animate-spin rounded-full border-2 border-cyan-500 border-t-transparent" />
+        <div className="flex flex-col items-center gap-3 text-[#B7ACBD]">
+          <div className="h-8 w-8 animate-spin rounded-full border-2 border-[#F18B78] border-t-transparent" />
           <span className="font-mono text-xs tracking-wider uppercase">Loading Temporal Intelligence...</span>
         </div>
       </div>
@@ -166,38 +166,38 @@ export const TemporalView: React.FC<TemporalViewProps> = ({
   }
 
   return (
-    <div className="space-y-6 pb-12">
+    <div className="space-y-6 pb-12 font-mono text-xs text-[#F4EFF6]">
       {/* 1. Header & Non-Causality Banner */}
-      <div className="flex flex-col gap-3 rounded-lg border border-slate-800 bg-slate-900/60 p-5 backdrop-blur">
+      <div className="flex flex-col gap-3 rounded-lg border border-[#443849] bg-[#2A2432] p-5 backdrop-blur">
         <div className="flex flex-wrap items-center justify-between gap-4">
           <div>
             <div className="flex items-center gap-3">
-              <div className="flex h-7 w-7 items-center justify-center rounded border border-cyan-500/40 bg-cyan-950/40 text-xs font-mono font-bold text-cyan-400">
+              <div className="flex h-7 w-7 items-center justify-center rounded border border-[#F18B78]/40 bg-[#332B3C] text-xs font-mono font-bold text-[#F18B78]">
                 09
               </div>
-              <h1 className="font-mono text-xl font-bold tracking-tight text-slate-100">
+              <h1 className="font-mono text-xl font-bold tracking-tight text-[#F4EFF6]">
                 TEMPORAL INTELLIGENCE & LONGITUDINAL MONITORING
               </h1>
             </div>
-            <p className="mt-1 font-mono text-xs text-slate-400">
+            <p className="mt-1 font-mono text-xs text-[#B7ACBD]">
               Model Lineage:{" "}
-              <span className="text-cyan-300 font-semibold">{history?.modelLineageId || "Unknown Lineage"}</span>{" "}
+              <span className="text-[#F18B78] font-semibold">{history?.modelLineageId || "Unknown Lineage"}</span>{" "}
               — Multi-Run Temporal Signals, Step Change-Points, Issue Tracks, and Durability Verification
             </p>
           </div>
 
           <div className="flex flex-wrap items-center gap-3">
             {/* Window selector */}
-            <div className="flex items-center rounded border border-slate-700 bg-slate-800/80 p-1 text-xs font-mono">
-              <span className="px-2 text-slate-400">WINDOW:</span>
+            <div className="flex items-center rounded border border-[#443849] bg-[#1C1824] p-1 text-xs font-mono">
+              <span className="px-2 text-[#8E8295]">WINDOW:</span>
               {["LAST_3", "LAST_5", "LAST_10", "ALL_AVAILABLE"].map((win) => (
                 <button
                   key={win}
                   onClick={() => setSelectedWindow(win)}
-                  className={`rounded px-2.5 py-1 transition ${
+                  className={`rounded px-2.5 py-1 transition cursor-pointer ${
                     selectedWindow === win
-                      ? "bg-cyan-600 font-bold text-white shadow"
-                      : "text-slate-400 hover:text-slate-200"
+                      ? "bg-[#F18B78] font-bold text-[#211D29] shadow"
+                      : "text-[#B7ACBD] hover:text-[#F4EFF6]"
                   }`}
                 >
                   {win.replace("_", " ")}
@@ -208,13 +208,13 @@ export const TemporalView: React.FC<TemporalViewProps> = ({
             {/* Experiment Overlay Toggle */}
             <button
               onClick={() => setShowExperiments(!showExperiments)}
-              className={`flex items-center gap-2 rounded border px-3 py-1.5 font-mono text-xs transition ${
+              className={`flex items-center gap-2 rounded border px-3 py-1.5 font-mono text-xs transition cursor-pointer ${
                 showExperiments
-                  ? "border-purple-500 bg-purple-950/60 text-purple-200"
-                  : "border-slate-700 bg-slate-800/80 text-slate-400 hover:text-slate-200"
+                  ? "border-[#F18B78]/50 bg-[#332B3C] text-[#F18B78]"
+                  : "border-[#443849] bg-[#1C1824] text-[#B7ACBD] hover:text-[#F4EFF6]"
               }`}
             >
-              <div className={`h-2 w-2 rounded-full ${showExperiments ? "bg-purple-400" : "bg-slate-500"}`} />
+              <div className={`h-2 w-2 rounded-full ${showExperiments ? "bg-[#F18B78]" : "bg-[#8E8295]"}`} />
               EXPERIMENT OVERLAY
             </button>
 
@@ -222,11 +222,11 @@ export const TemporalView: React.FC<TemporalViewProps> = ({
             <button
               onClick={handleRecalculate}
               disabled={isRecalculating}
-              className="flex items-center gap-2 rounded border border-cyan-500/50 bg-cyan-950/40 px-3.5 py-1.5 font-mono text-xs font-semibold text-cyan-300 hover:bg-cyan-900/50 disabled:opacity-50"
+              className="flex items-center gap-2 rounded border border-[#F18B78]/40 bg-[#F18B78] hover:bg-[#F39C8B] px-3.5 py-1.5 font-mono text-xs font-bold text-[#211D29] disabled:opacity-50 cursor-pointer transition-colors"
             >
               {isRecalculating ? (
                 <>
-                  <div className="h-3 w-3 animate-spin rounded-full border border-cyan-300 border-t-transparent" />
+                  <div className="h-3 w-3 animate-spin rounded-full border border-[#211D29] border-t-transparent" />
                   RECALCULATING...
                 </>
               ) : (
@@ -242,21 +242,21 @@ export const TemporalView: React.FC<TemporalViewProps> = ({
         </div>
 
         {/* Associative Non-Causality Banner */}
-        <div className="flex items-center gap-2 rounded border border-cyan-900/40 bg-cyan-950/20 px-3 py-1.5 text-xs font-mono text-cyan-300/90">
-          <span className="font-bold text-cyan-400">[MONITORING DIRECTIVE]</span>
+        <div className="flex items-center gap-2 rounded border border-[#443849] bg-[#1C1824] px-3 py-1.5 text-xs font-mono text-[#B7ACBD]">
+          <span className="font-bold text-[#F18B78]">[MONITORING DIRECTIVE]</span>
           <span>
             Temporal observations reflect deterministic longitudinal associations. Temporal ordering alone does not establish causal direction. Provenance is preserved for all historical runs.
           </span>
         </div>
 
         {statusNotification && (
-          <div className="rounded border border-emerald-900/40 bg-emerald-950/30 px-3 py-2 font-mono text-xs text-emerald-300">
+          <div className="rounded border border-[#B7D7A8]/40 bg-[#B7D7A8]/10 px-3 py-2 font-mono text-xs text-[#B7D7A8]">
             {statusNotification}
           </div>
         )}
 
         {errorMessage && (
-          <div className="rounded border border-rose-900/40 bg-rose-950/30 px-3 py-2 font-mono text-xs text-rose-300">
+          <div className="rounded border border-[#F18B78]/40 bg-[#F18B78]/10 px-3 py-2 font-mono text-xs text-[#F18B78]">
             {errorMessage}
           </div>
         )}
@@ -264,59 +264,59 @@ export const TemporalView: React.FC<TemporalViewProps> = ({
 
       {/* 2. Top HUD Metrics */}
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 lg:grid-cols-7">
-        <div className="rounded-lg border border-slate-800 bg-slate-900/50 p-3 text-center">
-          <div className="font-mono text-[10px] uppercase tracking-wider text-slate-400">Runs Observed</div>
-          <div className="mt-1 font-mono text-2xl font-bold text-slate-100">{history?.totalRunsCount || 0}</div>
-          <div className="font-mono text-[10px] text-slate-400">
+        <div className="rounded-lg border border-[#443849] bg-[#2A2432] p-3 text-center">
+          <div className="font-mono text-[10px] uppercase tracking-wider text-[#8E8295]">Runs Observed</div>
+          <div className="mt-1 font-mono text-2xl font-bold text-[#F4EFF6]">{history?.totalRunsCount || 0}</div>
+          <div className="font-mono text-[10px] text-[#8E8295]">
             {history?.baselineRunsCount || 0} base / {history?.experimentRunsCount || 0} exp
           </div>
         </div>
 
-        <div className="rounded-lg border border-slate-800 bg-slate-900/50 p-3 text-center">
-          <div className="font-mono text-[10px] uppercase tracking-wider text-slate-400">Active Issues</div>
-          <div className="mt-1 font-mono text-2xl font-bold text-amber-400">{history?.activeIssuesCount || 0}</div>
-          <div className="font-mono text-[10px] text-slate-400">unresolved tracks</div>
+        <div className="rounded-lg border border-[#443849] bg-[#2A2432] p-3 text-center">
+          <div className="font-mono text-[10px] uppercase tracking-wider text-[#8E8295]">Active Issues</div>
+          <div className="mt-1 font-mono text-2xl font-bold text-[#E8B66D]">{history?.activeIssuesCount || 0}</div>
+          <div className="font-mono text-[10px] text-[#8E8295]">unresolved tracks</div>
         </div>
 
-        <div className="rounded-lg border border-slate-800 bg-slate-900/50 p-3 text-center">
-          <div className="font-mono text-[10px] uppercase tracking-wider text-slate-400">Persistent</div>
-          <div className="mt-1 font-mono text-2xl font-bold text-purple-400">{history?.persistentIssuesCount || 0}</div>
-          <div className="font-mono text-[10px] text-slate-400">≥3 consecutive runs</div>
+        <div className="rounded-lg border border-[#443849] bg-[#2A2432] p-3 text-center">
+          <div className="font-mono text-[10px] uppercase tracking-wider text-[#8E8295]">Persistent</div>
+          <div className="mt-1 font-mono text-2xl font-bold text-[#B7ACBD]">{history?.persistentIssuesCount || 0}</div>
+          <div className="font-mono text-[10px] text-[#8E8295]">≥3 consecutive runs</div>
         </div>
 
-        <div className="rounded-lg border border-slate-800 bg-slate-900/50 p-3 text-center">
-          <div className="font-mono text-[10px] uppercase tracking-wider text-slate-400">Emerging</div>
-          <div className="mt-1 font-mono text-2xl font-bold text-cyan-400">{history?.emergingIssuesCount || 0}</div>
-          <div className="font-mono text-[10px] text-slate-400">newly observed</div>
+        <div className="rounded-lg border border-[#443849] bg-[#2A2432] p-3 text-center">
+          <div className="font-mono text-[10px] uppercase tracking-wider text-[#8E8295]">Emerging</div>
+          <div className="mt-1 font-mono text-2xl font-bold text-[#F18B78]">{history?.emergingIssuesCount || 0}</div>
+          <div className="font-mono text-[10px] text-[#8E8295]">newly observed</div>
         </div>
 
-        <div className="rounded-lg border border-slate-800 bg-slate-900/50 p-3 text-center">
-          <div className="font-mono text-[10px] uppercase tracking-wider text-slate-400">Recurring</div>
-          <div className="mt-1 font-mono text-2xl font-bold text-orange-400">{history?.recurringIssuesCount || 0}</div>
-          <div className="font-mono text-[10px] text-slate-400">returned after gap</div>
+        <div className="rounded-lg border border-[#443849] bg-[#2A2432] p-3 text-center">
+          <div className="font-mono text-[10px] uppercase tracking-wider text-[#8E8295]">Recurring</div>
+          <div className="mt-1 font-mono text-2xl font-bold text-[#E8B66D]">{history?.recurringIssuesCount || 0}</div>
+          <div className="font-mono text-[10px] text-[#8E8295]">returned after gap</div>
         </div>
 
-        <div className="rounded-lg border border-slate-800 bg-slate-900/50 p-3 text-center">
-          <div className="font-mono text-[10px] uppercase tracking-wider text-slate-400">Active Alerts</div>
-          <div className="mt-1 font-mono text-2xl font-bold text-rose-400">{history?.activeAlertsCount || 0}</div>
-          <div className="font-mono text-[10px] text-slate-400">{history?.criticalAlertsCount || 0} critical</div>
+        <div className="rounded-lg border border-[#443849] bg-[#2A2432] p-3 text-center">
+          <div className="font-mono text-[10px] uppercase tracking-wider text-[#8E8295]">Active Alerts</div>
+          <div className="mt-1 font-mono text-2xl font-bold text-[#F18B78]">{history?.activeAlertsCount || 0}</div>
+          <div className="font-mono text-[10px] text-[#8E8295]">{history?.criticalAlertsCount || 0} critical</div>
         </div>
 
-        <div className="rounded-lg border border-slate-800 bg-slate-900/50 p-3 text-center">
-          <div className="font-mono text-[10px] uppercase tracking-wider text-slate-400">Change Points</div>
-          <div className="mt-1 font-mono text-2xl font-bold text-emerald-400">{history?.changePointsCount || 0}</div>
-          <div className="font-mono text-[10px] text-slate-400">step shifts detected</div>
+        <div className="rounded-lg border border-[#443849] bg-[#2A2432] p-3 text-center">
+          <div className="font-mono text-[10px] uppercase tracking-wider text-[#8E8295]">Change Points</div>
+          <div className="mt-1 font-mono text-2xl font-bold text-[#B7D7A8]">{history?.changePointsCount || 0}</div>
+          <div className="font-mono text-[10px] text-[#8E8295]">step shifts detected</div>
         </div>
       </div>
 
       {/* 3. Model History Strip */}
-      <div className="rounded-lg border border-slate-800 bg-slate-900/60 p-4">
+      <div className="rounded-lg border border-[#443849] bg-[#2A2432] p-4">
         <div className="mb-3 flex items-center justify-between">
-          <div className="flex items-center gap-2 font-mono text-xs font-bold text-slate-300">
-            <span className="text-cyan-400">●</span> OPERATIONAL LINEAGE TIMELINE
+          <div className="flex items-center gap-2 font-mono text-xs font-bold text-[#F4EFF6]">
+            <span className="text-[#F18B78]">●</span> OPERATIONAL LINEAGE TIMELINE
           </div>
-          <div className="font-mono text-[11px] text-slate-400">
-            Current Run: <span className="font-bold text-cyan-300">{runId}</span>
+          <div className="font-mono text-[11px] text-[#B7ACBD]">
+            Current Run: <span className="font-bold text-[#F18B78]">{runId}</span>
           </div>
         </div>
 
@@ -325,36 +325,36 @@ export const TemporalView: React.FC<TemporalViewProps> = ({
             const isCurrent = r.runId === runId;
             return (
               <React.Fragment key={r.runId}>
-                {idx > 0 && <div className="h-[2px] w-6 shrink-0 bg-slate-800" />}
+                {idx > 0 && <div className="h-[2px] w-6 shrink-0 bg-[#443849]" />}
                 <div
                   className={`group relative flex shrink-0 flex-col rounded-lg border p-3 font-mono transition ${
                     isCurrent
-                      ? "border-cyan-500 bg-cyan-950/40 shadow-lg shadow-cyan-950/50"
-                      : "border-slate-800 bg-slate-900/80 hover:border-slate-700"
+                      ? "border-[#F18B78] bg-[#332B3C] shadow-lg shadow-[#F18B78]/10"
+                      : "border-[#443849] bg-[#1C1824] hover:border-[#5A4B62]"
                   }`}
                   style={{ minWidth: "160px" }}
                 >
                   <div className="flex items-center justify-between gap-2">
-                    <span className="text-[10px] text-slate-400">RUN #{idx + 1}</span>
+                    <span className="text-[10px] text-[#8E8295]">RUN #{idx + 1}</span>
                     <span
                       className={`rounded px-1.5 py-0.5 text-[9px] font-bold ${
                         r.status === "COMPLETED"
-                          ? "bg-emerald-950/80 text-emerald-400 border border-emerald-800/80"
-                          : "bg-slate-800 text-slate-300"
+                          ? "bg-[#B7D7A8]/15 text-[#B7D7A8] border border-[#B7D7A8]/40"
+                          : "bg-[#332B3C] text-[#B7ACBD] border border-[#443849]"
                       }`}
                     >
                       {r.status}
                     </span>
                   </div>
-                  <div className="mt-1 truncate text-xs font-bold text-slate-200" title={r.runId}>
+                  <div className="mt-1 truncate text-xs font-bold text-[#F4EFF6]" title={r.runId}>
                     {r.runId}
                   </div>
-                  <div className="mt-1 flex items-center justify-between text-[10px] text-slate-400">
+                  <div className="mt-1 flex items-center justify-between text-[10px] text-[#8E8295]">
                     <span>{r.completedModules}/{r.totalModules} modules</span>
                     <span>{new Date(r.createdAt).toLocaleDateString()}</span>
                   </div>
                   {isCurrent && (
-                    <div className="mt-1.5 flex items-center justify-center rounded bg-cyan-900/60 py-0.5 text-[9px] font-bold text-cyan-300">
+                    <div className="mt-1.5 flex items-center justify-center rounded bg-[#F18B78]/20 py-0.5 text-[9px] font-bold text-[#F18B78]">
                       CURRENT VIEW
                     </div>
                   )}
@@ -366,7 +366,7 @@ export const TemporalView: React.FC<TemporalViewProps> = ({
       </div>
 
       {/* 4. Tab Navigation */}
-      <div className="flex border-b border-slate-800">
+      <div className="flex border-b border-[#443849]">
         {[
           { id: "TIMELINE", label: "TIMELINE OVERVIEW", count: history?.orderedRuns.length },
           { id: "METRICS", label: "METRIC TIME-SERIES", count: history?.metricHistories.length },
@@ -377,15 +377,15 @@ export const TemporalView: React.FC<TemporalViewProps> = ({
           <button
             key={tab.id}
             onClick={() => setActiveTab(tab.id as any)}
-            className={`flex items-center gap-2 border-b-2 px-5 py-3 font-mono text-xs font-semibold transition ${
+            className={`flex items-center gap-2 border-b-2 px-5 py-3 font-mono text-xs font-semibold transition cursor-pointer ${
               activeTab === tab.id
-                ? "border-cyan-500 bg-slate-900/80 text-cyan-300"
-                : "border-transparent text-slate-400 hover:text-slate-200"
+                ? "border-[#F18B78] bg-[#332B3C] text-[#F18B78]"
+                : "border-transparent text-[#B7ACBD] hover:text-[#F4EFF6]"
             }`}
           >
             {tab.label}
             {tab.count !== undefined && (
-              <span className="rounded bg-slate-800 px-1.5 py-0.5 text-[10px] text-slate-300">
+              <span className="rounded bg-[#1C1824] px-1.5 py-0.5 text-[10px] text-[#B7ACBD] border border-[#443849]">
                 {tab.count}
               </span>
             )}
@@ -398,12 +398,12 @@ export const TemporalView: React.FC<TemporalViewProps> = ({
         <div className="space-y-6">
           <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
             {/* Recent Alerts Feed */}
-            <div className="rounded-lg border border-slate-800 bg-slate-900/50 p-5">
+            <div className="rounded-lg border border-[#443849] bg-[#2A2432] p-5">
               <div className="mb-4 flex items-center justify-between">
-                <h3 className="font-mono text-xs font-bold uppercase tracking-wider text-slate-200">
+                <h3 className="font-mono text-xs font-bold uppercase tracking-wider text-[#F4EFF6]">
                   Critical Temporal Alerts
                 </h3>
-                <span className="font-mono text-xs text-slate-400">{history?.alerts.length || 0} total</span>
+                <span className="font-mono text-xs text-[#8E8295]">{history?.alerts.length || 0} total</span>
               </div>
               <div className="space-y-2.5">
                 {history?.alerts.slice(0, 5).map((a, idx) => (
@@ -413,35 +413,35 @@ export const TemporalView: React.FC<TemporalViewProps> = ({
                       setSelectedAlert(a);
                       setActiveTab("ALERTS");
                     }}
-                    className="cursor-pointer rounded-lg border border-slate-800 bg-slate-900/80 p-3 hover:border-slate-700 transition"
+                    className="cursor-pointer rounded-lg border border-[#443849] bg-[#1C1824] p-3 hover:border-[#5A4B62] transition"
                   >
                     <div className="flex items-center justify-between gap-2">
                       <span className={`rounded border px-2 py-0.5 font-mono text-[10px] font-bold ${getSeverityBadge(a.priority)}`}>
                         {a.priority}
                       </span>
-                      <span className="font-mono text-xs font-semibold text-slate-200">{a.alertType}</span>
-                      <span className="font-mono text-[10px] text-slate-400">{new Date(a.createdAt).toLocaleTimeString()}</span>
+                      <span className="font-mono text-xs font-semibold text-[#F4EFF6]">{a.alertType}</span>
+                      <span className="font-mono text-[10px] text-[#8E8295]">{new Date(a.createdAt).toLocaleTimeString()}</span>
                     </div>
-                    <p className="mt-1.5 font-mono text-xs text-slate-300">{a.triggerDescription}</p>
-                    <div className="mt-2 flex items-center justify-between text-[10px] font-mono text-slate-400">
-                      <span>Target: <span className="text-cyan-300">{a.targetKey || "GLOBAL"}</span></span>
-                      <span>Metric: <span className="text-slate-200">{a.metricName || "N/A"}</span></span>
+                    <p className="mt-1.5 font-mono text-xs text-[#B7ACBD]">{a.triggerDescription}</p>
+                    <div className="mt-2 flex items-center justify-between text-[10px] font-mono text-[#8E8295]">
+                      <span>Target: <span className="text-[#F18B78]">{a.targetKey || "GLOBAL"}</span></span>
+                      <span>Metric: <span className="text-[#F4EFF6]">{a.metricName || "N/A"}</span></span>
                     </div>
                   </div>
                 ))}
                 {(!history?.alerts || history.alerts.length === 0) && (
-                  <div className="py-8 text-center font-mono text-xs text-slate-400">No active temporal alerts.</div>
+                  <div className="py-8 text-center font-mono text-xs text-[#8E8295]">No active temporal alerts.</div>
                 )}
               </div>
             </div>
 
             {/* Persistent & Emerging Tracks */}
-            <div className="rounded-lg border border-slate-800 bg-slate-900/50 p-5">
+            <div className="rounded-lg border border-[#443849] bg-[#2A2432] p-5">
               <div className="mb-4 flex items-center justify-between">
-                <h3 className="font-mono text-xs font-bold uppercase tracking-wider text-slate-200">
+                <h3 className="font-mono text-xs font-bold uppercase tracking-wider text-[#F4EFF6]">
                   Dominant Issue Tracks
                 </h3>
-                <span className="font-mono text-xs text-slate-400">{history?.issueTracks.length || 0} tracks</span>
+                <span className="font-mono text-xs text-[#8E8295]">{history?.issueTracks.length || 0} tracks</span>
               </div>
               <div className="space-y-2.5">
                 {history?.issueTracks.slice(0, 5).map((t, idx) => (
@@ -451,23 +451,23 @@ export const TemporalView: React.FC<TemporalViewProps> = ({
                       setSelectedIssueTrack(t);
                       setActiveTab("TRACKS");
                     }}
-                    className="cursor-pointer rounded-lg border border-slate-800 bg-slate-900/80 p-3 hover:border-slate-700 transition"
+                    className="cursor-pointer rounded-lg border border-[#443849] bg-[#1C1824] p-3 hover:border-[#5A4B62] transition"
                   >
                     <div className="flex items-center justify-between">
-                      <div className="font-mono text-xs font-bold text-cyan-300">{t.targetKey}</div>
+                      <div className="font-mono text-xs font-bold text-[#F18B78]">{t.targetKey}</div>
                       <span className={`rounded border px-2 py-0.5 font-mono text-[10px] font-bold ${getStatusBadge(t.status)}`}>
                         {t.status}
                       </span>
                     </div>
-                    <div className="mt-2 grid grid-cols-3 gap-2 font-mono text-[10px] text-slate-400">
+                    <div className="mt-2 grid grid-cols-3 gap-2 font-mono text-[10px] text-[#8E8295]">
                       <div>Peak: <span className={`font-bold ${getSeverityBadge(t.peakSeverity)} px-1 rounded`}>{t.peakSeverity}</span></div>
-                      <div>Consecutive: <span className="text-slate-200 font-bold">{t.consecutiveCount} runs</span></div>
-                      <div>Modules: <span className="text-slate-200">{t.modulesInvolved.join(", ")}</span></div>
+                      <div>Consecutive: <span className="text-[#F4EFF6] font-bold">{t.consecutiveCount} runs</span></div>
+                      <div>Modules: <span className="text-[#B7ACBD]">{t.modulesInvolved.join(", ")}</span></div>
                     </div>
                   </div>
                 ))}
                 {(!history?.issueTracks || history.issueTracks.length === 0) && (
-                  <div className="py-8 text-center font-mono text-xs text-slate-400">No target issue tracks identified.</div>
+                  <div className="py-8 text-center font-mono text-xs text-[#8E8295]">No target issue tracks identified.</div>
                 )}
               </div>
             </div>
@@ -479,8 +479,8 @@ export const TemporalView: React.FC<TemporalViewProps> = ({
       {activeTab === "METRICS" && (
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-4">
           {/* Metric Selector Column */}
-          <div className="lg:col-span-1 space-y-2 rounded-lg border border-slate-800 bg-slate-900/50 p-4 max-h-[600px] overflow-y-auto">
-            <div className="font-mono text-xs font-bold uppercase tracking-wider text-slate-400 pb-2 border-b border-slate-800">
+          <div className="lg:col-span-1 space-y-2 rounded-lg border border-[#443849] bg-[#2A2432] p-4 max-h-[600px] overflow-y-auto">
+            <div className="font-mono text-xs font-bold uppercase tracking-wider text-[#8E8295] pb-2 border-b border-[#443849]">
               Select Metric ({history?.metricHistories.length || 0})
             </div>
             {history?.metricHistories.map((m) => {
@@ -490,19 +490,19 @@ export const TemporalView: React.FC<TemporalViewProps> = ({
                 <button
                   key={key}
                   onClick={() => setSelectedMetricKey(key)}
-                  className={`w-full text-left rounded-lg p-2.5 font-mono text-xs transition border ${
+                  className={`w-full text-left rounded-lg p-2.5 font-mono text-xs transition border cursor-pointer ${
                     isSelected
-                      ? "border-cyan-500 bg-cyan-950/40 text-cyan-200"
-                      : "border-slate-800/80 bg-slate-900/60 text-slate-400 hover:border-slate-700 hover:text-slate-200"
+                      ? "border-[#F18B78] bg-[#332B3C] text-[#F18B78]"
+                      : "border-[#443849] bg-[#1C1824] text-[#B7ACBD] hover:border-[#5A4B62] hover:text-[#F4EFF6]"
                   }`}
                 >
                   <div className="flex items-center justify-between">
-                    <span className="font-bold text-slate-200">{m.metricName}</span>
+                    <span className="font-bold text-[#F4EFF6]">{m.metricName}</span>
                     <span className={`text-[9px] px-1.5 py-0.5 rounded ${getStatusBadge(m.trendDirection)}`}>
                       {m.trendDirection}
                     </span>
                   </div>
-                  <div className="mt-1 flex items-center justify-between text-[10px] text-slate-400">
+                  <div className="mt-1 flex items-center justify-between text-[10px] text-[#8E8295]">
                     <span>{m.module}</span>
                     <span>{m.targetKey || "GLOBAL"}</span>
                   </div>
@@ -514,31 +514,31 @@ export const TemporalView: React.FC<TemporalViewProps> = ({
           {/* Metric Detail & Graph Column */}
           <div className="lg:col-span-3 space-y-5">
             {selectedMetric ? (
-              <div className="rounded-lg border border-slate-800 bg-slate-900/60 p-5 space-y-5">
+              <div className="rounded-lg border border-[#443849] bg-[#2A2432] p-5 space-y-5">
                 {/* Metric Summary Bar */}
-                <div className="flex flex-wrap items-center justify-between gap-4 border-b border-slate-800 pb-4">
+                <div className="flex flex-wrap items-center justify-between gap-4 border-b border-[#443849] pb-4">
                   <div>
                     <div className="flex items-center gap-3">
-                      <h2 className="font-mono text-lg font-bold text-slate-100">{selectedMetric.metricName}</h2>
+                      <h2 className="font-mono text-lg font-bold text-[#F4EFF6]">{selectedMetric.metricName}</h2>
                       <span className={`rounded border px-2 py-0.5 font-mono text-[10px] font-bold ${getStatusBadge(selectedMetric.trendDirection)}`}>
                         TREND: {selectedMetric.trendDirection}
                       </span>
                     </div>
-                    <p className="mt-1 font-mono text-xs text-slate-400">
-                      Module: <span className="text-cyan-300">{selectedMetric.module}</span> | Target:{" "}
-                      <span className="text-slate-200">{selectedMetric.targetKey || "GLOBAL"}</span>
+                    <p className="mt-1 font-mono text-xs text-[#B7ACBD]">
+                      Module: <span className="text-[#F18B78]">{selectedMetric.module}</span> | Target:{" "}
+                      <span className="text-[#F4EFF6]">{selectedMetric.targetKey || "GLOBAL"}</span>
                     </p>
                   </div>
 
                   <div className="flex items-center gap-4 font-mono text-xs">
                     <div className="text-right">
-                      <div className="text-slate-400 text-[10px]">LATEST VALUE</div>
-                      <div className="text-base font-bold text-cyan-300">{selectedMetric.latestValue?.toFixed(4) ?? "N/A"}</div>
+                      <div className="text-[#8E8295] text-[10px]">LATEST VALUE</div>
+                      <div className="text-base font-bold text-[#F18B78]">{selectedMetric.latestValue?.toFixed(4) ?? "N/A"}</div>
                     </div>
                     <div className="text-right">
-                      <div className="text-slate-400 text-[10px]">DELTA</div>
+                      <div className="text-[#8E8295] text-[10px]">DELTA</div>
                       <div className={`text-base font-bold ${
-                        (selectedMetric.absoluteDelta ?? 0) > 0 ? "text-emerald-400" : (selectedMetric.absoluteDelta ?? 0) < 0 ? "text-rose-400" : "text-slate-400"
+                        (selectedMetric.absoluteDelta ?? 0) > 0 ? "text-[#B7D7A8]" : (selectedMetric.absoluteDelta ?? 0) < 0 ? "text-[#F18B78]" : "text-[#B7ACBD]"
                       }`}>
                         {selectedMetric.absoluteDelta !== undefined ? (selectedMetric.absoluteDelta > 0 ? `+${selectedMetric.absoluteDelta.toFixed(4)}` : selectedMetric.absoluteDelta.toFixed(4)) : "N/A"}
                       </div>
@@ -548,33 +548,33 @@ export const TemporalView: React.FC<TemporalViewProps> = ({
 
                 {/* Statistical Trend Metrics */}
                 <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 font-mono text-xs">
-                  <div className="rounded border border-slate-800 bg-slate-900/80 p-2.5">
-                    <div className="text-[10px] text-slate-400">SLOPE (per run)</div>
-                    <div className="font-bold text-slate-200">{selectedMetric.slope?.toFixed(5) ?? "N/A"}</div>
+                  <div className="rounded border border-[#443849] bg-[#1C1824] p-2.5">
+                    <div className="text-[10px] text-[#8E8295]">SLOPE (per run)</div>
+                    <div className="font-bold text-[#F4EFF6]">{selectedMetric.slope?.toFixed(5) ?? "N/A"}</div>
                   </div>
-                  <div className="rounded border border-slate-800 bg-slate-900/80 p-2.5">
-                    <div className="text-[10px] text-slate-400">R² FIT</div>
-                    <div className="font-bold text-slate-200">{selectedMetric.rSquared?.toFixed(4) ?? "N/A"}</div>
+                  <div className="rounded border border-[#443849] bg-[#1C1824] p-2.5">
+                    <div className="text-[10px] text-[#8E8295]">R² FIT</div>
+                    <div className="font-bold text-[#F4EFF6]">{selectedMetric.rSquared?.toFixed(4) ?? "N/A"}</div>
                   </div>
-                  <div className="rounded border border-slate-800 bg-slate-900/80 p-2.5">
-                    <div className="text-[10px] text-slate-400">MANN-KENDALL TAU</div>
-                    <div className="font-bold text-slate-200">{selectedMetric.mannKendallTau?.toFixed(4) ?? "N/A"}</div>
+                  <div className="rounded border border-[#443849] bg-[#1C1824] p-2.5">
+                    <div className="text-[10px] text-[#8E8295]">MANN-KENDALL TAU</div>
+                    <div className="font-bold text-[#F4EFF6]">{selectedMetric.mannKendallTau?.toFixed(4) ?? "N/A"}</div>
                   </div>
-                  <div className="rounded border border-slate-800 bg-slate-900/80 p-2.5">
-                    <div className="text-[10px] text-slate-400">P-VALUE</div>
-                    <div className="font-bold text-slate-200">{selectedMetric.mannKendallPValue?.toFixed(4) ?? "N/A"}</div>
+                  <div className="rounded border border-[#443849] bg-[#1C1824] p-2.5">
+                    <div className="text-[10px] text-[#8E8295]">P-VALUE</div>
+                    <div className="font-bold text-[#B7D7A8]">{selectedMetric.mannKendallPValue?.toFixed(4) ?? "N/A"}</div>
                   </div>
                 </div>
 
                 {/* Historical Points Table / Visual Points */}
                 <div>
-                  <div className="mb-2 flex items-center justify-between font-mono text-xs font-bold text-slate-300">
+                  <div className="mb-2 flex items-center justify-between font-mono text-xs font-bold text-[#F4EFF6]">
                     <span>OBSERVATION POINTS ({selectedMetric.baselinePoints.length} operational)</span>
-                    {showExperiments && <span className="text-purple-400">{selectedMetric.experimentPoints?.length || 0} experiments overlaid</span>}
+                    {showExperiments && <span className="text-[#F18B78]">{selectedMetric.experimentPoints?.length || 0} experiments overlaid</span>}
                   </div>
-                  <div className="overflow-x-auto rounded border border-slate-800 bg-slate-950/40">
+                  <div className="overflow-x-auto rounded border border-[#443849] bg-[#1C1824]">
                     <table className="w-full text-left font-mono text-xs">
-                      <thead className="border-b border-slate-800 bg-slate-900/80 text-[10px] uppercase text-slate-400">
+                      <thead className="border-b border-[#443849] bg-[#2A2432] text-[10px] uppercase text-[#8E8295]">
                         <tr>
                           <th className="px-3 py-2">Index</th>
                           <th className="px-3 py-2">Run ID</th>
@@ -584,16 +584,16 @@ export const TemporalView: React.FC<TemporalViewProps> = ({
                           <th className="px-3 py-2 text-right">Severity</th>
                         </tr>
                       </thead>
-                      <tbody className="divide-y divide-slate-800/60 text-slate-300">
+                      <tbody className="divide-y divide-[#443849]/60 text-[#F4EFF6]">
                         {selectedMetric.baselinePoints.map((pt, idx) => (
-                          <tr key={pt.runId} className="hover:bg-slate-900/40">
-                            <td className="px-3 py-2 font-bold text-slate-400">#{pt.runIndex || idx + 1}</td>
-                            <td className="px-3 py-2 text-cyan-300 font-semibold">{pt.runId}</td>
+                          <tr key={pt.runId} className="hover:bg-[#332B3C]/50 transition-colors">
+                            <td className="px-3 py-2 font-bold text-[#8E8295]">#{pt.runIndex || idx + 1}</td>
+                            <td className="px-3 py-2 text-[#F18B78] font-semibold">{pt.runId}</td>
                             <td className="px-3 py-2">
-                              <span className="rounded bg-slate-800 px-1.5 py-0.5 text-[9px] text-slate-300">BASELINE</span>
+                              <span className="rounded bg-[#332B3C] border border-[#443849] px-1.5 py-0.5 text-[9px] text-[#B7ACBD]">BASELINE</span>
                             </td>
-                            <td className="px-3 py-2 text-slate-400">{new Date(pt.timestamp).toLocaleString()}</td>
-                            <td className="px-3 py-2 text-right font-bold text-slate-100">{pt.value.toFixed(4)}</td>
+                            <td className="px-3 py-2 text-[#8E8295]">{new Date(pt.timestamp).toLocaleString()}</td>
+                            <td className="px-3 py-2 text-right font-bold text-[#F4EFF6]">{pt.value.toFixed(4)}</td>
                             <td className="px-3 py-2 text-right">
                               <span className={`rounded border px-1.5 py-0.5 text-[9px] font-bold ${getSeverityBadge(pt.severity || "LOW")}`}>
                                 {pt.severity || "LOW"}
@@ -608,23 +608,23 @@ export const TemporalView: React.FC<TemporalViewProps> = ({
 
                 {/* Change Points */}
                 {selectedMetric.changePoints && selectedMetric.changePoints.length > 0 && (
-                  <div className="rounded-lg border border-amber-900/40 bg-amber-950/20 p-3.5 space-y-2">
-                    <div className="font-mono text-xs font-bold text-amber-400">
+                  <div className="rounded-lg border border-[#E8B66D]/40 bg-[#E8B66D]/10 p-3.5 space-y-2">
+                    <div className="font-mono text-xs font-bold text-[#E8B66D]">
                       STEP CHANGE-POINT DETECTED
                     </div>
                     {selectedMetric.changePoints.map((cp, idx) => (
-                      <div key={idx} className="font-mono text-xs text-slate-300">
-                        At run <span className="font-bold text-amber-300">{cp.changeRunId}</span>: Step shift from mean{" "}
-                        <span className="text-slate-200">{cp.beforeMean.toFixed(4)}</span> to{" "}
-                        <span className="text-slate-200">{cp.afterMean.toFixed(4)}</span> (Absolute Shift:{" "}
-                        <span className="text-amber-300">{cp.absoluteShift.toFixed(4)}</span>, Confidence: {cp.confidenceLevel})
+                      <div key={idx} className="font-mono text-xs text-[#B7ACBD]">
+                        At run <span className="font-bold text-[#E8B66D]">{cp.changeRunId}</span>: Step shift from mean{" "}
+                        <span className="text-[#F4EFF6]">{cp.beforeMean.toFixed(4)}</span> to{" "}
+                        <span className="text-[#F4EFF6]">{cp.afterMean.toFixed(4)}</span> (Absolute Shift:{" "}
+                        <span className="text-[#E8B66D]">{cp.absoluteShift.toFixed(4)}</span>, Confidence: {cp.confidenceLevel})
                       </div>
                     ))}
                   </div>
                 )}
               </div>
             ) : (
-              <div className="flex h-64 items-center justify-center rounded-lg border border-slate-800 bg-slate-900/40 text-slate-400 font-mono text-xs">
+              <div className="flex h-64 items-center justify-center rounded-lg border border-[#443849] bg-[#2A2432] text-[#8E8295] font-mono text-xs">
                 Select a metric from the left panel to inspect historical trajectory.
               </div>
             )}
@@ -635,9 +635,9 @@ export const TemporalView: React.FC<TemporalViewProps> = ({
       {/* TAB CONTENT 3: ISSUE TRACKS */}
       {activeTab === "TRACKS" && (
         <div className="space-y-6">
-          <div className="overflow-x-auto rounded-lg border border-slate-800 bg-slate-900/50">
+          <div className="overflow-x-auto rounded-lg border border-[#443849] bg-[#2A2432]">
             <table className="w-full text-left font-mono text-xs">
-              <thead className="border-b border-slate-800 bg-slate-900/80 text-[10px] uppercase text-slate-400">
+              <thead className="border-b border-[#443849] bg-[#1C1824] text-[10px] uppercase text-[#8E8295]">
                 <tr>
                   <th className="px-4 py-3">Target Fingerprint</th>
                   <th className="px-4 py-3">Type</th>
@@ -649,11 +649,11 @@ export const TemporalView: React.FC<TemporalViewProps> = ({
                   <th className="px-4 py-3 text-right">Actions</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-800/60 text-slate-300">
+              <tbody className="divide-y divide-[#443849]/60 text-[#F4EFF6]">
                 {history?.issueTracks.map((t, idx) => (
-                  <tr key={idx} className="hover:bg-slate-900/40 transition">
-                    <td className="px-4 py-3 font-bold text-cyan-300">{t.targetKey}</td>
-                    <td className="px-4 py-3 text-slate-400">{t.targetType}</td>
+                  <tr key={idx} className="hover:bg-[#332B3C]/50 transition">
+                    <td className="px-4 py-3 font-bold text-[#F18B78]">{t.targetKey}</td>
+                    <td className="px-4 py-3 text-[#8E8295]">{t.targetType}</td>
                     <td className="px-4 py-3">
                       <span className={`rounded border px-2 py-0.5 text-[10px] font-bold ${getStatusBadge(t.status)}`}>
                         {t.status}
@@ -669,12 +669,12 @@ export const TemporalView: React.FC<TemporalViewProps> = ({
                         {t.peakSeverity}
                       </span>
                     </td>
-                    <td className="px-4 py-3 text-right font-bold text-slate-200">{t.consecutiveCount} runs</td>
-                    <td className="px-4 py-3 text-slate-400">{t.modulesInvolved.join(", ")}</td>
+                    <td className="px-4 py-3 text-right font-bold text-[#F4EFF6]">{t.consecutiveCount} runs</td>
+                    <td className="px-4 py-3 text-[#B7ACBD]">{t.modulesInvolved.join(", ")}</td>
                     <td className="px-4 py-3 text-right">
                       <button
                         onClick={() => setSelectedIssueTrack(t)}
-                        className="rounded border border-cyan-500/50 bg-cyan-950/40 px-2.5 py-1 text-[10px] font-bold text-cyan-300 hover:bg-cyan-900/50"
+                        className="rounded border border-[#F18B78]/40 bg-[#332B3C] hover:bg-[#3D3448] px-2.5 py-1 text-[10px] font-bold text-[#F18B78] cursor-pointer transition-colors"
                       >
                         DOSSIER
                       </button>
@@ -687,39 +687,39 @@ export const TemporalView: React.FC<TemporalViewProps> = ({
 
           {/* Dossier Drawer if Selected */}
           {selectedIssueTrack && (
-            <div className="rounded-lg border border-cyan-500/40 bg-slate-950/90 p-5 space-y-4">
-              <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+            <div className="rounded-lg border border-[#F18B78]/40 bg-[#1C1824] p-5 space-y-4 shadow-xl">
+              <div className="flex items-center justify-between border-b border-[#443849] pb-3">
                 <div>
-                  <div className="font-mono text-xs uppercase tracking-wider text-cyan-400">
+                  <div className="font-mono text-xs uppercase tracking-wider text-[#F18B78] font-bold">
                     TEMPORAL INVESTIGATION DOSSIER
                   </div>
-                  <h3 className="font-mono text-base font-bold text-slate-100">{selectedIssueTrack.targetKey}</h3>
+                  <h3 className="font-mono text-base font-bold text-[#F4EFF6]">{selectedIssueTrack.targetKey}</h3>
                 </div>
                 <button
                   onClick={() => setSelectedIssueTrack(null)}
-                  className="font-mono text-xs text-slate-400 hover:text-slate-200"
+                  className="font-mono text-xs text-[#8E8295] hover:text-[#F4EFF6] cursor-pointer"
                 >
                   ✕ CLOSE
                 </button>
               </div>
 
               <div className="grid grid-cols-2 gap-4 sm:grid-cols-4 font-mono text-xs">
-                <div className="rounded border border-slate-800 bg-slate-900/60 p-3">
-                  <div className="text-[10px] text-slate-400">FIRST OBSERVED</div>
-                  <div className="font-bold text-slate-200">{selectedIssueTrack.firstSeenRunId}</div>
-                  <div className="text-[10px] text-slate-400">{new Date(selectedIssueTrack.firstSeenAt).toLocaleDateString()}</div>
+                <div className="rounded border border-[#443849] bg-[#2A2432] p-3">
+                  <div className="text-[10px] text-[#8E8295]">FIRST OBSERVED</div>
+                  <div className="font-bold text-[#F4EFF6]">{selectedIssueTrack.firstSeenRunId}</div>
+                  <div className="text-[10px] text-[#8E8295]">{new Date(selectedIssueTrack.firstSeenAt).toLocaleDateString()}</div>
                 </div>
-                <div className="rounded border border-slate-800 bg-slate-900/60 p-3">
-                  <div className="text-[10px] text-slate-400">LAST OBSERVED</div>
-                  <div className="font-bold text-slate-200">{selectedIssueTrack.lastSeenRunId}</div>
-                  <div className="text-[10px] text-slate-400">{new Date(selectedIssueTrack.lastSeenAt).toLocaleDateString()}</div>
+                <div className="rounded border border-[#443849] bg-[#2A2432] p-3">
+                  <div className="text-[10px] text-[#8E8295]">LAST OBSERVED</div>
+                  <div className="font-bold text-[#F4EFF6]">{selectedIssueTrack.lastSeenRunId}</div>
+                  <div className="text-[10px] text-[#8E8295]">{new Date(selectedIssueTrack.lastSeenAt).toLocaleDateString()}</div>
                 </div>
-                <div className="rounded border border-slate-800 bg-slate-900/60 p-3">
-                  <div className="text-[10px] text-slate-400">TOTAL OBSERVATIONS</div>
-                  <div className="font-bold text-slate-200">{selectedIssueTrack.observationCount} occurrences</div>
+                <div className="rounded border border-[#443849] bg-[#2A2432] p-3">
+                  <div className="text-[10px] text-[#8E8295]">TOTAL OBSERVATIONS</div>
+                  <div className="font-bold text-[#F4EFF6]">{selectedIssueTrack.observationCount} occurrences</div>
                 </div>
-                <div className="rounded border border-slate-800 bg-slate-900/60 p-3">
-                  <div className="text-[10px] text-slate-400">DURABILITY</div>
+                <div className="rounded border border-[#443849] bg-[#2A2432] p-3">
+                  <div className="text-[10px] text-[#8E8295]">DURABILITY</div>
                   <div className={`font-bold ${getDurabilityBadge(selectedIssueTrack.durabilityStatus || "NOT_APPLICABLE")} px-1.5 py-0.5 rounded text-center mt-1`}>
                     {selectedIssueTrack.durabilityStatus || "NOT_APPLICABLE"}
                   </div>
@@ -736,7 +736,7 @@ export const TemporalView: React.FC<TemporalViewProps> = ({
                       }
                       navigate("06_INVESTIGATION");
                     }}
-                    className="rounded border border-slate-700 bg-slate-800 px-3 py-1.5 font-mono text-xs font-bold text-slate-200 hover:bg-slate-700"
+                    className="rounded border border-[#F18B78]/40 bg-[#332B3C] hover:bg-[#3D3448] px-3 py-1.5 font-mono text-xs font-bold text-[#F18B78] cursor-pointer transition-colors"
                   >
                     VIEW IN 06 INVESTIGATION →
                   </button>
@@ -744,7 +744,7 @@ export const TemporalView: React.FC<TemporalViewProps> = ({
                 {navigate && (
                   <button
                     onClick={() => navigate("07_REMEDIATION")}
-                    className="rounded border border-slate-700 bg-slate-800 px-3 py-1.5 font-mono text-xs font-bold text-slate-200 hover:bg-slate-700"
+                    className="rounded border border-[#443849] bg-[#332B3C] hover:bg-[#3D3448] px-3 py-1.5 font-mono text-xs font-bold text-[#B7ACBD] hover:text-[#F4EFF6] cursor-pointer transition-colors"
                   >
                     VIEW IN 07 REMEDIATION →
                   </button>
@@ -758,9 +758,9 @@ export const TemporalView: React.FC<TemporalViewProps> = ({
       {/* TAB CONTENT 4: ALERT CONSOLE */}
       {activeTab === "ALERTS" && (
         <div className="space-y-4">
-          <div className="overflow-x-auto rounded-lg border border-slate-800 bg-slate-900/50">
+          <div className="overflow-x-auto rounded-lg border border-[#443849] bg-[#2A2432]">
             <table className="w-full text-left font-mono text-xs">
-              <thead className="border-b border-slate-800 bg-slate-900/80 text-[10px] uppercase text-slate-400">
+              <thead className="border-b border-[#443849] bg-[#1C1824] text-[10px] uppercase text-[#8E8295]">
                 <tr>
                   <th className="px-4 py-3">Timestamp</th>
                   <th className="px-4 py-3">Priority</th>
@@ -771,22 +771,22 @@ export const TemporalView: React.FC<TemporalViewProps> = ({
                   <th className="px-4 py-3">Confidence</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-800/60 text-slate-300">
+              <tbody className="divide-y divide-[#443849]/60 text-[#F4EFF6]">
                 {history?.alerts.map((a, idx) => (
-                  <tr key={idx} className="hover:bg-slate-900/40">
-                    <td className="px-4 py-3 text-slate-400">{new Date(a.createdAt).toLocaleTimeString()}</td>
+                  <tr key={idx} className="hover:bg-[#332B3C]/50 transition">
+                    <td className="px-4 py-3 text-[#8E8295]">{new Date(a.createdAt).toLocaleTimeString()}</td>
                     <td className="px-4 py-3">
                       <span className={`rounded border px-2 py-0.5 text-[10px] font-bold ${getSeverityBadge(a.priority)}`}>
                         {a.priority}
                       </span>
                     </td>
-                    <td className="px-4 py-3 font-bold text-slate-100">{a.alertType}</td>
-                    <td className="px-4 py-3 text-cyan-300">{a.targetKey || "GLOBAL"}</td>
-                    <td className="px-4 py-3 text-slate-300">{a.metricName || "N/A"}</td>
-                    <td className="px-4 py-3 max-w-xs truncate text-slate-300" title={a.triggerDescription}>
+                    <td className="px-4 py-3 font-bold text-[#F4EFF6]">{a.alertType}</td>
+                    <td className="px-4 py-3 text-[#F18B78]">{a.targetKey || "GLOBAL"}</td>
+                    <td className="px-4 py-3 text-[#B7ACBD]">{a.metricName || "N/A"}</td>
+                    <td className="px-4 py-3 max-w-xs truncate text-[#B7ACBD]" title={a.triggerDescription}>
                       {a.triggerDescription}
                     </td>
-                    <td className="px-4 py-3 text-slate-400">{a.confidence}</td>
+                    <td className="px-4 py-3 text-[#8E8295]">{a.confidence}</td>
                   </tr>
                 ))}
               </tbody>
@@ -798,13 +798,13 @@ export const TemporalView: React.FC<TemporalViewProps> = ({
       {/* TAB CONTENT 5: REMEDIATION DURABILITY */}
       {activeTab === "DURABILITY" && (
         <div className="space-y-4">
-          <div className="rounded-lg border border-slate-800 bg-slate-900/60 p-4 font-mono text-xs text-slate-400">
+          <div className="rounded-lg border border-[#443849] bg-[#2A2432] p-4 font-mono text-xs text-[#B7ACBD]">
             Remediation Durability measures whether experimental improvements sustained across subsequent operational baseline runs.
           </div>
 
-          <div className="overflow-x-auto rounded-lg border border-slate-800 bg-slate-900/50">
+          <div className="overflow-x-auto rounded-lg border border-[#443849] bg-[#2A2432]">
             <table className="w-full text-left font-mono text-xs">
-              <thead className="border-b border-slate-800 bg-slate-900/80 text-[10px] uppercase text-slate-400">
+              <thead className="border-b border-[#443849] bg-[#1C1824] text-[10px] uppercase text-[#8E8295]">
                 <tr>
                   <th className="px-4 py-3">Remediation / Target</th>
                   <th className="px-4 py-3">Experiment</th>
@@ -815,17 +815,17 @@ export const TemporalView: React.FC<TemporalViewProps> = ({
                   <th className="px-4 py-3">Explanation</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-800/60 text-slate-300">
+              <tbody className="divide-y divide-[#443849]/60 text-[#F4EFF6]">
                 {history?.remediationDurability.map((d, idx) => (
-                  <tr key={idx} className="hover:bg-slate-900/40">
+                  <tr key={idx} className="hover:bg-[#332B3C]/50 transition">
                     <td className="px-4 py-3">
-                      <div className="font-bold text-slate-100">{d.remediationTitle}</div>
-                      <div className="text-[10px] text-cyan-300">{d.targetKey}</div>
+                      <div className="font-bold text-[#F4EFF6]">{d.remediationTitle}</div>
+                      <div className="text-[10px] text-[#F18B78]">{d.targetKey}</div>
                     </td>
-                    <td className="px-4 py-3 text-slate-400">{d.experimentType}</td>
-                    <td className="px-4 py-3 text-right font-bold text-slate-300">{d.preExperimentValue.toFixed(4)}</td>
-                    <td className="px-4 py-3 text-right font-bold text-cyan-300">{d.candidateValue.toFixed(4)}</td>
-                    <td className="px-4 py-3 text-right font-bold text-slate-100">
+                    <td className="px-4 py-3 text-[#8E8295]">{d.experimentType}</td>
+                    <td className="px-4 py-3 text-right font-bold text-[#B7ACBD]">{d.preExperimentValue.toFixed(4)}</td>
+                    <td className="px-4 py-3 text-right font-bold text-[#F18B78]">{d.candidateValue.toFixed(4)}</td>
+                    <td className="px-4 py-3 text-right font-bold text-[#B7D7A8]">
                       {d.latestFollowUpValue !== undefined ? d.latestFollowUpValue.toFixed(4) : "N/A"}
                     </td>
                     <td className="px-4 py-3">
@@ -833,14 +833,14 @@ export const TemporalView: React.FC<TemporalViewProps> = ({
                         {d.durabilityStatus}
                       </span>
                     </td>
-                    <td className="px-4 py-3 max-w-sm truncate text-slate-300" title={d.durabilityExplanation}>
+                    <td className="px-4 py-3 max-w-sm truncate text-[#B7ACBD]" title={d.durabilityExplanation}>
                       {d.durabilityExplanation}
                     </td>
                   </tr>
                 ))}
                 {(!history?.remediationDurability || history.remediationDurability.length === 0) && (
                   <tr>
-                    <td colSpan={7} className="py-8 text-center text-slate-400">
+                    <td colSpan={7} className="py-8 text-center text-[#8E8295]">
                       No candidate experiments evaluated for follow-up durability in this window.
                     </td>
                   </tr>

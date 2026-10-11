@@ -385,7 +385,7 @@ export default function DiagnosticWorkstationPage({
     switch (activeSection) {
       case "00_INTELLIGENCE":
         return (
-          <div className="flex-1 overflow-auto p-4 bg-[#090b0e]">
+          <div className="flex-1 overflow-auto p-4 bg-[#211D29]">
             <IntelligenceView
               runId={runIdParam}
               correlations={correlations}
@@ -409,7 +409,7 @@ export default function DiagnosticWorkstationPage({
         );
       case "06_INVESTIGATION":
         return (
-          <div className="flex-1 overflow-auto p-4 bg-[#090b0e]">
+          <div className="flex-1 overflow-auto p-4 bg-[#211D29]">
             <InvestigationView
               runId={runIdParam}
               runSummary={runSummary}
@@ -446,7 +446,7 @@ export default function DiagnosticWorkstationPage({
         );
       case "02_DATA":
         return (
-          <div className="flex-1 overflow-auto p-4 bg-[#090b0e]">
+          <div className="flex-1 overflow-auto p-4 bg-[#211D29]">
             <DataQualityView
               result={dqModule?.result}
               status={dqModule?.status}
@@ -456,7 +456,7 @@ export default function DiagnosticWorkstationPage({
         );
       case "03_FORENSICS":
         return (
-          <div className="flex-1 overflow-auto p-4 bg-[#090b0e]">
+          <div className="flex-1 overflow-auto p-4 bg-[#211D29]">
             <ForensicsView
               result={leakageModule?.result}
               status={leakageModule?.status}
@@ -466,7 +466,7 @@ export default function DiagnosticWorkstationPage({
         );
       case "04_DRIFT":
         return (
-          <div className="flex-1 overflow-auto p-4 bg-[#090b0e]">
+          <div className="flex-1 overflow-auto p-4 bg-[#211D29]">
             <DriftView
               result={driftModule?.result}
               status={driftModule?.status}
@@ -476,7 +476,7 @@ export default function DiagnosticWorkstationPage({
         );
       case "05_PERFORMANCE":
         return (
-          <div className="flex-1 overflow-auto p-4 bg-[#090b0e]">
+          <div className="flex-1 overflow-auto p-4 bg-[#211D29]">
             <PerformanceView
               result={perfModule?.result}
               status={perfModule?.status}
@@ -486,7 +486,7 @@ export default function DiagnosticWorkstationPage({
         );
       case "05_ERROR_FORENSICS":
         return (
-          <div className="flex-1 overflow-auto p-4 bg-[#090b0e]">
+          <div className="flex-1 overflow-auto p-4 bg-[#211D29]">
             <ErrorForensicsView
               result={errorForensicsModule?.result}
               status={errorForensicsModule?.status}
@@ -496,7 +496,7 @@ export default function DiagnosticWorkstationPage({
         );
       case "06_EXPLAIN":
         return (
-          <div className="flex-1 overflow-auto p-4 bg-[#090b0e]">
+          <div className="flex-1 overflow-auto p-4 bg-[#211D29]">
             <ExplainView
               explainResult={explainModule?.result}
               status={explainModule?.status}
@@ -506,7 +506,7 @@ export default function DiagnosticWorkstationPage({
         );
       case "07_REMEDIATION":
         return (
-          <div className="flex-1 overflow-auto bg-[#090b0e]">
+          <div className="flex-1 overflow-auto bg-[#211D29]">
             <RemediationView
               runId={runIdParam}
               runSummary={runSummary}
@@ -524,7 +524,7 @@ export default function DiagnosticWorkstationPage({
         );
       case "08_EXPERIMENT":
         return (
-          <div className="flex-1 overflow-auto bg-[#090b0e]">
+          <div className="flex-1 overflow-auto bg-[#211D29]">
             <ExperimentView
               runId={runIdParam}
               runSummary={runSummary}
@@ -542,7 +542,7 @@ export default function DiagnosticWorkstationPage({
         );
       case "09_TEMPORAL":
         return (
-          <div className="flex-1 overflow-auto bg-[#090b0e] p-6">
+          <div className="flex-1 overflow-auto bg-[#211D29] p-6">
             <TemporalView
               runId={runIdParam}
               runSummary={runSummary}
@@ -560,7 +560,7 @@ export default function DiagnosticWorkstationPage({
         );
       case "10_MONITORING":
         return (
-          <div className="flex-1 overflow-auto bg-[#090b0e] p-6">
+          <div className="flex-1 overflow-auto bg-[#211D29] p-6">
             <MonitoringView
               runId={runIdParam}
               runSummary={runSummary}
@@ -578,7 +578,7 @@ export default function DiagnosticWorkstationPage({
         );
       case "11_INCIDENTS":
         return (
-          <div className="flex-1 overflow-auto bg-[#090b0e]">
+          <div className="flex-1 overflow-auto bg-[#211D29]">
             <IncidentDecisionView
               runId={runIdParam}
               runSummary={runSummary}
@@ -596,7 +596,7 @@ export default function DiagnosticWorkstationPage({
         );
       case "12_RELIABILITY":
         return (
-          <div className="flex-1 overflow-auto bg-[#090b0e]">
+          <div className="flex-1 overflow-auto bg-[#211D29]">
             <ModelReliabilityView
               runId={runIdParam}
               runSummary={runSummary}
@@ -614,7 +614,7 @@ export default function DiagnosticWorkstationPage({
         );
       case "07_BIAS":
         return (
-          <div className="flex-1 overflow-auto p-4 bg-[#090b0e]">
+          <div className="flex-1 overflow-auto p-4 bg-[#211D29]">
             <BiasView
               biasResult={biasModule?.result}
               status={biasModule?.status}
@@ -624,7 +624,7 @@ export default function DiagnosticWorkstationPage({
         );
       case "08_ROBUSTNESS":
         return (
-          <div className="flex-1 overflow-auto p-4 bg-[#090b0e]">
+          <div className="flex-1 overflow-auto p-4 bg-[#211D29]">
             <RobustnessView
               robustnessResult={robustModule?.result}
               status={robustModule?.status}
@@ -634,13 +634,13 @@ export default function DiagnosticWorkstationPage({
         );
       case "09_EXPERIMENTS":
         return (
-          <div className="flex-1 overflow-auto p-4 bg-[#090b0e]">
+          <div className="flex-1 overflow-auto p-4 bg-[#211D29]">
             <ExperimentsView />
           </div>
         );
       case "10_REPORTS":
         return (
-          <div className="flex-1 overflow-auto p-4 bg-[#090b0e]">
+          <div className="flex-1 overflow-auto p-4 bg-[#211D29]">
             <ReportsView />
           </div>
         );
@@ -650,7 +650,7 @@ export default function DiagnosticWorkstationPage({
   };
 
   return (
-    <div className="h-screen w-screen flex flex-col bg-[#090b0e] text-[#f1f3f8] overflow-hidden">
+    <div className="h-screen w-screen flex flex-col bg-[#211D29] text-[#F4EFF6] overflow-hidden">
       {/* Top Application Status Bar */}
       <WorkstationHeader
         summary={summary}
@@ -660,21 +660,21 @@ export default function DiagnosticWorkstationPage({
       />
 
       {/* Breadcrumb Navigation & Execution Control Strip */}
-      <div className="h-7 bg-[#07090c] border-b border-[#1f2533] px-3 flex items-center justify-between text-[10px] font-mono text-[#64748b]">
+      <div className="h-7 bg-[#1C1824] border-b border-[#443849] px-3 flex items-center justify-between text-[10px] font-mono text-[#B7ACBD]">
         <div className="flex items-center gap-2">
-          <Link href="/" className="hover:text-white transition-colors">
+          <Link href="/" className="hover:text-[#F4EFF6] transition-colors">
             HOME
           </Link>
           <span>/</span>
-          <Link href="/diagnose" className="hover:text-white transition-colors">
+          <Link href="/diagnose" className="hover:text-[#F4EFF6] transition-colors">
             DIAGNOSE SETUP
           </Link>
           <span>/</span>
-          <span className="text-[#3b82f6] font-bold">
+          <span className="text-[#F18B78] font-bold">
             RUN {summary.runId}
           </span>
           {retryCount > 0 && (
-            <span className="px-1.5 py-0.2 bg-[#3b82f6]/20 text-[#60a5fa] border border-[#3b82f6]/40 rounded text-[9px]">
+            <span className="px-1.5 py-0.2 bg-[#F18B78]/20 text-[#F18B78] border border-[#F18B78]/40 rounded text-[9px]">
               RETRY #{retryCount}
             </span>
           )}
@@ -683,14 +683,14 @@ export default function DiagnosticWorkstationPage({
         <div className="flex items-center gap-3">
           {progress && (backendStatus === "RUNNING" || backendStatus === "QUEUED") && (
             <div className="flex items-center gap-2">
-              <div className="w-24 h-2 bg-[#1f2533] rounded-full overflow-hidden border border-[#2d3748]">
+              <div className="w-24 h-2 bg-[#332B3C] rounded-full overflow-hidden border border-[#443849]">
                 <div
-                  className="h-full bg-[#3b82f6] transition-all duration-300"
+                  className="h-full bg-[#F18B78] transition-all duration-300"
                   style={{ width: `${progress.progressPercent}%` }}
                 />
               </div>
-              <span className="text-white font-bold">{progress.progressPercent}%</span>
-              <span className="text-[#64748b]">
+              <span className="text-[#F4EFF6] font-bold">{progress.progressPercent}%</span>
+              <span className="text-[#8E8295]">
                 ({progress.completedModulesCount}/{progress.selectedModulesCount})
               </span>
             </div>
@@ -701,7 +701,7 @@ export default function DiagnosticWorkstationPage({
               <button
                 onClick={handleRetryRun}
                 disabled={isRetrying}
-                className="px-2 py-0.5 bg-[#f59e0b]/20 hover:bg-[#f59e0b]/30 text-[#fbbf24] border border-[#f59e0b]/50 rounded cursor-pointer disabled:opacity-50 transition-colors"
+                className="px-2 py-0.5 bg-[#E8B66D]/20 hover:bg-[#E8B66D]/30 text-[#E8B66D] border border-[#E8B66D]/50 rounded cursor-pointer disabled:opacity-50 transition-colors"
                 title="Retry all non-completed modules"
               >
                 {isRetrying ? "RETRYING..." : "⟳ RETRY RUN"}
@@ -709,7 +709,7 @@ export default function DiagnosticWorkstationPage({
               <button
                 onClick={handleRetryFailedModules}
                 disabled={isRetrying}
-                className="px-2 py-0.5 bg-[#141822] hover:bg-[#1a202c] text-[#94a3b8] hover:text-white border border-[#222633] rounded cursor-pointer disabled:opacity-50 transition-colors"
+                className="px-2 py-0.5 bg-[#332B3C] hover:bg-[#3D3448] text-[#B7ACBD] hover:text-[#F4EFF6] border border-[#443849] rounded cursor-pointer disabled:opacity-50 transition-colors"
                 title="Retry only failed modules"
               >
                 RETRY FAILED
@@ -719,19 +719,19 @@ export default function DiagnosticWorkstationPage({
 
           <span className={`font-bold flex items-center gap-1 ${
             backendStatus === "COMPLETED"
-              ? "text-[#10b981]"
+              ? "text-[#B7D7A8]"
               : backendStatus === "PARTIAL"
-              ? "text-[#f59e0b]"
+              ? "text-[#E8B66D]"
               : backendStatus === "FAILED"
-              ? "text-[#ef4444]"
-              : "text-[#3b82f6] animate-pulse"
+              ? "text-[#F18B78]"
+              : "text-[#F18B78] animate-pulse"
           }`}>
             &bull; {backendStatus}
           </span>
-          <span className="text-[#333a4d]">|</span>
+          <span className="text-[#443849]">|</span>
           <Link
             href="/diagnose"
-            className="text-[#94a3b8] hover:text-white transition-colors"
+            className="text-[#B7ACBD] hover:text-[#F4EFF6] transition-colors"
           >
             [+ NEW DIAGNOSTIC RUN]
           </Link>
@@ -773,39 +773,39 @@ export default function DiagnosticWorkstationPage({
         subtitle={`Re-evaluates all 47 features for ${summary.modelId} on partition ${summary.datasetName}`}
       >
         <div className="space-y-3 font-mono text-xs">
-          <div className="p-2.5 bg-[#0e1117] border border-[#1f2533] space-y-1.5">
+          <div className="p-2.5 bg-[#2A2432] border border-[#443849] space-y-1.5">
             <div className="flex justify-between">
-              <span className="text-[#64748b]">TARGET MODEL:</span>
-              <span className="text-white font-bold">{summary.modelId}</span>
+              <span className="text-[#8E8295]">TARGET MODEL:</span>
+              <span className="text-[#F4EFF6] font-bold">{summary.modelId}</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-[#64748b]">DATASET PARTITION:</span>
-              <span className="text-[#94a3b8]">{summary.datasetName}</span>
+              <span className="text-[#8E8295]">DATASET PARTITION:</span>
+              <span className="text-[#B7ACBD]">{summary.datasetName}</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-[#64748b]">ACTIVE ENGINES:</span>
-              <span className="text-[#10b981]">7 / 7 REGISTERED</span>
+              <span className="text-[#8E8295]">ACTIVE ENGINES:</span>
+              <span className="text-[#B7D7A8]">7 / 7 REGISTERED</span>
             </div>
           </div>
 
           {isScanning ? (
-            <div className="p-3 bg-[#141822] border border-[#3b82f6] text-center space-y-1.5">
-              <div className="text-xs text-white font-bold">{scanStep}</div>
-              <div className="text-[10px] text-[#64748b]">
+            <div className="p-3 bg-[#332B3C] border border-[#F18B78] text-center space-y-1.5">
+              <div className="text-xs text-[#F4EFF6] font-bold">{scanStep}</div>
+              <div className="text-[10px] text-[#8E8295]">
                 Streaming live metrics to STOMP broker...
               </div>
             </div>
           ) : (
-            <div className="flex items-center justify-end gap-2 pt-2 border-t border-[#1f2533]">
+            <div className="flex items-center justify-end gap-2 pt-2 border-t border-[#443849]">
               <button
                 onClick={() => setIsScanModalOpen(false)}
-                className="px-3 py-1 bg-[#141822] hover:bg-[#1a202c] text-[#94a3b8] hover:text-white border border-[#222633] cursor-pointer"
+                className="px-3 py-1 bg-[#332B3C] hover:bg-[#3D3448] text-[#B7ACBD] hover:text-[#F4EFF6] border border-[#443849] cursor-pointer"
               >
                 CANCEL
               </button>
               <button
                 onClick={handleRunDiagnostic}
-                className="px-3 py-1 bg-[#1d4ed8] hover:bg-[#2563eb] text-white font-semibold border border-[#3b82f6] cursor-pointer"
+                className="px-3 py-1 bg-[#F18B78] hover:bg-[#F39C8B] text-[#211D29] font-bold border border-[#F18B78] cursor-pointer"
               >
                 START AUDIT
               </button>

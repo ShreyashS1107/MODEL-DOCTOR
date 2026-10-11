@@ -12,15 +12,15 @@ export const RobustnessView: React.FC<RobustnessViewProps> = ({ robustnessResult
   if (status === "FAILED") {
     return (
       <div className="space-y-4 font-mono text-xs">
-        <div className="p-4 border border-[#ef4444] bg-[#1a0f0f] text-[#f87171] space-y-2">
+        <div className="p-4 border border-[#F18B78] bg-[#332B3C] text-[#F18B78] space-y-2">
           <div className="flex items-center gap-2">
-            <span className="px-1.5 py-0.5 text-[9px] font-bold bg-[#ef4444] text-black">FAILED</span>
-            <span className="text-sm font-bold text-white uppercase">ROBUSTNESS &amp; ADVERSARIAL STABILITY AUDIT FAILED</span>
+            <span className="px-1.5 py-0.5 text-[9px] font-bold bg-[#F18B78] text-[#211D29]">FAILED</span>
+            <span className="text-sm font-bold text-[#F4EFF6] uppercase">ROBUSTNESS &amp; ADVERSARIAL STABILITY AUDIT FAILED</span>
           </div>
-          <p className="text-xs text-[#fca5a5]">
+          <p className="text-xs text-[#F18B78]/90">
             {statusMessage || "Diagnostic engine reported an execution failure during adversarial perturbation and stability analysis."}
           </p>
-          <div className="text-[10px] text-[#94a3b8] pt-1 border-t border-[#331518]">
+          <div className="text-[10px] text-[#B7ACBD] pt-1 border-t border-[#443849]">
             Engine execution terminated without producing valid stability metrics. Synthetic demo data is suppressed for failed live runs.
           </div>
         </div>
@@ -31,12 +31,12 @@ export const RobustnessView: React.FC<RobustnessViewProps> = ({ robustnessResult
   if (status === "NOT_IMPLEMENTED") {
     return (
       <div className="space-y-4 font-mono text-xs">
-        <div className="p-4 border border-[#f59e0b] bg-[#16120b] text-[#fde047] space-y-2">
+        <div className="p-4 border border-[#E8B66D] bg-[#332B3C] text-[#E8B66D] space-y-2">
           <div className="flex items-center gap-2">
-            <span className="px-1.5 py-0.5 text-[9px] font-bold bg-[#f59e0b] text-black">DEFERRED</span>
-            <span className="text-sm font-bold text-white uppercase">ROBUSTNESS ENGINE DEFERRED</span>
+            <span className="px-1.5 py-0.5 text-[9px] font-bold bg-[#E8B66D] text-[#211D29]">DEFERRED</span>
+            <span className="text-sm font-bold text-[#F4EFF6] uppercase">ROBUSTNESS ENGINE DEFERRED</span>
           </div>
-          <p className="text-xs text-[#fef08a]">
+          <p className="text-xs text-[#E8B66D]/90">
             {statusMessage || "Module is registered for subsequent analytical phases."}
           </p>
         </div>
@@ -189,41 +189,41 @@ export const RobustnessView: React.FC<RobustnessViewProps> = ({ robustnessResult
   return (
     <div className="space-y-4 font-mono text-xs">
       {/* Header & Mode Badge */}
-      <div className="p-3 border border-[#1f2533] bg-[#0c0e14] flex flex-wrap items-center justify-between gap-2">
+      <div className="p-3 border border-[#443849] bg-[#2A2432] flex flex-wrap items-center justify-between gap-2">
         <div>
-          <div className="text-xs text-[#94a3b8] uppercase font-bold flex items-center gap-2">
+          <div className="text-xs text-[#B7ACBD] uppercase font-bold flex items-center gap-2">
             <span>08 ADVERSARIAL &amp; PERTURBATION ROBUSTNESS</span>
             {isRealData ? (
-              <span className="px-1.5 py-0.5 text-[9px] font-bold bg-[#064e3b] text-[#34d399] border border-[#059669]">
+              <span className="px-1.5 py-0.5 text-[9px] font-bold bg-[#B7D7A8]/20 text-[#B7D7A8] border border-[#B7D7A8]/40">
                 LIVE RUN AUDIT ACTIVE
               </span>
             ) : (
-              <span className="px-1.5 py-0.5 text-[9px] font-bold bg-[#1e293b] text-[#94a3b8] border border-[#334155]">
+              <span className="px-1.5 py-0.5 text-[9px] font-bold bg-[#332B3C] text-[#B7ACBD] border border-[#443849]">
                 DEMO / SYNTHETIC FIXTURE FALLBACK
               </span>
             )}
           </div>
-          <div className="text-[11px] text-[#64748b]">
+          <div className="text-[11px] text-[#8E8295]">
             Empirical stress testing: Gaussian jitter sensitivity, feature instability ranking, tree boundary search, and missingness tolerance.
           </div>
         </div>
 
         <div className="flex items-center gap-2 text-[10px]">
-          <div className="px-2 py-0.5 bg-[#141822] text-[#94a3b8] border border-[#222633]">
-            MODEL: <span className="text-white font-bold">{summary?.modelName || "xgboost"}</span> ({summary?.modelFramework || "xgboost"})
+          <div className="px-2 py-0.5 bg-[#332B3C] text-[#B7ACBD] border border-[#443849]">
+            MODEL: <span className="text-[#F4EFF6] font-bold">{summary?.modelName || "xgboost"}</span> ({summary?.modelFramework || "xgboost"})
           </div>
-          <div className="px-2 py-0.5 bg-[#141822] text-[#94a3b8] border border-[#222633]">
-            SAMPLES: <span className="text-[#3b82f6] font-bold">{summary?.samplesEvaluated?.toLocaleString() || "0"}</span> {summary?.isSampled && "(sampled)"}
+          <div className="px-2 py-0.5 bg-[#332B3C] text-[#B7ACBD] border border-[#443849]">
+            SAMPLES: <span className="text-[#F18B78] font-bold">{summary?.samplesEvaluated?.toLocaleString() || "0"}</span> {summary?.isSampled && "(sampled)"}
           </div>
-          <div className="px-2 py-0.5 bg-[#141822] text-[#94a3b8] border border-[#222633]">
-            NUMERIC FEATS: <span className="text-white font-bold">{summary?.numericFeaturesEvaluated || featureSensitivity.length}</span>
+          <div className="px-2 py-0.5 bg-[#332B3C] text-[#B7ACBD] border border-[#443849]">
+            NUMERIC FEATS: <span className="text-[#F4EFF6] font-bold">{summary?.numericFeaturesEvaluated || featureSensitivity.length}</span>
           </div>
         </div>
       </div>
 
       {/* Forensic Disclaimer Banner */}
-      <div className="p-2.5 bg-[#0e121a] border border-[#1e293b] text-[10px] text-[#94a3b8] flex items-start gap-2">
-        <span className="text-[#3b82f6] font-bold shrink-0">[METHODOLOGY NOTICE]</span>
+      <div className="p-2.5 bg-[#1C1824] border border-[#443849] text-[10px] text-[#B7ACBD] flex items-start gap-2">
+        <span className="text-[#F18B78] font-bold shrink-0">[METHODOLOGY NOTICE]</span>
         <span>
           Tree-based models (such as XGBoost) utilize non-differentiable step-function decision boundaries.
           Local adversarial sensitivity is measured via bounded coordinate boundary search (TREE_BOUNDARY_SEARCH) and empirical Gaussian jitter rather than fabricated gradients.
@@ -233,129 +233,129 @@ export const RobustnessView: React.FC<RobustnessViewProps> = ({ robustnessResult
       {/* KPI Summary Strip */}
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-2">
         {/* 5% Gaussian Jitter Flip Rate */}
-        <div className="border border-[#1f2533] bg-[#0c0e14] p-2.5">
-          <div className="text-[10px] text-[#64748b] uppercase">5% JITTER FLIP RATE</div>
+        <div className="border border-[#443849] bg-[#2A2432] p-2.5">
+          <div className="text-[10px] text-[#8E8295] uppercase">5% JITTER FLIP RATE</div>
           <div
             className={`text-base font-bold mt-1 ${
               summary?.gaussianJitter5PctFlipRate !== undefined && summary.gaussianJitter5PctFlipRate >= 0.10
-                ? "text-[#ef4444]"
+                ? "text-[#F18B78]"
                 : summary?.gaussianJitter5PctFlipRate !== undefined && summary.gaussianJitter5PctFlipRate >= 0.05
-                ? "text-[#f59e0b]"
-                : "text-[#10b981]"
+                ? "text-[#E8B66D]"
+                : "text-[#B7D7A8]"
             }`}
           >
             {summary?.gaussianJitter5PctFlipRate !== undefined
               ? `${(summary.gaussianJitter5PctFlipRate * 100).toFixed(1)}%`
               : "N/A"}
           </div>
-          <div className="text-[10px] text-[#64748b] mt-0.5">
+          <div className="text-[10px] text-[#8E8295] mt-0.5">
             {summary?.gaussianJitter5PctFlipRate !== undefined && summary.gaussianJitter5PctFlipRate >= 0.05 ? "Unstable boundary" : "Resilient boundary"}
           </div>
         </div>
 
         {/* 5% Noise Mean Prob Shift */}
-        <div className="border border-[#1f2533] bg-[#0c0e14] p-2.5">
-          <div className="text-[10px] text-[#64748b] uppercase">MEAN PROB SHIFT (5% NOISE)</div>
+        <div className="border border-[#443849] bg-[#2A2432] p-2.5">
+          <div className="text-[10px] text-[#8E8295] uppercase">MEAN PROB SHIFT (5% NOISE)</div>
           <div
             className={`text-base font-bold mt-1 ${
               summary?.meanProbabilityShift5Pct !== undefined && summary.meanProbabilityShift5Pct >= 0.10
-                ? "text-[#ef4444]"
+                ? "text-[#F18B78]"
                 : summary?.meanProbabilityShift5Pct !== undefined && summary.meanProbabilityShift5Pct >= 0.05
-                ? "text-[#f59e0b]"
-                : "text-white"
+                ? "text-[#E8B66D]"
+                : "text-[#F4EFF6]"
             }`}
           >
             {summary?.meanProbabilityShift5Pct !== undefined
               ? `${(summary.meanProbabilityShift5Pct * 100).toFixed(1)}%`
               : "N/A"}
           </div>
-          <div className="text-[10px] text-[#64748b] mt-0.5">
+          <div className="text-[10px] text-[#8E8295] mt-0.5">
             Average Output Drift
           </div>
         </div>
 
         {/* Boundary Flip Rate */}
-        <div className="border border-[#1f2533] bg-[#0c0e14] p-2.5">
-          <div className="text-[10px] text-[#64748b] uppercase">BOUNDARY FLIP RATE</div>
+        <div className="border border-[#443849] bg-[#2A2432] p-2.5">
+          <div className="text-[10px] text-[#8E8295] uppercase">BOUNDARY FLIP RATE</div>
           <div
             className={`text-base font-bold mt-1 ${
               summary?.boundaryFlipRate !== undefined && summary.boundaryFlipRate >= 0.30
-                ? "text-[#ef4444]"
+                ? "text-[#F18B78]"
                 : summary?.boundaryFlipRate !== undefined && summary.boundaryFlipRate >= 0.15
-                ? "text-[#f59e0b]"
-                : "text-[#10b981]"
+                ? "text-[#E8B66D]"
+                : "text-[#B7D7A8]"
             }`}
           >
             {summary?.boundaryFlipRate !== undefined
               ? `${(summary.boundaryFlipRate * 100).toFixed(1)}%`
               : "N/A"}
           </div>
-          <div className="text-[10px] text-[#64748b] mt-0.5">
+          <div className="text-[10px] text-[#8E8295] mt-0.5">
             Med Δ: {summary?.medianBoundaryDistance !== null && summary?.medianBoundaryDistance !== undefined ? `${(summary.medianBoundaryDistance * 100).toFixed(1)}% std` : "N/A"}
           </div>
         </div>
 
         {/* Top Sensitive Feature */}
-        <div className="border border-[#1f2533] bg-[#0c0e14] p-2.5">
-          <div className="text-[10px] text-[#64748b] uppercase">TOP SENSITIVE FEATURE</div>
-          <div className="text-sm font-bold text-[#3b82f6] mt-1 truncate" title={summary?.topSensitiveFeature || "none"}>
+        <div className="border border-[#443849] bg-[#2A2432] p-2.5">
+          <div className="text-[10px] text-[#8E8295] uppercase">TOP SENSITIVE FEATURE</div>
+          <div className="text-sm font-bold text-[#F18B78] mt-1 truncate" title={summary?.topSensitiveFeature || "none"}>
             {summary?.topSensitiveFeature || "none"}
           </div>
-          <div className="text-[10px] text-[#64748b] mt-0.5">
+          <div className="text-[10px] text-[#8E8295] mt-0.5">
             Highest Flip Volatility
           </div>
         </div>
 
         {/* Subgroup Robustness Gap */}
-        <div className="border border-[#1f2533] bg-[#0c0e14] p-2.5">
-          <div className="text-[10px] text-[#64748b] uppercase">SUBGROUP ROBUSTNESS GAP</div>
+        <div className="border border-[#443849] bg-[#2A2432] p-2.5">
+          <div className="text-[10px] text-[#8E8295] uppercase">SUBGROUP ROBUSTNESS GAP</div>
           <div
             className={`text-base font-bold mt-1 ${
               summary?.subgroupRobustnessGap !== null && summary?.subgroupRobustnessGap !== undefined && summary.subgroupRobustnessGap >= 0.10
-                ? "text-[#ef4444]"
+                ? "text-[#F18B78]"
                 : summary?.subgroupRobustnessGap !== null && summary?.subgroupRobustnessGap !== undefined && summary.subgroupRobustnessGap >= 0.05
-                ? "text-[#f59e0b]"
-                : "text-[#10b981]"
+                ? "text-[#E8B66D]"
+                : "text-[#B7D7A8]"
             }`}
           >
             {summary?.subgroupRobustnessGap !== null && summary?.subgroupRobustnessGap !== undefined
               ? `${(summary.subgroupRobustnessGap * 100).toFixed(1)}%`
               : "N/A"}
           </div>
-          <div className="text-[10px] text-[#64748b] mt-0.5">
+          <div className="text-[10px] text-[#8E8295] mt-0.5">
             {subgroup.protectedAttribute ? `Slice: ${subgroup.protectedAttribute}` : "No Protected Attribute"}
           </div>
         </div>
 
         {/* Health Score */}
-        <div className="border border-[#1f2533] bg-[#0c0e14] p-2.5">
-          <div className="text-[10px] text-[#64748b] uppercase">ROBUSTNESS HEALTH SCORE</div>
+        <div className="border border-[#443849] bg-[#2A2432] p-2.5">
+          <div className="text-[10px] text-[#8E8295] uppercase">ROBUSTNESS HEALTH SCORE</div>
           <div
             className={`text-base font-bold mt-1 ${
               summary?.healthScore !== undefined && summary.healthScore >= 80
-                ? "text-[#10b981]"
+                ? "text-[#B7D7A8]"
                 : summary?.healthScore !== undefined && summary.healthScore >= 60
-                ? "text-[#f59e0b]"
-                : "text-[#ef4444]"
+                ? "text-[#E8B66D]"
+                : "text-[#F18B78]"
             }`}
           >
             {summary?.healthScore !== undefined ? summary.healthScore.toFixed(1) : "N/A"}
-            <span className="text-xs text-[#64748b] font-normal"> / 100</span>
+            <span className="text-xs text-[#8E8295] font-normal"> / 100</span>
           </div>
-          <div className="text-[10px] text-[#64748b] mt-0.5">
+          <div className="text-[10px] text-[#8E8295] mt-0.5">
             {findings.length} Issue(s) Logged
           </div>
         </div>
       </div>
 
       {/* Tabs */}
-      <div className="flex border-b border-[#1f2533] gap-1 bg-[#0c0e14] p-1">
+      <div className="flex border-b border-[#443849] gap-1 bg-[#2A2432] p-1">
         <button
           onClick={() => setActiveTab("NOISE")}
           className={`px-3 py-1.5 text-xs font-semibold cursor-pointer border ${
             activeTab === "NOISE"
-              ? "bg-[#141822] text-[#3b82f6] border-[#3b82f6]"
-              : "text-[#64748b] border-transparent hover:text-[#94a3b8]"
+              ? "bg-[#332B3C] text-[#F18B78] border-[#F18B78]"
+              : "text-[#8E8295] border-transparent hover:text-[#F4EFF6]"
           }`}
         >
           NOISE SENSITIVITY ({noiseLevels.length} LEVELS)
@@ -364,8 +364,8 @@ export const RobustnessView: React.FC<RobustnessViewProps> = ({ robustnessResult
           onClick={() => setActiveTab("FEATURES")}
           className={`px-3 py-1.5 text-xs font-semibold cursor-pointer border ${
             activeTab === "FEATURES"
-              ? "bg-[#141822] text-[#3b82f6] border-[#3b82f6]"
-              : "text-[#64748b] border-transparent hover:text-[#94a3b8]"
+              ? "bg-[#332B3C] text-[#F18B78] border-[#F18B78]"
+              : "text-[#8E8295] border-transparent hover:text-[#F4EFF6]"
           }`}
         >
           FEATURE INSTABILITY RANKING ({featureSensitivity.length})
@@ -374,8 +374,8 @@ export const RobustnessView: React.FC<RobustnessViewProps> = ({ robustnessResult
           onClick={() => setActiveTab("BOUNDARY")}
           className={`px-3 py-1.5 text-xs font-semibold cursor-pointer border ${
             activeTab === "BOUNDARY"
-              ? "bg-[#141822] text-[#3b82f6] border-[#3b82f6]"
-              : "text-[#64748b] border-transparent hover:text-[#94a3b8]"
+              ? "bg-[#332B3C] text-[#F18B78] border-[#F18B78]"
+              : "text-[#8E8295] border-transparent hover:text-[#F4EFF6]"
           }`}
         >
           DECISION BOUNDARY SEARCH
@@ -384,8 +384,8 @@ export const RobustnessView: React.FC<RobustnessViewProps> = ({ robustnessResult
           onClick={() => setActiveTab("STRESS")}
           className={`px-3 py-1.5 text-xs font-semibold cursor-pointer border ${
             activeTab === "STRESS"
-              ? "bg-[#141822] text-[#3b82f6] border-[#3b82f6]"
-              : "text-[#64748b] border-transparent hover:text-[#94a3b8]"
+              ? "bg-[#332B3C] text-[#F18B78] border-[#F18B78]"
+              : "text-[#8E8295] border-transparent hover:text-[#F4EFF6]"
           }`}
         >
           FGSM &amp; MISSINGNESS STRESS
@@ -394,8 +394,8 @@ export const RobustnessView: React.FC<RobustnessViewProps> = ({ robustnessResult
           onClick={() => setActiveTab("SUBGROUPS")}
           className={`px-3 py-1.5 text-xs font-semibold cursor-pointer border ${
             activeTab === "SUBGROUPS"
-              ? "bg-[#141822] text-[#3b82f6] border-[#3b82f6]"
-              : "text-[#64748b] border-transparent hover:text-[#94a3b8]"
+              ? "bg-[#332B3C] text-[#F18B78] border-[#F18B78]"
+              : "text-[#8E8295] border-transparent hover:text-[#F4EFF6]"
           }`}
         >
           SUBGROUP ROBUSTNESS
@@ -404,8 +404,8 @@ export const RobustnessView: React.FC<RobustnessViewProps> = ({ robustnessResult
           onClick={() => setActiveTab("FINDINGS")}
           className={`px-3 py-1.5 text-xs font-semibold cursor-pointer border ${
             activeTab === "FINDINGS"
-              ? "bg-[#141822] text-[#3b82f6] border-[#3b82f6]"
-              : "text-[#64748b] border-transparent hover:text-[#94a3b8]"
+              ? "bg-[#332B3C] text-[#F18B78] border-[#F18B78]"
+              : "text-[#8E8295] border-transparent hover:text-[#F4EFF6]"
           }`}
         >
           FORENSIC FINDINGS ({findings.length})
@@ -414,12 +414,12 @@ export const RobustnessView: React.FC<RobustnessViewProps> = ({ robustnessResult
 
       {/* Tab 1: Noise Sensitivity */}
       {activeTab === "NOISE" && (
-        <div className="border border-[#1f2533] bg-[#0c0e14] p-3 space-y-3">
+        <div className="border border-[#443849] bg-[#2A2432] p-3 space-y-3">
           <div className="flex justify-between items-center">
-            <div className="text-xs text-[#94a3b8] uppercase font-bold">
+            <div className="text-xs text-[#B7ACBD] uppercase font-bold">
               GAUSSIAN JITTER DEGRADATION PROFILE
             </div>
-            <div className="text-[10px] text-[#64748b]">
+            <div className="text-[10px] text-[#8E8295]">
               Baseline: Accuracy = {baseline.accuracy ? (baseline.accuracy * 100).toFixed(1) + "%" : "N/A"}, Positive Rate = {baseline.positiveRate ? (baseline.positiveRate * 100).toFixed(1) + "%" : "N/A"}
             </div>
           </div>
@@ -427,7 +427,7 @@ export const RobustnessView: React.FC<RobustnessViewProps> = ({ robustnessResult
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs border-collapse">
               <thead>
-                <tr className="border-b border-[#1f2533] text-[#64748b] text-[10px] uppercase bg-[#090b0e]">
+                <tr className="border-b border-[#443849] text-[#8E8295] text-[10px] uppercase bg-[#1C1824]">
                   <th className="py-2 px-2.5">PERTURBATION LEVEL</th>
                   <th className="py-2 px-2.5 text-right">EVALUATED (N)</th>
                   <th className="py-2 px-2.5 text-right">FLIP COUNT</th>
@@ -440,40 +440,40 @@ export const RobustnessView: React.FC<RobustnessViewProps> = ({ robustnessResult
                   <th className="py-2 px-2.5 text-right">ROC-AUC</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-[#1f2533] tabular-nums">
+              <tbody className="divide-y divide-[#443849] tabular-nums">
                 {noiseLevels.map((lvl: any, idx: number) => {
                   return (
-                    <tr key={idx} className="hover:bg-[#12161f]">
-                      <td className="py-2 px-2.5 font-bold text-white">
+                    <tr key={idx} className="hover:bg-[#332B3C]">
+                      <td className="py-2 px-2.5 font-bold text-[#F4EFF6]">
                         {lvl.label || `${lvl.level * 100}% Noise`}
                       </td>
-                      <td className="py-2 px-2.5 text-right text-[#94a3b8]">
+                      <td className="py-2 px-2.5 text-right text-[#B7ACBD]">
                         {lvl.observationsEvaluated?.toLocaleString()}
                       </td>
-                      <td className="py-2 px-2.5 text-right text-[#f1f3f8]">
+                      <td className="py-2 px-2.5 text-right text-[#F4EFF6]">
                         {lvl.flipCount}
                       </td>
                       <td className="py-2 px-2.5 text-right font-bold">
-                        <span className={lvl.flipRate >= 0.10 ? "text-[#ef4444]" : lvl.flipRate >= 0.05 ? "text-[#f59e0b]" : "text-[#10b981]"}>
+                        <span className={lvl.flipRate >= 0.10 ? "text-[#F18B78]" : lvl.flipRate >= 0.05 ? "text-[#E8B66D]" : "text-[#B7D7A8]"}>
                           {(lvl.flipRate * 100).toFixed(2)}%
                         </span>
                       </td>
-                      <td className="py-2 px-2.5 text-right text-[#94a3b8]">
+                      <td className="py-2 px-2.5 text-right text-[#B7ACBD]">
                         {(lvl.meanProbabilityShift * 100).toFixed(2)}%
                       </td>
-                      <td className="py-2 px-2.5 text-right text-[#64748b]">
+                      <td className="py-2 px-2.5 text-right text-[#8E8295]">
                         {(lvl.medianProbabilityShift * 100).toFixed(2)}%
                       </td>
-                      <td className="py-2 px-2.5 text-right text-[#94a3b8]">
+                      <td className="py-2 px-2.5 text-right text-[#B7ACBD]">
                         {(lvl.maxProbabilityShift * 100).toFixed(2)}%
                       </td>
-                      <td className="py-2 px-2.5 text-right text-white">
+                      <td className="py-2 px-2.5 text-right text-[#F4EFF6]">
                         {lvl.accuracy !== null && lvl.accuracy !== undefined ? (lvl.accuracy * 100).toFixed(1) + "%" : "N/A"}
                       </td>
-                      <td className="py-2 px-2.5 text-right text-[#94a3b8]">
+                      <td className="py-2 px-2.5 text-right text-[#B7ACBD]">
                         {lvl.f1Score !== null && lvl.f1Score !== undefined ? lvl.f1Score.toFixed(3) : "N/A"}
                       </td>
-                      <td className="py-2 px-2.5 text-right text-[#94a3b8]">
+                      <td className="py-2 px-2.5 text-right text-[#B7ACBD]">
                         {lvl.rocAuc !== null && lvl.rocAuc !== undefined ? lvl.rocAuc.toFixed(3) : "N/A"}
                       </td>
                     </tr>
@@ -487,12 +487,12 @@ export const RobustnessView: React.FC<RobustnessViewProps> = ({ robustnessResult
 
       {/* Tab 2: Feature Sensitivity */}
       {activeTab === "FEATURES" && (
-        <div className="border border-[#1f2533] bg-[#0c0e14] p-3 space-y-3">
+        <div className="border border-[#443849] bg-[#2A2432] p-3 space-y-3">
           <div className="flex justify-between items-center">
-            <div className="text-xs text-[#94a3b8] uppercase font-bold">
+            <div className="text-xs text-[#B7ACBD] uppercase font-bold">
               INDIVIDUAL FEATURE PERTURBATION SENSITIVITY (5% FEATURE JITTER)
             </div>
-            <div className="text-[10px] text-[#64748b]">
+            <div className="text-[10px] text-[#8E8295]">
               Ranked descending by flip rate and mean probability shift
             </div>
           </div>
@@ -500,7 +500,7 @@ export const RobustnessView: React.FC<RobustnessViewProps> = ({ robustnessResult
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs border-collapse">
               <thead>
-                <tr className="border-b border-[#1f2533] text-[#64748b] text-[10px] uppercase bg-[#090b0e]">
+                <tr className="border-b border-[#443849] text-[#8E8295] text-[10px] uppercase bg-[#1C1824]">
                   <th className="py-2 px-2.5">FEATURE NAME</th>
                   <th className="py-2 px-2.5 text-right">SCALE (STD / IQR)</th>
                   <th className="py-2 px-2.5 text-right">FLIP COUNT</th>
@@ -511,45 +511,45 @@ export const RobustnessView: React.FC<RobustnessViewProps> = ({ robustnessResult
                   <th className="py-2 px-2.5 text-right">INSTABILITY STATUS</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-[#1f2533] tabular-nums">
+              <tbody className="divide-y divide-[#443849] tabular-nums">
                 {featureSensitivity.map((f: any, idx: number) => {
                   return (
-                    <tr key={idx} className="hover:bg-[#12161f]">
-                      <td className="py-2 px-2.5 font-bold text-white">
-                        <span className="text-[#64748b] mr-2">#{idx + 1}</span>
+                    <tr key={idx} className="hover:bg-[#332B3C]">
+                      <td className="py-2 px-2.5 font-bold text-[#F4EFF6]">
+                        <span className="text-[#8E8295] mr-2">#{idx + 1}</span>
                         {f.feature}
                       </td>
-                      <td className="py-2 px-2.5 text-right text-[#94a3b8]">
+                      <td className="py-2 px-2.5 text-right text-[#B7ACBD]">
                         {f.perturbationScale ? f.perturbationScale.toFixed(4) : "1.0000"}
                       </td>
-                      <td className="py-2 px-2.5 text-right text-[#f1f3f8]">
+                      <td className="py-2 px-2.5 text-right text-[#F4EFF6]">
                         {f.flipCount}
                       </td>
                       <td className="py-2 px-2.5 text-right font-bold">
-                        <span className={f.flipRate >= 0.05 ? "text-[#ef4444]" : f.flipRate >= 0.02 ? "text-[#f59e0b]" : "text-[#10b981]"}>
+                        <span className={f.flipRate >= 0.05 ? "text-[#F18B78]" : f.flipRate >= 0.02 ? "text-[#E8B66D]" : "text-[#B7D7A8]"}>
                           {(f.flipRate * 100).toFixed(2)}%
                         </span>
                       </td>
-                      <td className="py-2 px-2.5 text-right text-[#94a3b8]">
+                      <td className="py-2 px-2.5 text-right text-[#B7ACBD]">
                         {(f.meanProbabilityShift * 100).toFixed(2)}%
                       </td>
-                      <td className="py-2 px-2.5 text-right text-[#64748b]">
+                      <td className="py-2 px-2.5 text-right text-[#8E8295]">
                         {(f.medianProbabilityShift * 100).toFixed(2)}%
                       </td>
-                      <td className="py-2 px-2.5 text-right text-[#94a3b8]">
+                      <td className="py-2 px-2.5 text-right text-[#B7ACBD]">
                         {(f.maxProbabilityShift * 100).toFixed(2)}%
                       </td>
                       <td className="py-2 px-2.5 text-right">
                         {f.flipRate >= 0.05 ? (
-                          <span className="px-1.5 py-0.5 text-[8px] font-bold bg-[#7f1d1d] text-[#fca5a5] border border-[#ef4444]">
+                          <span className="px-1.5 py-0.5 text-[8px] font-bold bg-[#F18B78]/20 text-[#F18B78] border border-[#F18B78]/40">
                             HIGH VOLATILITY
                           </span>
                         ) : f.flipRate >= 0.02 ? (
-                          <span className="px-1.5 py-0.5 text-[8px] font-bold bg-[#78350f] text-[#fde047] border border-[#f59e0b]">
+                          <span className="px-1.5 py-0.5 text-[8px] font-bold bg-[#E8B66D]/20 text-[#E8B66D] border border-[#E8B66D]/40">
                             MODERATE
                           </span>
                         ) : (
-                          <span className="px-1.5 py-0.5 text-[8px] font-bold bg-[#064e3b] text-[#34d399] border border-[#059669]">
+                          <span className="px-1.5 py-0.5 text-[8px] font-bold bg-[#B7D7A8]/20 text-[#B7D7A8] border border-[#B7D7A8]/40">
                             STABLE
                           </span>
                         )}
@@ -567,33 +567,33 @@ export const RobustnessView: React.FC<RobustnessViewProps> = ({ robustnessResult
       {activeTab === "BOUNDARY" && (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
           {/* Boundary Search Summary */}
-          <div className="border border-[#1f2533] bg-[#0c0e14] p-3 space-y-3">
-            <div className="text-xs text-[#94a3b8] uppercase font-bold flex justify-between items-center">
+          <div className="border border-[#443849] bg-[#2A2432] p-3 space-y-3">
+            <div className="text-xs text-[#B7ACBD] uppercase font-bold flex justify-between items-center">
               <span>LOCAL DECISION BOUNDARY PROXIMITY</span>
-              <span className="text-[10px] text-[#3b82f6] font-bold">{boundarySearch.method || "TREE_BOUNDARY_SEARCH"}</span>
+              <span className="text-[10px] text-[#F18B78] font-bold">{boundarySearch.method || "TREE_BOUNDARY_SEARCH"}</span>
             </div>
-            <div className="text-[11px] text-[#64748b]">
-              Measures the minimal normalized feature perturbation <span className="text-white">Δ / scale</span> required to flip the predicted class.
+            <div className="text-[11px] text-[#8E8295]">
+              Measures the minimal normalized feature perturbation <span className="text-[#F4EFF6]">Δ / scale</span> required to flip the predicted class.
             </div>
 
-            <div className="p-3 bg-[#090b0e] border border-[#1f2533] space-y-2">
+            <div className="p-3 bg-[#1C1824] border border-[#443849] space-y-2">
               <div className="flex justify-between items-center text-xs">
-                <span className="text-[#94a3b8]">SAMPLES EVALUATED:</span>
-                <span className="font-bold text-white">{boundarySearch.samplesTested}</span>
+                <span className="text-[#B7ACBD]">SAMPLES EVALUATED:</span>
+                <span className="font-bold text-[#F4EFF6]">{boundarySearch.samplesTested}</span>
               </div>
               <div className="flex justify-between items-center text-xs">
-                <span className="text-[#94a3b8]">SUCCESSFULLY FLIPPED:</span>
-                <span className={`font-bold tabular-nums ${boundarySearch.flipRate >= 0.20 ? "text-[#f59e0b]" : "text-[#10b981]"}`}>
+                <span className="text-[#B7ACBD]">SUCCESSFULLY FLIPPED:</span>
+                <span className={`font-bold tabular-nums ${boundarySearch.flipRate >= 0.20 ? "text-[#E8B66D]" : "text-[#B7D7A8]"}`}>
                   {boundarySearch.successfulFlips} ({((boundarySearch.flipRate || 0) * 100).toFixed(1)}%)
                 </span>
               </div>
               <div className="flex justify-between items-center text-xs">
-                <span className="text-[#94a3b8]">UNFLIPPED WITHIN BOUNDS:</span>
-                <span className="font-bold text-[#64748b]">{boundarySearch.unflippedCount}</span>
+                <span className="text-[#B7ACBD]">UNFLIPPED WITHIN BOUNDS:</span>
+                <span className="font-bold text-[#8E8295]">{boundarySearch.unflippedCount}</span>
               </div>
-              <div className="flex justify-between items-center text-xs pt-1 border-t border-[#1f2533]">
-                <span className="text-white font-bold">MEDIAN NORMALIZED DISTANCE:</span>
-                <span className={`font-bold tabular-nums ${boundarySearch.medianNormalizedDistance !== null && boundarySearch.medianNormalizedDistance <= 0.30 ? "text-[#f59e0b]" : "text-[#10b981]"}`}>
+              <div className="flex justify-between items-center text-xs pt-1 border-t border-[#443849]">
+                <span className="text-[#F4EFF6] font-bold">MEDIAN NORMALIZED DISTANCE:</span>
+                <span className={`font-bold tabular-nums ${boundarySearch.medianNormalizedDistance !== null && boundarySearch.medianNormalizedDistance <= 0.30 ? "text-[#E8B66D]" : "text-[#B7D7A8]"}`}>
                   {boundarySearch.medianNormalizedDistance !== null && boundarySearch.medianNormalizedDistance !== undefined
                     ? `${(boundarySearch.medianNormalizedDistance * 100).toFixed(1)}% std`
                     : "N/A"}
@@ -603,26 +603,26 @@ export const RobustnessView: React.FC<RobustnessViewProps> = ({ robustnessResult
           </div>
 
           {/* Per-Feature Boundary Sensitivity */}
-          <div className="border border-[#1f2533] bg-[#0c0e14] p-3 space-y-3">
-            <div className="text-xs text-[#94a3b8] uppercase font-bold">
+          <div className="border border-[#443849] bg-[#2A2432] p-3 space-y-3">
+            <div className="text-xs text-[#B7ACBD] uppercase font-bold">
               TOP BOUNDARY CROSSING CHANNELS
             </div>
-            <div className="text-[11px] text-[#64748b]">
+            <div className="text-[11px] text-[#8E8295]">
               Features that most frequently cross the decision threshold with minimal perturbation.
             </div>
 
             <div className="space-y-1.5">
               {(boundarySearch.features || []).map((bf: any, idx: number) => {
                 return (
-                  <div key={idx} className="p-2 bg-[#090b0e] border border-[#1f2533] flex justify-between items-center">
+                  <div key={idx} className="p-2 bg-[#1C1824] border border-[#443849] flex justify-between items-center">
                     <div>
-                      <div className="text-xs font-bold text-white">{bf.feature}</div>
-                      <div className="text-[10px] text-[#64748b]">
+                      <div className="text-xs font-bold text-[#F4EFF6]">{bf.feature}</div>
+                      <div className="text-[10px] text-[#8E8295]">
                         Median Δ: {bf.medianNormalizedDistance !== null ? `${(bf.medianNormalizedDistance * 100).toFixed(1)}% std` : "N/A"}
                       </div>
                     </div>
                     <div className="text-right">
-                      <span className="px-2 py-0.5 text-[9px] font-bold bg-[#141822] text-[#3b82f6] border border-[#222633]">
+                      <span className="px-2 py-0.5 text-[9px] font-bold bg-[#332B3C] text-[#F18B78] border border-[#443849]">
                         {bf.flipCount} Flips
                       </span>
                     </div>
@@ -638,25 +638,25 @@ export const RobustnessView: React.FC<RobustnessViewProps> = ({ robustnessResult
       {activeTab === "STRESS" && (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
           {/* FGSM Panel */}
-          <div className="border border-[#1f2533] bg-[#0c0e14] p-3 space-y-3">
-            <div className="text-xs text-[#94a3b8] uppercase font-bold flex justify-between items-center">
+          <div className="border border-[#443849] bg-[#2A2432] p-3 space-y-3">
+            <div className="text-xs text-[#B7ACBD] uppercase font-bold flex justify-between items-center">
               <span>FAST GRADIENT SIGN METHOD (FGSM)</span>
-              <span className={`text-[9px] font-bold px-1.5 py-0.5 ${fgsm.status === "COMPLETED" ? "bg-[#064e3b] text-[#34d399]" : "bg-[#1e293b] text-[#94a3b8]"}`}>
+              <span className={`text-[9px] font-bold px-1.5 py-0.5 ${fgsm.status === "COMPLETED" ? "bg-[#B7D7A8]/20 text-[#B7D7A8] border border-[#B7D7A8]/40" : "bg-[#332B3C] text-[#B7ACBD] border border-[#443849]"}`}>
                 {fgsm.status || "NOT_APPLICABLE"}
               </span>
             </div>
-            <div className="p-3 bg-[#090b0e] border border-[#1f2533] space-y-2">
-              <div className="text-xs text-[#94a3b8]">
+            <div className="p-3 bg-[#1C1824] border border-[#443849] space-y-2">
+              <div className="text-xs text-[#B7ACBD]">
                 {fgsm.reason || "Gradient interface is unavailable for tree-based models. Boundary sensitivity is evaluated via coordinate search."}
               </div>
             </div>
           </div>
 
           {/* Missingness Stress Panel */}
-          <div className="border border-[#1f2533] bg-[#0c0e14] p-3 space-y-3">
-            <div className="text-xs text-[#94a3b8] uppercase font-bold flex justify-between items-center">
+          <div className="border border-[#443849] bg-[#2A2432] p-3 space-y-3">
+            <div className="text-xs text-[#B7ACBD] uppercase font-bold flex justify-between items-center">
               <span>FEATURE DROPOUT / MISSINGNESS RESILIENCE</span>
-              <span className={`text-[9px] font-bold px-1.5 py-0.5 ${missingness.status === "COMPLETED" ? "bg-[#064e3b] text-[#34d399]" : "bg-[#1e293b] text-[#94a3b8]"}`}>
+              <span className={`text-[9px] font-bold px-1.5 py-0.5 ${missingness.status === "COMPLETED" ? "bg-[#B7D7A8]/20 text-[#B7D7A8] border border-[#B7D7A8]/40" : "bg-[#332B3C] text-[#B7ACBD] border border-[#443849]"}`}>
                 {missingness.status || "NOT_APPLICABLE"}
               </span>
             </div>
@@ -665,15 +665,15 @@ export const RobustnessView: React.FC<RobustnessViewProps> = ({ robustnessResult
               <div className="space-y-1.5">
                 {missingness.levels.map((ml: any, idx: number) => {
                   return (
-                    <div key={idx} className="p-2 bg-[#090b0e] border border-[#1f2533] flex justify-between items-center text-xs">
+                    <div key={idx} className="p-2 bg-[#1C1824] border border-[#443849] flex justify-between items-center text-xs">
                       <div>
-                        <span className="font-bold text-white">{ml.label}</span>
-                        <span className="text-[10px] text-[#64748b] ml-2">
+                        <span className="font-bold text-[#F4EFF6]">{ml.label}</span>
+                        <span className="text-[10px] text-[#8E8295] ml-2">
                           Mean Prob Shift: {(ml.meanProbabilityShift * 100).toFixed(1)}%
                         </span>
                       </div>
                       <div className="text-right">
-                        <span className="text-[#10b981] font-bold">
+                        <span className="text-[#B7D7A8] font-bold">
                           {ml.retainedAccuracy ? `${(ml.retainedAccuracy * 100).toFixed(1)}% Acc` : `Flip Rate: ${(ml.flipRate * 100).toFixed(1)}%`}
                         </span>
                       </div>
@@ -682,7 +682,7 @@ export const RobustnessView: React.FC<RobustnessViewProps> = ({ robustnessResult
                 })}
               </div>
             ) : (
-              <div className="p-3 bg-[#090b0e] border border-[#1f2533] text-xs text-[#94a3b8]">
+              <div className="p-3 bg-[#1C1824] border border-[#443849] text-xs text-[#B7ACBD]">
                 {missingness.reason || "Model architecture does not natively support missing feature values at inference time."}
               </div>
             )}
@@ -692,10 +692,10 @@ export const RobustnessView: React.FC<RobustnessViewProps> = ({ robustnessResult
 
       {/* Tab 5: Subgroup Robustness */}
       {activeTab === "SUBGROUPS" && (
-        <div className="border border-[#1f2533] bg-[#0c0e14] p-3 space-y-3">
-          <div className="text-xs text-[#94a3b8] uppercase font-bold flex justify-between items-center">
+        <div className="border border-[#443849] bg-[#2A2432] p-3 space-y-3">
+          <div className="text-xs text-[#B7ACBD] uppercase font-bold flex justify-between items-center">
             <span>SUBGROUP NOISE STABILITY COMPARISON</span>
-            <span className="text-[10px] text-[#64748b]">
+            <span className="text-[10px] text-[#8E8295]">
               {subgroup.protectedAttribute ? `Slice: ${subgroup.protectedAttribute}` : "No Protected Attribute Configured"}
             </span>
           </div>
@@ -704,7 +704,7 @@ export const RobustnessView: React.FC<RobustnessViewProps> = ({ robustnessResult
             <div className="overflow-x-auto">
               <table className="w-full text-left text-xs border-collapse">
                 <thead>
-                  <tr className="border-b border-[#1f2533] text-[#64748b] text-[10px] uppercase bg-[#090b0e]">
+                  <tr className="border-b border-[#443849] text-[#8E8295] text-[10px] uppercase bg-[#1C1824]">
                     <th className="py-2 px-2.5">SUBGROUP</th>
                     <th className="py-2 px-2.5 text-right">SAMPLE COUNT (N)</th>
                     <th className="py-2 px-2.5 text-right">BASELINE POS RATE</th>
@@ -712,15 +712,15 @@ export const RobustnessView: React.FC<RobustnessViewProps> = ({ robustnessResult
                     <th className="py-2 px-2.5 text-right">MEAN PROB SHIFT</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-[#1f2533] tabular-nums">
+                <tbody className="divide-y divide-[#443849] tabular-nums">
                   {subgroup.groups.map((sg: any, idx: number) => {
                     return (
-                      <tr key={idx} className="hover:bg-[#12161f]">
-                        <td className="py-2 px-2.5 font-bold text-white">{sg.group}</td>
-                        <td className="py-2 px-2.5 text-right text-[#94a3b8]">{sg.sampleCount?.toLocaleString()}</td>
-                        <td className="py-2 px-2.5 text-right text-[#94a3b8]">{(sg.baselinePositiveRate * 100).toFixed(1)}%</td>
-                        <td className="py-2 px-2.5 text-right font-bold text-white">{(sg.noiseFlipRate5Pct * 100).toFixed(2)}%</td>
-                        <td className="py-2 px-2.5 text-right text-[#94a3b8]">{(sg.meanProbabilityShift * 100).toFixed(2)}%</td>
+                      <tr key={idx} className="hover:bg-[#332B3C]">
+                        <td className="py-2 px-2.5 font-bold text-[#F4EFF6]">{sg.group}</td>
+                        <td className="py-2 px-2.5 text-right text-[#B7ACBD]">{sg.sampleCount?.toLocaleString()}</td>
+                        <td className="py-2 px-2.5 text-right text-[#B7ACBD]">{(sg.baselinePositiveRate * 100).toFixed(1)}%</td>
+                        <td className="py-2 px-2.5 text-right font-bold text-[#F4EFF6]">{(sg.noiseFlipRate5Pct * 100).toFixed(2)}%</td>
+                        <td className="py-2 px-2.5 text-right text-[#B7ACBD]">{(sg.meanProbabilityShift * 100).toFixed(2)}%</td>
                       </tr>
                     );
                   })}
@@ -728,7 +728,7 @@ export const RobustnessView: React.FC<RobustnessViewProps> = ({ robustnessResult
               </table>
             </div>
           ) : (
-            <div className="p-4 bg-[#090b0e] border border-[#1f2533] text-center text-[#64748b]">
+            <div className="p-4 bg-[#1C1824] border border-[#443849] text-center text-[#8E8295]">
               NO PROTECTED ATTRIBUTE CONFIGURED FOR SUBGROUP ROBUSTNESS ANALYSIS
             </div>
           )}
@@ -737,14 +737,14 @@ export const RobustnessView: React.FC<RobustnessViewProps> = ({ robustnessResult
 
       {/* Tab 6: Forensic Findings */}
       {activeTab === "FINDINGS" && (
-        <div className="border border-[#1f2533] bg-[#0c0e14] p-3 space-y-3">
-          <div className="text-xs text-[#94a3b8] uppercase font-bold flex justify-between items-center">
+        <div className="border border-[#443849] bg-[#2A2432] p-3 space-y-3">
+          <div className="text-xs text-[#B7ACBD] uppercase font-bold flex justify-between items-center">
             <span>STRUCTURED ROBUSTNESS &amp; SENSITIVITY FINDINGS</span>
-            <span className="text-[10px] text-[#64748b]">{findings.length} Issue(s) Logged</span>
+            <span className="text-[10px] text-[#8E8295]">{findings.length} Issue(s) Logged</span>
           </div>
 
           {findings.length === 0 ? (
-            <div className="p-4 bg-[#090b0e] border border-[#1f2533] text-center text-[#10b981]">
+            <div className="p-4 bg-[#1C1824] border border-[#443849] text-center text-[#B7D7A8]">
               ✓ No critical perturbation vulnerabilities or decision margin anomalies detected.
             </div>
           ) : (
@@ -756,7 +756,7 @@ export const RobustnessView: React.FC<RobustnessViewProps> = ({ robustnessResult
                   <div
                     key={idx}
                     className={`p-3 border ${
-                      isCrit ? "bg-[#1c0d0d] border-[#ef4444]" : "bg-[#16120b] border-[#f59e0b]"
+                      isCrit ? "bg-[#332B3C] border-[#F18B78]" : "bg-[#332B3C] border-[#E8B66D]"
                     } space-y-1.5`}
                   >
                     <div className="flex items-center justify-between">
@@ -764,22 +764,22 @@ export const RobustnessView: React.FC<RobustnessViewProps> = ({ robustnessResult
                         <span
                           className={`px-1.5 py-0.5 text-[9px] font-bold ${
                             isCrit
-                              ? "bg-[#ef4444] text-white"
-                              : "bg-[#f59e0b] text-black"
+                              ? "bg-[#F18B78] text-[#211D29]"
+                              : "bg-[#E8B66D] text-[#211D29]"
                           }`}
                         >
                           {sev}
                         </span>
-                        <span className="font-bold text-white text-xs">{finding.title}</span>
+                        <span className="font-bold text-[#F4EFF6] text-xs">{finding.title}</span>
                       </div>
-                      <span className="text-[10px] text-[#64748b] font-mono">{finding.id}</span>
+                      <span className="text-[10px] text-[#8E8295] font-mono">{finding.id}</span>
                     </div>
 
-                    <div className="text-[11px] text-[#cbd5e1]">{finding.description}</div>
+                    <div className="text-[11px] text-[#B7ACBD]">{finding.description}</div>
 
                     {finding.recommendation && (
-                      <div className="text-[10px] text-[#94a3b8] pt-1 border-t border-[#1f2533]">
-                        <span className="text-[#3b82f6] font-bold">REMEDIATION:</span> {finding.recommendation}
+                      <div className="text-[10px] text-[#B7ACBD] pt-1 border-t border-[#443849]">
+                        <span className="text-[#F18B78] font-bold">REMEDIATION:</span> {finding.recommendation}
                       </div>
                     )}
                   </div>
@@ -792,3 +792,4 @@ export const RobustnessView: React.FC<RobustnessViewProps> = ({ robustnessResult
     </div>
   );
 };
+

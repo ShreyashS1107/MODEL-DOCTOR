@@ -12,16 +12,16 @@ export interface DataQualityViewProps {
 export const DataQualityView: React.FC<DataQualityViewProps> = ({ result, status, statusMessage }) => {
   if (status === "FAILED") {
     return (
-      <div className="space-y-4 font-mono text-xs">
-        <div className="p-4 border border-[#ef4444] bg-[#1a0f0f] text-[#f87171] space-y-2">
+      <div className="space-y-4 font-mono text-xs text-[#F4EFF6]">
+        <div className="p-4 border border-[#F18B78] bg-[#F18B78]/10 text-[#F18B78] rounded space-y-2">
           <div className="flex items-center gap-2">
-            <span className="px-1.5 py-0.5 text-[9px] font-bold bg-[#ef4444] text-black">FAILED</span>
-            <span className="text-sm font-bold text-white uppercase">DATA QUALITY &amp; INPUT INTEGRITY AUDIT FAILED</span>
+            <span className="px-1.5 py-0.5 text-[9px] font-bold bg-[#F18B78] text-[#211D29] rounded">FAILED</span>
+            <span className="text-sm font-bold text-[#F4EFF6] uppercase">DATA QUALITY &amp; INPUT INTEGRITY AUDIT FAILED</span>
           </div>
-          <p className="text-xs text-[#fca5a5]">
+          <p className="text-xs text-[#F18B78]">
             {statusMessage || "Diagnostic engine reported an execution failure during data quality analysis."}
           </p>
-          <div className="text-[10px] text-[#94a3b8] pt-1 border-t border-[#331518]">
+          <div className="text-[10px] text-[#8E8295] pt-1 border-t border-[#F18B78]/30">
             Engine execution terminated without producing valid dataset metrics. Synthetic demo data is suppressed for failed live runs.
           </div>
         </div>
@@ -31,13 +31,13 @@ export const DataQualityView: React.FC<DataQualityViewProps> = ({ result, status
 
   if (status === "NOT_IMPLEMENTED") {
     return (
-      <div className="space-y-4 font-mono text-xs">
-        <div className="p-4 border border-[#f59e0b] bg-[#16120b] text-[#fde047] space-y-2">
+      <div className="space-y-4 font-mono text-xs text-[#F4EFF6]">
+        <div className="p-4 border border-[#E8B66D] bg-[#E8B66D]/10 text-[#E8B66D] rounded space-y-2">
           <div className="flex items-center gap-2">
-            <span className="px-1.5 py-0.5 text-[9px] font-bold bg-[#f59e0b] text-black">DEFERRED</span>
-            <span className="text-sm font-bold text-white uppercase">DATA QUALITY ENGINE DEFERRED</span>
+            <span className="px-1.5 py-0.5 text-[9px] font-bold bg-[#E8B66D] text-[#211D29] rounded">DEFERRED</span>
+            <span className="text-sm font-bold text-[#F4EFF6] uppercase">DATA QUALITY ENGINE DEFERRED</span>
           </div>
-          <p className="text-xs text-[#fef08a]">
+          <p className="text-xs text-[#E8B66D]">
             {statusMessage || "Module is registered for subsequent analytical phases."}
           </p>
         </div>
@@ -84,33 +84,33 @@ export const DataQualityView: React.FC<DataQualityViewProps> = ({ result, status
     : { name: "device_trust_score", missingRate: 0.042 };
 
   return (
-    <div className="space-y-4 font-mono text-xs">
+    <div className="space-y-4 font-mono text-xs text-[#F4EFF6]">
       {/* Module Header Banner */}
-      <div className="p-3 border border-[#1f2533] bg-[#0c0e14] flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+      <div className="p-3 border border-[#443849] bg-[#2A2432] rounded flex flex-col sm:flex-row sm:items-center justify-between gap-2">
         <div>
           <div className="flex items-center gap-2">
-            <span className="text-xs text-[#94a3b8] uppercase font-bold">
+            <span className="text-xs text-[#B7ACBD] uppercase font-bold">
               02 DATA QUALITY &amp; INPUT INTEGRITY AUDIT
             </span>
             {isRealData ? (
-              <span className="px-1.5 py-0.2 text-[9px] font-bold bg-[#10b981]/20 text-[#10b981] border border-[#10b981]/40">
+              <span className="px-1.5 py-0.2 text-[9px] font-bold bg-[#B7D7A8]/20 text-[#B7D7A8] border border-[#B7D7A8]/40 rounded">
                 REAL STATISTICAL EVIDENCE
               </span>
             ) : (
-              <span className="px-1.5 py-0.2 text-[9px] font-bold bg-[#f59e0b]/20 text-[#f59e0b] border border-[#f59e0b]/40">
+              <span className="px-1.5 py-0.2 text-[9px] font-bold bg-[#E8B66D]/20 text-[#E8B66D] border border-[#E8B66D]/40 rounded">
                 DEMO / SYNTHETIC FIXTURE FALLBACK
               </span>
             )}
           </div>
-          <div className="text-[11px] text-[#64748b] mt-0.5">
+          <div className="text-[11px] text-[#8E8295] mt-0.5">
             Missingness topology, zero-variance columns, type fidelity, non-finite values, and IQR outlier bounds.
           </div>
         </div>
         <div
-          className={`px-2.5 py-1 text-xs font-bold shrink-0 ${
+          className={`px-2.5 py-1 text-xs font-bold shrink-0 rounded ${
             summary.passed
-              ? "bg-[#10b981] text-black"
-              : "bg-[#ef4444] text-black"
+              ? "bg-[#B7D7A8] text-[#211D29]"
+              : "bg-[#F18B78] text-[#211D29]"
           }`}
         >
           {summary.passed
@@ -121,54 +121,54 @@ export const DataQualityView: React.FC<DataQualityViewProps> = ({ result, status
 
       {/* Numerical Metrics Summary Grid */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
-        <div className="p-2.5 border border-[#1f2533] bg-[#0c0e14]">
-          <div className="text-[10px] text-[#64748b] uppercase">COLUMNS AUDITED</div>
-          <div className="text-xl font-bold text-white tabular-nums mt-0.5">
+        <div className="p-2.5 border border-[#443849] bg-[#2A2432] rounded">
+          <div className="text-[10px] text-[#8E8295] uppercase">COLUMNS AUDITED</div>
+          <div className="text-xl font-bold text-[#F4EFF6] tabular-nums mt-0.5">
             {summary.columnCount}
           </div>
-          <div className="text-[10px] text-[#64748b]">
+          <div className="text-[10px] text-[#8E8295]">
             {summary.constantColumnsCount || 0} constant column(s)
           </div>
         </div>
 
-        <div className="p-2.5 border border-[#1f2533] bg-[#0c0e14]">
-          <div className="text-[10px] text-[#64748b] uppercase">GLOBAL MISSING RATE</div>
+        <div className="p-2.5 border border-[#443849] bg-[#2A2432] rounded">
+          <div className="text-[10px] text-[#8E8295] uppercase">GLOBAL MISSING RATE</div>
           <div
             className={`text-xl font-bold tabular-nums mt-0.5 ${
-              summary.globalMissingRate > 0.02 ? "text-[#f59e0b]" : "text-[#10b981]"
+              summary.globalMissingRate > 0.02 ? "text-[#E8B66D]" : "text-[#B7D7A8]"
             }`}
           >
             {(summary.globalMissingRate * 100).toFixed(2)}%
           </div>
-          <div className="text-[10px] text-[#64748b]">
+          <div className="text-[10px] text-[#8E8295]">
             {summary.totalMissingCells ?? 0} missing cells ({summary.columnsWithMissingValues ?? 0} cols)
           </div>
         </div>
 
-        <div className="p-2.5 border border-[#1f2533] bg-[#0c0e14]">
-          <div className="text-[10px] text-[#64748b] uppercase">MAX COLUMN NULL RATE</div>
+        <div className="p-2.5 border border-[#443849] bg-[#2A2432] rounded">
+          <div className="text-[10px] text-[#8E8295] uppercase">MAX COLUMN NULL RATE</div>
           <div
             className={`text-xl font-bold tabular-nums mt-0.5 ${
-              (summary.maxMissingRate || 0) > 0.02 ? "text-[#f59e0b]" : "text-white"
+              (summary.maxMissingRate || 0) > 0.02 ? "text-[#E8B66D]" : "text-[#F4EFF6]"
             }`}
           >
             {((summary.maxMissingRate || 0) * 100).toFixed(2)}%
           </div>
-          <div className="text-[10px] text-[#64748b] truncate">
+          <div className="text-[10px] text-[#8E8295] truncate">
             {maxMissingCol?.name || "None"}
           </div>
         </div>
 
-        <div className="p-2.5 border border-[#1f2533] bg-[#0c0e14]">
-          <div className="text-[10px] text-[#64748b] uppercase">DUPLICATE ROW RATE</div>
+        <div className="p-2.5 border border-[#443849] bg-[#2A2432] rounded">
+          <div className="text-[10px] text-[#8E8295] uppercase">DUPLICATE ROW RATE</div>
           <div
             className={`text-xl font-bold tabular-nums mt-0.5 ${
-              summary.duplicateRowRate > 0.01 ? "text-[#ef4444]" : "text-white"
+              summary.duplicateRowRate > 0.01 ? "text-[#F18B78]" : "text-[#F4EFF6]"
             }`}
           >
             {(summary.duplicateRowRate * 100).toFixed(2)}%
           </div>
-          <div className="text-[10px] text-[#64748b]">
+          <div className="text-[10px] text-[#8E8295]">
             {summary.duplicateRowCount || 0} / {summary.rowCount?.toLocaleString()} rows
           </div>
         </div>
@@ -176,10 +176,10 @@ export const DataQualityView: React.FC<DataQualityViewProps> = ({ result, status
 
       {/* Structured Findings Section */}
       {findings.length > 0 && (
-        <div className="border border-[#1f2533] bg-[#0c0e14] p-3 space-y-2">
-          <div className="text-xs text-[#94a3b8] uppercase font-bold flex items-center justify-between">
+        <div className="border border-[#443849] bg-[#2A2432] rounded p-3 space-y-2">
+          <div className="text-xs text-[#B7ACBD] uppercase font-bold flex items-center justify-between">
             <span>DATA QUALITY FINDINGS &amp; ANOMALIES ({findings.length})</span>
-            <span className="text-[10px] text-[#64748b]">SORTED BY SEVERITY</span>
+            <span className="text-[10px] text-[#8E8295]">SORTED BY SEVERITY</span>
           </div>
 
           <div className="space-y-1.5">
@@ -187,38 +187,38 @@ export const DataQualityView: React.FC<DataQualityViewProps> = ({ result, status
               const isCrit = f.severity === "CRITICAL";
               const isWarn = f.severity === "WARNING" || f.severity === "HIGH";
               const borderColor = isCrit
-                ? "border-[#ef4444]"
+                ? "border-[#F18B78]"
                 : isWarn
-                ? "border-[#f59e0b]"
-                : "border-[#1f2533]";
-              const bgColor = isCrit ? "bg-[#170e10]" : isWarn ? "bg-[#16120b]" : "bg-[#141822]";
+                ? "border-[#E8B66D]"
+                : "border-[#443849]";
+              const bgColor = isCrit ? "bg-[#F18B78]/10" : isWarn ? "bg-[#E8B66D]/10" : "bg-[#332B3C]";
 
               return (
-                <div key={f.id || idx} className={`p-2.5 border ${borderColor} ${bgColor} space-y-1`}>
+                <div key={f.id || idx} className={`p-2.5 border ${borderColor} ${bgColor} rounded space-y-1`}>
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
                       <span
-                        className={`px-1.5 py-0.2 text-[9px] font-bold ${
+                        className={`px-1.5 py-0.2 text-[9px] font-bold rounded ${
                           isCrit
-                            ? "bg-[#ef4444] text-black"
+                            ? "bg-[#F18B78] text-[#211D29]"
                             : isWarn
-                            ? "bg-[#f59e0b] text-black"
-                            : "bg-[#3b82f6] text-white"
+                            ? "bg-[#E8B66D] text-[#211D29]"
+                            : "bg-[#332B3C] text-[#B7ACBD] border border-[#443849]"
                         }`}
                       >
                         {f.severity}
                       </span>
-                      <span className="text-white font-bold">{f.title || f.id}</span>
+                      <span className="text-[#F4EFF6] font-bold">{f.title || f.id}</span>
                     </div>
                     {f.affected_features?.length > 0 && (
-                      <span className="text-[10px] text-[#94a3b8] font-bold">
+                      <span className="text-[10px] text-[#B7ACBD] font-bold">
                         COL: {f.affected_features.join(", ")}
                       </span>
                     )}
                   </div>
-                  <div className="text-[11px] text-[#94a3b8]">{f.description}</div>
+                  <div className="text-[11px] text-[#B7ACBD]">{f.description}</div>
                   {f.recommendation && (
-                    <div className="text-[11px] text-[#10b981] pt-1">
+                    <div className="text-[11px] text-[#B7D7A8] pt-1">
                       <strong>Remediation:</strong> {f.recommendation}
                     </div>
                   )}
@@ -230,16 +230,16 @@ export const DataQualityView: React.FC<DataQualityViewProps> = ({ result, status
       )}
 
       {/* Feature Quality Profile Table */}
-      <div className="border border-[#1f2533] bg-[#0c0e14] p-3">
-        <div className="text-xs text-[#94a3b8] mb-3 uppercase font-bold flex items-center justify-between">
+      <div className="border border-[#443849] bg-[#2A2432] rounded p-3">
+        <div className="text-xs text-[#B7ACBD] mb-3 uppercase font-bold flex items-center justify-between">
           <span>COLUMN-BY-COLUMN INTEGRITY PROFILE ({columns.length} COLUMNS)</span>
-          <span className="text-[10px] text-[#64748b]">EVALUATION DATASET PARTITION</span>
+          <span className="text-[10px] text-[#8E8295]">EVALUATION DATASET PARTITION</span>
         </div>
 
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs">
             <thead>
-              <tr className="border-b border-[#1f2533] text-[#64748b] text-[10px] uppercase">
+              <tr className="border-b border-[#443849] text-[#8E8295] text-[10px] uppercase">
                 <th className="py-1.5 px-2">Column Name</th>
                 <th className="py-1.5 px-2">Inferred Type</th>
                 <th className="py-1.5 px-2">Distinct</th>
@@ -250,7 +250,7 @@ export const DataQualityView: React.FC<DataQualityViewProps> = ({ result, status
                 <th className="py-1.5 px-2">Status</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-[#1f2533] tabular-nums">
+            <tbody className="divide-y divide-[#443849] tabular-nums">
               {columns.map((c: any) => {
                 const missRate = c.missingRate || 0;
                 const outRate = c.outlierRate || 0;
@@ -261,50 +261,50 @@ export const DataQualityView: React.FC<DataQualityViewProps> = ({ result, status
                 const hasWarning = missRate >= 0.02 || isConst || outRate >= 0.05 || Boolean(c.isNearConstant);
 
                 return (
-                  <tr key={c.name} className="hover:bg-[#12161f]">
-                    <td className="py-2 px-2 text-[#f1f3f8] font-bold">{c.name}</td>
-                    <td className="py-2 px-2 text-[#94a3b8]">
-                      <span className="px-1 py-0.2 bg-[#141822] border border-[#222633] text-[10px]">
+                  <tr key={c.name} className="hover:bg-[#332B3C]/50 transition-colors">
+                    <td className="py-2 px-2 text-[#F4EFF6] font-bold">{c.name}</td>
+                    <td className="py-2 px-2 text-[#B7ACBD]">
+                      <span className="px-1 py-0.2 bg-[#332B3C] border border-[#443849] text-[10px] rounded">
                         {c.inferredType || c.dtype || "UNKNOWN"}
                       </span>
                     </td>
-                    <td className="py-2 px-2 text-[#94a3b8]">{c.uniqueCount?.toLocaleString() ?? "-"}</td>
+                    <td className="py-2 px-2 text-[#B7ACBD]">{c.uniqueCount?.toLocaleString() ?? "-"}</td>
                     <td
                       className={`py-2 px-2 ${
                         missRate >= 0.20
-                          ? "text-[#ef4444] font-bold"
+                          ? "text-[#F18B78] font-bold"
                           : missRate >= 0.02
-                          ? "text-[#f59e0b] font-bold"
-                          : "text-[#64748b]"
+                          ? "text-[#E8B66D] font-bold"
+                          : "text-[#8E8295]"
                       }`}
                     >
                       {(missRate * 100).toFixed(2)}%
                     </td>
-                    <td className="py-2 px-2 text-[#64748b]">
+                    <td className="py-2 px-2 text-[#8E8295]">
                       {outRate > 0 ? `${(outRate * 100).toFixed(2)}%` : "0.00%"}
                     </td>
                     <td className="py-2 px-2">
                       <span
                         className={`text-[10px] font-bold ${
-                          isConst ? "text-[#f59e0b]" : "text-[#10b981]"
+                          isConst ? "text-[#E8B66D]" : "text-[#B7D7A8]"
                         }`}
                       >
                         {isConst ? "TRUE" : c.isNearConstant ? "NEAR" : "FALSE"}
                       </span>
                     </td>
                     <td className="py-2 px-2">
-                      <span className={`text-[10px] ${nonFinite > 0 ? "text-[#ef4444] font-bold" : "text-[#64748b]"}`}>
+                      <span className={`text-[10px] ${nonFinite > 0 ? "text-[#F18B78] font-bold" : "text-[#8E8295]"}`}>
                         {nonFinite > 0 ? `${nonFinite} INF` : "0"}
                       </span>
                     </td>
                     <td className="py-2 px-2">
                       <span
-                        className={`px-1.5 py-0.5 text-[9px] font-bold ${
+                        className={`px-1.5 py-0.5 text-[9px] font-bold rounded ${
                           hasCritical
-                            ? "bg-[#ef4444] text-black"
+                            ? "bg-[#F18B78] text-[#211D29]"
                             : hasWarning
-                            ? "bg-[#f59e0b] text-black"
-                            : "bg-[#10b981] text-black"
+                            ? "bg-[#E8B66D] text-[#211D29]"
+                            : "bg-[#B7D7A8] text-[#211D29]"
                         }`}
                       >
                         {hasCritical ? "CRITICAL" : hasWarning ? "WARNING" : "NOMINAL"}

@@ -26,17 +26,17 @@ export interface InvestigationViewProps {
 }
 
 const MODULE_COLORS: Record<string, { bg: string; text: string; border: string; hex: string }> = {
-  DRIFT: { bg: "bg-cyan-950/40", text: "text-cyan-400", border: "border-cyan-500/40", hex: "#06b6d4" },
-  EXPLAINABILITY: { bg: "bg-purple-950/40", text: "text-purple-400", border: "border-purple-500/40", hex: "#a855f7" },
-  ERROR_FORENSICS: { bg: "bg-rose-950/40", text: "text-rose-400", border: "border-rose-500/40", hex: "#f43f5e" },
-  ROBUSTNESS: { bg: "bg-orange-950/40", text: "text-orange-400", border: "border-orange-500/40", hex: "#f97316" },
-  DATA_QUALITY: { bg: "bg-yellow-950/40", text: "text-yellow-400", border: "border-yellow-500/40", hex: "#eab308" },
-  LEAKAGE: { bg: "bg-amber-950/40", text: "text-amber-400", border: "border-amber-500/40", hex: "#d97706" },
-  BIAS: { bg: "bg-emerald-950/40", text: "text-emerald-400", border: "border-emerald-500/40", hex: "#10b981" },
-  PERFORMANCE: { bg: "bg-indigo-950/40", text: "text-indigo-400", border: "border-indigo-500/40", hex: "#6366f1" },
+  DRIFT: { bg: "bg-[#F18B78]/15", text: "text-[#F18B78]", border: "border-[#F18B78]/40", hex: "#F18B78" },
+  EXPLAINABILITY: { bg: "bg-[#C490D1]/15", text: "text-[#C490D1]", border: "border-[#C490D1]/40", hex: "#C490D1" },
+  ERROR_FORENSICS: { bg: "bg-[#F18B78]/15", text: "text-[#F18B78]", border: "border-[#F18B78]/40", hex: "#F18B78" },
+  ROBUSTNESS: { bg: "bg-[#E8B66D]/15", text: "text-[#E8B66D]", border: "border-[#E8B66D]/40", hex: "#E8B66D" },
+  DATA_QUALITY: { bg: "bg-[#E8B66D]/15", text: "text-[#E8B66D]", border: "border-[#E8B66D]/40", hex: "#E8B66D" },
+  LEAKAGE: { bg: "bg-[#F18B78]/15", text: "text-[#F18B78]", border: "border-[#F18B78]/40", hex: "#F18B78" },
+  BIAS: { bg: "bg-[#B7D7A8]/15", text: "text-[#B7D7A8]", border: "border-[#B7D7A8]/40", hex: "#B7D7A8" },
+  PERFORMANCE: { bg: "bg-[#B7ACBD]/15", text: "text-[#F4EFF6]", border: "border-[#B7ACBD]/40", hex: "#B7ACBD" },
 };
 
-const DEFAULT_COLOR = { bg: "bg-slate-900/40", text: "text-slate-400", border: "border-slate-500/40", hex: "#64748b" };
+const DEFAULT_COLOR = { bg: "bg-[#332B3C]", text: "text-[#B7ACBD]", border: "border-[#443849]", hex: "#8E8295" };
 
 export const InvestigationView: React.FC<InvestigationViewProps> = ({
   runId,
@@ -146,16 +146,16 @@ export const InvestigationView: React.FC<InvestigationViewProps> = ({
   const getPriorityStyle = (priority: string) => {
     switch (priority) {
       case "CRITICAL":
-        return { badge: "bg-red-500 text-black font-bold", border: "border-red-500/40", text: "text-red-400" };
+        return { badge: "bg-[#F18B78] text-[#211D29] font-bold", border: "border-[#F18B78]/40", text: "text-[#F18B78]" };
       case "HIGH":
-        return { badge: "bg-amber-500 text-black font-bold", border: "border-amber-500/40", text: "text-amber-400" };
+        return { badge: "bg-[#F18B78]/80 text-[#211D29] font-bold", border: "border-[#F18B78]/40", text: "text-[#F18B78]" };
       case "MEDIUM":
-        return { badge: "bg-yellow-500 text-black font-bold", border: "border-yellow-500/40", text: "text-yellow-400" };
+        return { badge: "bg-[#E8B66D] text-[#211D29] font-bold", border: "border-[#E8B66D]/40", text: "text-[#E8B66D]" };
       case "LOW":
-        return { badge: "bg-blue-500 text-white", border: "border-blue-500/40", text: "text-blue-400" };
+        return { badge: "bg-[#B7D7A8] text-[#211D29] font-bold", border: "border-[#B7D7A8]/40", text: "text-[#B7D7A8]" };
       case "INFO":
       default:
-        return { badge: "bg-slate-700 text-white", border: "border-slate-600", text: "text-slate-400" };
+        return { badge: "bg-[#332B3C] text-[#F4EFF6]", border: "border-[#443849]", text: "text-[#B7ACBD]" };
     }
   };
 
@@ -225,30 +225,30 @@ export const InvestigationView: React.FC<InvestigationViewProps> = ({
   }, [graph]);
 
   return (
-    <div className="space-y-4 font-mono text-xs text-[#f1f3f8] pb-12">
+    <div className="space-y-4 font-mono text-xs text-[#F4EFF6] pb-12">
       {/* Non-Causality Disclaimer Banner */}
-      <div className="px-3.5 py-2 bg-[#0c1017] border border-[#232d3f] flex items-center justify-between text-[11px] rounded">
+      <div className="px-3.5 py-2 bg-[#2A2432] border border-[#443849] flex items-center justify-between text-[11px] rounded">
         <div className="flex items-center gap-2">
-          <span className="px-1.5 py-0.2 bg-[#3b82f6]/20 text-[#60a5fa] border border-[#3b82f6]/50 rounded font-bold text-[9px]">
+          <span className="px-1.5 py-0.2 bg-[#F18B78]/20 text-[#F18B78] border border-[#F18B78]/50 rounded font-bold text-[9px]">
             NOTICE
           </span>
-          <span className="text-[#94a3b8] font-semibold">
+          <span className="text-[#B7ACBD] font-semibold">
             INVESTIGATION RELATIONSHIPS ARE ASSOCIATIVE. THE SYSTEM DOES NOT ESTABLISH CAUSALITY.
           </span>
         </div>
-        <div className="text-[10px] text-[#64748b]">
+        <div className="text-[10px] text-[#8E8295]">
           PHASE 6 ROOT-CAUSE INVESTIGATION
         </div>
       </div>
 
       {/* Top Engineering Metrics HUD */}
-      <div className="p-3.5 bg-[#0c0e14] border border-[#1f2533] rounded space-y-3">
-        <div className="flex flex-wrap items-center justify-between gap-3 border-b border-[#1f2533] pb-3">
+      <div className="p-3.5 bg-[#2A2432] border border-[#443849] rounded space-y-3">
+        <div className="flex flex-wrap items-center justify-between gap-3 border-b border-[#443849] pb-3">
           <div className="flex items-center gap-3">
-            <span className="text-sm font-bold text-white tracking-wide uppercase">
+            <span className="text-sm font-bold text-[#F4EFF6] tracking-wide uppercase">
               ROOT-CAUSE INVESTIGATION & EVIDENCE GRAPH
             </span>
-            <span className="px-2 py-0.5 text-[10px] font-bold bg-[#1e293b] text-[#93c5fd] border border-[#3b82f6]/30 rounded">
+            <span className="px-2 py-0.5 text-[10px] font-bold bg-[#332B3C] text-[#F18B78] border border-[#443849] rounded">
               RUN: {runId}
             </span>
           </div>
@@ -257,7 +257,7 @@ export const InvestigationView: React.FC<InvestigationViewProps> = ({
             <button
               onClick={handleRecalculate}
               disabled={isRecalculating}
-              className="px-3 py-1 bg-[#161d2d] hover:bg-[#1d273d] text-[#60a5fa] border border-[#3b82f6]/40 rounded font-bold transition-colors cursor-pointer disabled:opacity-50"
+              className="px-3 py-1 bg-[#F18B78] hover:bg-[#F39C8B] text-[#211D29] rounded font-bold transition-colors cursor-pointer disabled:opacity-50"
             >
               {isRecalculating ? "⟳ RECALCULATING..." : "⟳ RECALCULATE INVESTIGATIONS"}
             </button>
@@ -266,52 +266,52 @@ export const InvestigationView: React.FC<InvestigationViewProps> = ({
 
         {/* HUD Counters */}
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-2">
-          <div className="p-2 bg-[#121620] border border-[#1f2533] rounded">
-            <div className="text-[10px] text-[#64748b]">TARGETS</div>
-            <div className="text-base font-bold text-white tabular-nums">
+          <div className="p-2 bg-[#332B3C] border border-[#443849] rounded">
+            <div className="text-[10px] text-[#8E8295]">TARGETS</div>
+            <div className="text-base font-bold text-[#F4EFF6] tabular-nums">
               {targets.length}
             </div>
           </div>
-          <div className="p-2 bg-[#121620] border border-[#1f2533] rounded">
-            <div className="text-[10px] text-[#ef4444]">CRITICAL TARGETS</div>
-            <div className="text-base font-bold text-[#ef4444] tabular-nums">
+          <div className="p-2 bg-[#332B3C] border border-[#443849] rounded">
+            <div className="text-[10px] text-[#F18B78]">CRITICAL TARGETS</div>
+            <div className="text-base font-bold text-[#F18B78] tabular-nums">
               {targets.filter((t) => t.priority === "CRITICAL").length}
             </div>
           </div>
-          <div className="p-2 bg-[#121620] border border-[#1f2533] rounded">
-            <div className="text-[10px] text-[#f59e0b]">HIGH TARGETS</div>
-            <div className="text-base font-bold text-[#f59e0b] tabular-nums">
+          <div className="p-2 bg-[#332B3C] border border-[#443849] rounded">
+            <div className="text-[10px] text-[#E8B66D]">HIGH TARGETS</div>
+            <div className="text-base font-bold text-[#E8B66D] tabular-nums">
               {targets.filter((t) => t.priority === "HIGH").length}
             </div>
           </div>
-          <div className="p-2 bg-[#121620] border border-[#1f2533] rounded">
-            <div className="text-[10px] text-[#64748b]">GRAPH NODES</div>
-            <div className="text-base font-bold text-[#93c5fd] tabular-nums">
+          <div className="p-2 bg-[#332B3C] border border-[#443849] rounded">
+            <div className="text-[10px] text-[#8E8295]">GRAPH NODES</div>
+            <div className="text-base font-bold text-[#B7ACBD] tabular-nums">
               {graph?.nodes?.length ?? 0}
             </div>
           </div>
-          <div className="p-2 bg-[#121620] border border-[#1f2533] rounded">
-            <div className="text-[10px] text-[#64748b]">EVIDENCE EDGES</div>
-            <div className="text-base font-bold text-[#93c5fd] tabular-nums">
+          <div className="p-2 bg-[#332B3C] border border-[#443849] rounded">
+            <div className="text-[10px] text-[#8E8295]">EVIDENCE EDGES</div>
+            <div className="text-base font-bold text-[#B7ACBD] tabular-nums">
               {graph?.edges?.length ?? 0}
             </div>
           </div>
-          <div className="p-2 bg-[#121620] border border-[#1f2533] rounded">
-            <div className="text-[10px] text-[#64748b]">TOP TARGET</div>
-            <div className="text-xs font-bold text-white truncate" title={targets[0]?.targetKey || "NONE"}>
+          <div className="p-2 bg-[#332B3C] border border-[#443849] rounded">
+            <div className="text-[10px] text-[#8E8295]">TOP TARGET</div>
+            <div className="text-xs font-bold text-[#F4EFF6] truncate" title={targets[0]?.targetKey || "NONE"}>
               {targets[0]?.displayName || "NONE"}
             </div>
           </div>
         </div>
 
         {/* View Tabs */}
-        <div className="flex items-center gap-2 pt-1 border-t border-[#1f2533]">
+        <div className="flex items-center gap-2 pt-1 border-t border-[#443849]">
           <button
             onClick={() => setActiveTab("QUEUE")}
             className={`px-3 py-1 font-bold text-xs rounded transition-colors cursor-pointer ${
               activeTab === "QUEUE"
-                ? "bg-[#2563eb] text-white"
-                : "bg-[#141822] text-[#94a3b8] hover:text-white border border-[#1f2533]"
+                ? "bg-[#F18B78] text-[#211D29]"
+                : "bg-[#332B3C] text-[#B7ACBD] hover:text-[#F4EFF6] border border-[#443849]"
             }`}
           >
             01 INVESTIGATION QUEUE & DOSSIER ({targets.length})
@@ -320,8 +320,8 @@ export const InvestigationView: React.FC<InvestigationViewProps> = ({
             onClick={() => setActiveTab("GRAPH")}
             className={`px-3 py-1 font-bold text-xs rounded transition-colors cursor-pointer ${
               activeTab === "GRAPH"
-                ? "bg-[#2563eb] text-white"
-                : "bg-[#141822] text-[#94a3b8] hover:text-white border border-[#1f2533]"
+                ? "bg-[#F18B78] text-[#211D29]"
+                : "bg-[#332B3C] text-[#B7ACBD] hover:text-[#F4EFF6] border border-[#443849]"
             }`}
           >
             02 EVIDENCE GRAPH ({graph?.edges?.length ?? 0} EDGES)
@@ -330,8 +330,8 @@ export const InvestigationView: React.FC<InvestigationViewProps> = ({
             onClick={() => setActiveTab("MATRIX")}
             className={`px-3 py-1 font-bold text-xs rounded transition-colors cursor-pointer ${
               activeTab === "MATRIX"
-                ? "bg-[#2563eb] text-white"
-                : "bg-[#141822] text-[#94a3b8] hover:text-white border border-[#1f2533]"
+                ? "bg-[#F18B78] text-[#211D29]"
+                : "bg-[#332B3C] text-[#B7ACBD] hover:text-[#F4EFF6] border border-[#443849]"
             }`}
           >
             03 FORENSIC INVESTIGATION MATRIX
@@ -341,8 +341,8 @@ export const InvestigationView: React.FC<InvestigationViewProps> = ({
 
       {/* Loading and Error States */}
       {isLoading && (
-        <div className="p-12 text-center text-[#64748b] bg-[#0c0e14] border border-[#1f2533] rounded">
-          <div className="animate-pulse font-bold text-white text-sm mb-1">
+        <div className="p-12 text-center text-[#8E8295] bg-[#2A2432] border border-[#443849] rounded">
+          <div className="animate-pulse font-bold text-[#F4EFF6] text-sm mb-1">
             CONSTRUCTING EVIDENCE GRAPH & INVESTIGATION DOSSIERS...
           </div>
           <div>Synthesizing cross-module signals, calculating graph connectivity, and building ranked hypotheses</div>
@@ -350,16 +350,16 @@ export const InvestigationView: React.FC<InvestigationViewProps> = ({
       )}
 
       {errorMessage && !isLoading && (
-        <div className="p-4 bg-red-950/40 border border-red-500/40 text-red-300 rounded space-y-1">
+        <div className="p-4 bg-[#F18B78]/15 border border-[#F18B78]/40 text-[#F18B78] rounded space-y-1">
           <div className="font-bold">INVESTIGATION INGESTION ERROR</div>
           <div className="text-xs">{errorMessage}</div>
         </div>
       )}
 
       {!isLoading && !errorMessage && targets.length === 0 && (
-        <div className="p-12 text-center text-[#64748b] bg-[#0c0e14] border border-[#1f2533] rounded space-y-2">
-          <div className="text-white font-bold text-sm">NO INVESTIGATION TARGETS DETECTED</div>
-          <p className="max-w-md mx-auto text-xs text-[#94a3b8]">
+        <div className="p-12 text-center text-[#8E8295] bg-[#2A2432] border border-[#443849] rounded space-y-2">
+          <div className="text-[#F4EFF6] font-bold text-sm">NO INVESTIGATION TARGETS DETECTED</div>
+          <p className="max-w-md mx-auto text-xs text-[#B7ACBD]">
             Either all diagnostic modules completed with nominal metrics, or insufficient cross-module evidence was produced to generate high-priority investigation targets.
           </p>
         </div>
@@ -371,18 +371,18 @@ export const InvestigationView: React.FC<InvestigationViewProps> = ({
           {/* Left Column: Ranked Queue (5 cols) */}
           <div className="lg:col-span-5 space-y-3">
             {/* Filter Bar */}
-            <div className="p-2.5 bg-[#0c0e14] border border-[#1f2533] rounded flex flex-wrap gap-2 items-center">
+            <div className="p-2.5 bg-[#2A2432] border border-[#443849] rounded flex flex-wrap gap-2 items-center">
               <input
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Search target, feature, hypothesis..."
-                className="flex-1 min-w-[140px] px-2 py-1 bg-[#141822] border border-[#2d3748] rounded text-white text-xs placeholder-[#64748b]"
+                className="flex-1 min-w-[140px] px-2 py-1 bg-[#1C1824] border border-[#443849] rounded text-[#F4EFF6] text-xs placeholder-[#8E8295]"
               />
               <select
                 value={priorityFilter}
                 onChange={(e) => setPriorityFilter(e.target.value)}
-                className="px-2 py-1 bg-[#141822] border border-[#2d3748] rounded text-white text-xs"
+                className="px-2 py-1 bg-[#1C1824] border border-[#443849] rounded text-[#F4EFF6] text-xs"
               >
                 <option value="ALL">ALL PRIORITIES</option>
                 <option value="CRITICAL">CRITICAL</option>
@@ -393,7 +393,7 @@ export const InvestigationView: React.FC<InvestigationViewProps> = ({
               <select
                 value={typeFilter}
                 onChange={(e) => setTypeFilter(e.target.value)}
-                className="px-2 py-1 bg-[#141822] border border-[#2d3748] rounded text-white text-xs"
+                className="px-2 py-1 bg-[#1C1824] border border-[#443849] rounded text-[#F4EFF6] text-xs"
               >
                 <option value="ALL">ALL TYPES</option>
                 <option value="FEATURE">FEATURE</option>
@@ -414,50 +414,50 @@ export const InvestigationView: React.FC<InvestigationViewProps> = ({
                   <div
                     key={target.targetKey}
                     onClick={() => setSelectedTargetKey(target.targetKey)}
-                    className={`p-3 bg-[#0c0e14] border rounded cursor-pointer transition-all ${
+                    className={`p-3 rounded cursor-pointer transition-all border ${
                       isSelected
-                        ? "border-[#3b82f6] bg-[#141a29] shadow-lg"
-                        : "border-[#1f2533] hover:border-[#2d3748] hover:bg-[#10141e]"
+                        ? "border-[#F18B78] bg-[#332B3C] shadow-lg"
+                        : "border-[#443849] hover:border-[#5A4B62] hover:bg-[#332B3C]/50 bg-[#211D29]"
                     }`}
                   >
                     <div className="flex items-start justify-between gap-2 mb-1.5">
                       <div className="flex items-center gap-2">
-                        <span className="text-[10px] text-[#64748b] font-bold">
+                        <span className="text-[10px] text-[#8E8295] font-bold">
                           #{rankFormatted}
                         </span>
                         <span className={`px-1.5 py-0.2 text-[9px] rounded ${pStyle.badge}`}>
                           {target.priority}
                         </span>
-                        <span className="text-white font-bold truncate max-w-[200px]">
+                        <span className="text-[#F4EFF6] font-bold truncate max-w-[200px]">
                           {target.displayName}
                         </span>
                       </div>
                       <div className="text-right shrink-0">
-                        <div className="text-xs font-bold text-white tabular-nums">
+                        <div className="text-xs font-bold text-[#F4EFF6] tabular-nums">
                           {target.priorityScore.toFixed(1)}
                         </div>
-                        <div className="text-[9px] text-[#64748b]">SCORE</div>
+                        <div className="text-[9px] text-[#8E8295]">SCORE</div>
                       </div>
                     </div>
 
                     {/* Meta badges */}
                     <div className="flex flex-wrap gap-1.5 mb-2 text-[10px]">
-                      <span className="px-1.5 py-0.2 bg-[#1e293b] text-[#94a3b8] rounded border border-[#334155]">
+                      <span className="px-1.5 py-0.2 bg-[#1C1824] text-[#B7ACBD] rounded border border-[#443849]">
                         TYPE: {target.targetType}
                       </span>
-                      <span className="px-1.5 py-0.2 bg-[#1e293b] text-[#93c5fd] rounded border border-[#334155]">
+                      <span className="px-1.5 py-0.2 bg-[#1C1824] text-[#F18B78] rounded border border-[#443849]">
                         {target.supportingModuleCount} MODULES
                       </span>
-                      <span className="px-1.5 py-0.2 bg-[#1e293b] text-[#cbd5e1] rounded border border-[#334155]">
+                      <span className="px-1.5 py-0.2 bg-[#1C1824] text-[#B7ACBD] rounded border border-[#443849]">
                         {target.supportingFindingCount} FINDINGS
                       </span>
-                      <span className="px-1.5 py-0.2 bg-[#1e293b] text-[#a7f3d0] rounded border border-[#334155]">
+                      <span className="px-1.5 py-0.2 bg-[#1C1824] text-[#B7D7A8] rounded border border-[#443849]">
                         CONFIDENCE: {target.evidenceConfidence}
                       </span>
                     </div>
 
                     {/* Hypothesis snippet */}
-                    <p className="text-[11px] text-[#94a3b8] line-clamp-2 leading-relaxed">
+                    <p className="text-[11px] text-[#B7ACBD] line-clamp-2 leading-relaxed">
                       {target.hypothesis}
                     </p>
                   </div>
@@ -469,33 +469,33 @@ export const InvestigationView: React.FC<InvestigationViewProps> = ({
           {/* Right Column: Target Dossier (7 cols) */}
           <div className="lg:col-span-7">
             {isLoadingDossier ? (
-              <div className="p-12 text-center text-[#64748b] bg-[#0c0e14] border border-[#1f2533] rounded">
-                <div className="animate-pulse font-bold text-white text-sm mb-1">
+              <div className="p-12 text-center text-[#8E8295] bg-[#2A2432] border border-[#443849] rounded">
+                <div className="animate-pulse font-bold text-[#F4EFF6] text-sm mb-1">
                   LOADING INVESTIGATION DOSSIER...
                 </div>
               </div>
             ) : dossier ? (
-              <div className="p-4 bg-[#0c0e14] border border-[#1f2533] rounded space-y-4">
+              <div className="p-4 bg-[#2A2432] border border-[#443849] rounded space-y-4">
                 {/* Dossier Header */}
-                <div className="flex flex-wrap items-start justify-between gap-3 border-b border-[#1f2533] pb-3">
+                <div className="flex flex-wrap items-start justify-between gap-3 border-b border-[#443849] pb-3">
                   <div>
-                    <div className="text-[10px] text-[#64748b] uppercase tracking-wider">
+                    <div className="text-[10px] text-[#8E8295] uppercase tracking-wider">
                       INVESTIGATION TARGET DOSSIER
                     </div>
-                    <div className="text-base font-bold text-white">
+                    <div className="text-base font-bold text-[#F4EFF6]">
                       {dossier.displayName}
                     </div>
-                    <div className="text-[11px] text-[#94a3b8] font-mono mt-0.5">
-                      CANONICAL KEY: <span className="text-[#38bdf8]">{dossier.targetKey}</span>
+                    <div className="text-[11px] text-[#B7ACBD] font-mono mt-0.5">
+                      CANONICAL KEY: <span className="text-[#F18B78]">{dossier.targetKey}</span>
                     </div>
                   </div>
 
                   <div className="flex items-center gap-3">
                     <div className="text-right">
-                      <div className="text-lg font-bold text-white tabular-nums">
+                      <div className="text-lg font-bold text-[#F4EFF6] tabular-nums">
                         {dossier.priorityScore.toFixed(1)}
                       </div>
-                      <div className="text-[9px] text-[#64748b]">PRIORITY SCORE</div>
+                      <div className="text-[9px] text-[#8E8295]">PRIORITY SCORE</div>
                     </div>
                     <span className={`px-2 py-1 text-xs rounded font-bold ${getPriorityStyle(dossier.priority).badge}`}>
                       {dossier.priority}
@@ -505,7 +505,7 @@ export const InvestigationView: React.FC<InvestigationViewProps> = ({
 
                 {/* Supporting Modules Strip */}
                 <div>
-                  <div className="text-[10px] text-[#64748b] uppercase mb-1.5 font-bold">
+                  <div className="text-[10px] text-[#8E8295] uppercase mb-1.5 font-bold">
                     SUPPORTING CONVERGENT MODULES ({dossier.supportingModules.length})
                   </div>
                   <div className="flex flex-wrap gap-1.5">
@@ -535,11 +535,11 @@ export const InvestigationView: React.FC<InvestigationViewProps> = ({
                 </div>
 
                 {/* Deterministic Investigation Hypothesis */}
-                <div className="p-3 bg-[#121620] border border-[#222b3d] rounded space-y-1">
-                  <div className="text-[10px] text-[#38bdf8] font-bold uppercase tracking-wider">
+                <div className="p-3 bg-[#1C1824] border border-[#443849] rounded space-y-1">
+                  <div className="text-[10px] text-[#F18B78] font-bold uppercase tracking-wider">
                     INVESTIGATION HYPOTHESIS (EVIDENCE-DERIVED)
                   </div>
-                  <p className="text-xs text-[#e2e8f0] leading-relaxed">
+                  <p className="text-xs text-[#F4EFF6] leading-relaxed">
                     {dossier.hypothesis}
                   </p>
                 </div>
@@ -547,7 +547,7 @@ export const InvestigationView: React.FC<InvestigationViewProps> = ({
                 {/* Ordered Investigation Path */}
                 {dossier.investigationPath && dossier.investigationPath.length > 0 && (
                   <div className="space-y-2">
-                    <div className="text-[10px] text-[#64748b] uppercase font-bold">
+                    <div className="text-[10px] text-[#8E8295] uppercase font-bold">
                       ORDERED EVIDENCE PATH ({dossier.investigationPath.length} STEPS)
                     </div>
                     <div className="space-y-1.5">
@@ -556,9 +556,9 @@ export const InvestigationView: React.FC<InvestigationViewProps> = ({
                         return (
                           <div
                             key={step.stepNumber}
-                            className="p-2.5 bg-[#090b0e] border border-[#1f2533] rounded flex items-start gap-2.5 text-xs"
+                            className="p-2.5 bg-[#1C1824] border border-[#443849] rounded flex items-start gap-2.5 text-xs"
                           >
-                            <span className="px-1.5 py-0.2 bg-[#1e293b] text-white rounded text-[10px] font-bold shrink-0">
+                            <span className="px-1.5 py-0.2 bg-[#332B3C] text-[#F4EFF6] rounded text-[10px] font-bold shrink-0">
                               {step.stepNumber}
                             </span>
                             <div className="flex-1 space-y-1">
@@ -567,17 +567,17 @@ export const InvestigationView: React.FC<InvestigationViewProps> = ({
                                   {step.sourceModule}
                                 </span>
                                 {step.formattedValue && (
-                                  <span className="px-1.5 py-0.2 bg-[#1f293d] text-[#60a5fa] rounded text-[10px] font-mono">
+                                  <span className="px-1.5 py-0.2 bg-[#332B3C] text-[#F18B78] rounded text-[10px] font-mono">
                                     {step.formattedValue}
                                   </span>
                                 )}
                               </div>
-                              <p className="text-[11px] text-[#cbd5e1]">
+                              <p className="text-[11px] text-[#B7ACBD]">
                                 {step.description}
                               </p>
                               {step.correlationRuleId && (
-                                <div className="text-[9px] text-[#64748b]">
-                                  RULE: <span className="text-[#94a3b8]">{step.correlationRuleId}</span>
+                                <div className="text-[9px] text-[#8E8295]">
+                                  RULE: <span className="text-[#B7ACBD]">{step.correlationRuleId}</span>
                                 </div>
                               )}
                             </div>
@@ -590,14 +590,14 @@ export const InvestigationView: React.FC<InvestigationViewProps> = ({
 
                 {/* Deterministic Next Actions */}
                 {dossier.nextActions && dossier.nextActions.length > 0 && (
-                  <div className="p-3 bg-[#0d141e] border border-[#1f3049] rounded space-y-2">
-                    <div className="text-[10px] text-[#60a5fa] font-bold uppercase tracking-wider">
+                  <div className="p-3 bg-[#1C1824] border border-[#443849] rounded space-y-2">
+                    <div className="text-[10px] text-[#F18B78] font-bold uppercase tracking-wider">
                       DETERMINISTIC NEXT ACTIONS
                     </div>
                     <div className="space-y-1.5">
                       {dossier.nextActions.map((action, idx) => (
-                        <div key={idx} className="flex items-start gap-2 text-xs text-[#cbd5e1]">
-                          <span className="text-[#3b82f6] font-bold shrink-0">[{idx + 1}]</span>
+                        <div key={idx} className="flex items-start gap-2 text-xs text-[#B7ACBD]">
+                          <span className="text-[#F18B78] font-bold shrink-0">[{idx + 1}]</span>
                           <span className="leading-relaxed">{action}</span>
                         </div>
                       ))}
@@ -607,14 +607,14 @@ export const InvestigationView: React.FC<InvestigationViewProps> = ({
 
                 {/* Provenance Traceability */}
                 {dossier.provenance && (
-                  <div className="space-y-2 pt-2 border-t border-[#1f2533]">
-                    <div className="text-[10px] text-[#64748b] uppercase font-bold">
+                  <div className="space-y-2 pt-2 border-t border-[#443849]">
+                    <div className="text-[10px] text-[#8E8295] uppercase font-bold">
                       PROVENANCE & RESULT TRACEABILITY
                     </div>
                     <div className="overflow-x-auto">
                       <table className="w-full text-left text-[10px] border-collapse">
                         <thead>
-                          <tr className="border-b border-[#1f2533] text-[#64748b]">
+                          <tr className="border-b border-[#443849] text-[#8E8295]">
                             <th className="py-1 px-1.5">MODULE</th>
                             <th className="py-1 px-1.5">METRIC</th>
                             <th className="py-1 px-1.5">VALUE</th>
@@ -627,20 +627,20 @@ export const InvestigationView: React.FC<InvestigationViewProps> = ({
                             ? dossier.provenance
                             : dossier.provenance.evidenceItems || []
                           ).map((p: any, idx: number) => (
-                            <tr key={idx} className="border-b border-[#1f2533]/50 hover:bg-[#141822]">
-                              <td className="py-1 px-1.5 font-bold text-white">{p.sourceModule}</td>
-                              <td className="py-1 px-1.5 text-[#94a3b8]">{p.metric || "N/A"}</td>
-                              <td className="py-1 px-1.5 font-mono text-[#60a5fa]">
+                            <tr key={idx} className="border-b border-[#443849]/50 hover:bg-[#332B3C]/50">
+                              <td className="py-1 px-1.5 font-bold text-[#F4EFF6]">{p.sourceModule}</td>
+                              <td className="py-1 px-1.5 text-[#B7ACBD]">{p.metric || "N/A"}</td>
+                              <td className="py-1 px-1.5 font-mono text-[#F18B78]">
                                 {typeof p.value === "number" ? p.value.toFixed(4) : (p.value ?? "N/A")}
                               </td>
-                              <td className="py-1 px-1.5 text-[#a78bfa]">{p.ruleId || "N/A"}</td>
-                              <td className="py-1 px-1.5 font-mono text-[#64748b] truncate max-w-[120px]">
+                              <td className="py-1 px-1.5 text-[#B7ACBD]">{p.ruleId || "N/A"}</td>
+                              <td className="py-1 px-1.5 font-mono text-[#8E8295] truncate max-w-[120px]">
                                 {p.sourceResultId ? (
-                                  <span className="text-[#38bdf8]" title={p.sourceResultId}>
+                                  <span className="text-[#F18B78]" title={p.sourceResultId}>
                                     {p.sourceResultId}
                                   </span>
                                 ) : (
-                                  <span className="text-[#475569]">N/A</span>
+                                  <span className="text-[#8E8295]">N/A</span>
                                 )}
                               </td>
                             </tr>
@@ -652,7 +652,7 @@ export const InvestigationView: React.FC<InvestigationViewProps> = ({
                 )}
               </div>
             ) : (
-              <div className="p-12 text-center text-[#64748b] bg-[#0c0e14] border border-[#1f2533] rounded">
+              <div className="p-12 text-center text-[#8E8295] bg-[#2A2432] border border-[#443849] rounded">
                 Select an investigation target from the queue to view its full evidence dossier.
               </div>
             )}
@@ -664,34 +664,34 @@ export const InvestigationView: React.FC<InvestigationViewProps> = ({
       {!isLoading && activeTab === "GRAPH" && (
         <div className="space-y-3">
           {/* Graph Controls Bar */}
-          <div className="p-2.5 bg-[#0c0e14] border border-[#1f2533] rounded flex flex-wrap items-center justify-between gap-2 text-xs">
+          <div className="p-2.5 bg-[#2A2432] border border-[#443849] rounded flex flex-wrap items-center justify-between gap-2 text-xs">
             <div className="flex items-center gap-2">
-              <span className="text-[#64748b] text-[10px]">LEGEND:</span>
+              <span className="text-[#8E8295] text-[10px] font-bold">LEGEND:</span>
               {Object.entries(MODULE_COLORS).map(([mod, col]) => (
-                <span key={mod} className={`px-1.5 py-0.2 text-[9px] rounded font-bold ${col.bg} ${col.text} border ${col.border}`}>
+                <span key={mod} className={`px-1.5 py-0.5 text-[9px] rounded font-bold ${col.bg} ${col.text} border ${col.border}`}>
                   {mod}
                 </span>
               ))}
             </div>
 
             <div className="flex items-center gap-2">
-              <span className="text-[10px] text-[#64748b]">ZOOM:</span>
+              <span className="text-[10px] text-[#8E8295] font-bold">ZOOM:</span>
               <button
                 onClick={() => setZoomLevel((z) => Math.max(0.6, z - 0.1))}
-                className="px-2 py-0.5 bg-[#141822] hover:bg-[#1f2638] text-white border border-[#2d3748] rounded cursor-pointer"
+                className="px-2 py-0.5 bg-[#332B3C] hover:bg-[#3D3448] text-[#F4EFF6] border border-[#443849] rounded cursor-pointer transition-colors"
               >
                 -
               </button>
-              <span className="text-[10px] font-mono text-white">{Math.round(zoomLevel * 100)}%</span>
+              <span className="text-[10px] font-mono text-[#F4EFF6]">{Math.round(zoomLevel * 100)}%</span>
               <button
                 onClick={() => setZoomLevel((z) => Math.min(1.8, z + 0.1))}
-                className="px-2 py-0.5 bg-[#141822] hover:bg-[#1f2638] text-white border border-[#2d3748] rounded cursor-pointer"
+                className="px-2 py-0.5 bg-[#332B3C] hover:bg-[#3D3448] text-[#F4EFF6] border border-[#443849] rounded cursor-pointer transition-colors"
               >
                 +
               </button>
               <button
                 onClick={() => setZoomLevel(1)}
-                className="px-2 py-0.5 bg-[#141822] hover:bg-[#1f2638] text-[#94a3b8] hover:text-white border border-[#2d3748] rounded cursor-pointer text-[10px]"
+                className="px-2 py-0.5 bg-[#332B3C] hover:bg-[#3D3448] text-[#B7ACBD] hover:text-[#F4EFF6] border border-[#443849] rounded cursor-pointer text-[10px] transition-colors"
               >
                 RESET
               </button>
@@ -700,7 +700,7 @@ export const InvestigationView: React.FC<InvestigationViewProps> = ({
 
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
             {/* SVG Canvas (8 cols) */}
-            <div className="lg:col-span-8 bg-[#07090d] border border-[#1f2533] rounded p-2 overflow-auto flex items-center justify-center min-h-[550px]">
+            <div className="lg:col-span-8 bg-[#1C1824] border border-[#443849] rounded p-2 overflow-auto flex items-center justify-center min-h-[550px]">
               <svg
                 width={graphLayout.width * zoomLevel}
                 height={graphLayout.height * zoomLevel}
@@ -716,7 +716,7 @@ export const InvestigationView: React.FC<InvestigationViewProps> = ({
                     refY="3"
                     orient="auto"
                   >
-                    <polygon points="0 0, 8 3, 0 6" fill="#475569" />
+                    <polygon points="0 0, 8 3, 0 6" fill="#5A4B62" />
                   </marker>
                   <marker
                     id="arrowhead-active"
@@ -726,7 +726,7 @@ export const InvestigationView: React.FC<InvestigationViewProps> = ({
                     refY="3"
                     orient="auto"
                   >
-                    <polygon points="0 0, 8 3, 0 6" fill="#38bdf8" />
+                    <polygon points="0 0, 8 3, 0 6" fill="#F18B78" />
                   </marker>
                 </defs>
 
@@ -737,7 +737,7 @@ export const InvestigationView: React.FC<InvestigationViewProps> = ({
                   if (!srcNode || !tgtNode) return null;
 
                   const isSelected = selectedEdge?.id === edge.id;
-                  const strokeColor = isSelected ? "#38bdf8" : "#334155";
+                  const strokeColor = isSelected ? "#F18B78" : "#443849";
                   const strokeWidth = isSelected ? 2.5 : 1.2;
 
                   return (
@@ -766,8 +766,8 @@ export const InvestigationView: React.FC<InvestigationViewProps> = ({
                         width="56"
                         height="14"
                         rx="3"
-                        fill="#0c0e14"
-                        stroke={isSelected ? "#38bdf8" : "#1f2533"}
+                        fill="#2A2432"
+                        stroke={isSelected ? "#F18B78" : "#443849"}
                         strokeWidth="1"
                       />
                       <text
@@ -775,7 +775,7 @@ export const InvestigationView: React.FC<InvestigationViewProps> = ({
                         y={(srcNode.y + tgtNode.y) / 2 + 2}
                         textAnchor="middle"
                         fontSize="7"
-                        fill={isSelected ? "#38bdf8" : "#94a3b8"}
+                        fill={isSelected ? "#F18B78" : "#B7ACBD"}
                         fontFamily="monospace"
                         fontWeight="bold"
                       >
@@ -812,8 +812,8 @@ export const InvestigationView: React.FC<InvestigationViewProps> = ({
                         width={boxWidth}
                         height={boxHeight}
                         rx="4"
-                        fill={isSelected ? "#1e293b" : "#0c0e14"}
-                        stroke={isSelected ? "#38bdf8" : isModule ? modColor.hex : "#2d3748"}
+                        fill={isSelected ? "#332B3C" : "#2A2432"}
+                        stroke={isSelected ? "#F18B78" : isModule ? modColor.hex : "#443849"}
                         strokeWidth={isSelected ? 2 : 1.2}
                       />
                       <text
@@ -832,7 +832,7 @@ export const InvestigationView: React.FC<InvestigationViewProps> = ({
                         y={23}
                         textAnchor="middle"
                         fontSize="9"
-                        fill="#ffffff"
+                        fill="#F4EFF6"
                         fontFamily="monospace"
                         fontWeight="bold"
                         className="truncate"
@@ -848,104 +848,104 @@ export const InvestigationView: React.FC<InvestigationViewProps> = ({
             {/* Edge / Node Inspector Sidebar (4 cols) */}
             <div className="lg:col-span-4 space-y-3">
               {selectedEdge ? (
-                <div className="p-3.5 bg-[#0c0e14] border border-[#38bdf8]/50 rounded space-y-3">
-                  <div className="flex items-center justify-between border-b border-[#1f2533] pb-2">
-                    <span className="text-[10px] text-[#38bdf8] font-bold uppercase">
+                <div className="p-3.5 bg-[#2A2432] border border-[#F18B78]/50 rounded space-y-3">
+                  <div className="flex items-center justify-between border-b border-[#443849] pb-2">
+                    <span className="text-[10px] text-[#F18B78] font-bold uppercase tracking-wider">
                       EDGE INSPECTOR
                     </span>
-                    <span className="px-1.5 py-0.2 bg-[#1e293b] text-[#93c5fd] rounded text-[9px] font-bold">
+                    <span className="px-1.5 py-0.5 bg-[#332B3C] text-[#F18B78] rounded text-[9px] font-bold border border-[#F18B78]/30">
                       {selectedEdge.relationType}
                     </span>
                   </div>
 
                   <div className="space-y-1.5 text-xs">
                     <div className="flex justify-between">
-                      <span className="text-[#64748b]">SOURCE:</span>
-                      <span className="text-white font-mono">{selectedEdge.source}</span>
+                      <span className="text-[#8E8295]">SOURCE:</span>
+                      <span className="text-[#F4EFF6] font-mono">{selectedEdge.source}</span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-[#64748b]">TARGET:</span>
-                      <span className="text-white font-mono">{selectedEdge.target}</span>
+                      <span className="text-[#8E8295]">TARGET:</span>
+                      <span className="text-[#F4EFF6] font-mono">{selectedEdge.target}</span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-[#64748b]">MODULE:</span>
-                      <span className="text-[#38bdf8] font-bold">{selectedEdge.sourceModule}</span>
+                      <span className="text-[#8E8295]">MODULE:</span>
+                      <span className="text-[#F18B78] font-bold">{selectedEdge.sourceModule}</span>
                     </div>
                     {selectedEdge.ruleId && (
                       <div className="flex justify-between">
-                        <span className="text-[#64748b]">RULE ID:</span>
-                        <span className="text-[#a78bfa]">{selectedEdge.ruleId}</span>
+                        <span className="text-[#8E8295]">RULE ID:</span>
+                        <span className="text-[#B7D7A8] font-mono">{selectedEdge.ruleId}</span>
                       </div>
                     )}
                     {selectedEdge.metric && (
                       <div className="flex justify-between">
-                        <span className="text-[#64748b]">METRIC:</span>
-                        <span className="text-[#cbd5e1]">{selectedEdge.metric}</span>
+                        <span className="text-[#8E8295]">METRIC:</span>
+                        <span className="text-[#B7ACBD]">{selectedEdge.metric}</span>
                       </div>
                     )}
                     {selectedEdge.metricValue !== undefined && (
                       <div className="flex justify-between">
-                        <span className="text-[#64748b]">VALUE:</span>
-                        <span className="text-[#60a5fa] font-bold font-mono">
+                        <span className="text-[#8E8295]">VALUE:</span>
+                        <span className="text-[#F18B78] font-bold font-mono">
                           {selectedEdge.metricValue.toFixed(4)}
                         </span>
                       </div>
                     )}
                     {selectedEdge.threshold && (
                       <div className="flex justify-between">
-                        <span className="text-[#64748b]">THRESHOLD:</span>
-                        <span className="text-[#f59e0b] font-mono">{selectedEdge.threshold}</span>
+                        <span className="text-[#8E8295]">THRESHOLD:</span>
+                        <span className="text-[#E8B66D] font-mono">{selectedEdge.threshold}</span>
                       </div>
                     )}
                     {selectedEdge.confidence && (
                       <div className="flex justify-between">
-                        <span className="text-[#64748b]">CONFIDENCE:</span>
-                        <span className="text-[#10b981] font-bold">{selectedEdge.confidence}</span>
+                        <span className="text-[#8E8295]">CONFIDENCE:</span>
+                        <span className="text-[#B7D7A8] font-bold">{selectedEdge.confidence}</span>
                       </div>
                     )}
-                    <div className="flex justify-between border-t border-[#1f2533] pt-1.5">
-                      <span className="text-[#64748b]">SOURCE RESULT ID:</span>
-                      <span className="text-[#94a3b8] font-mono truncate max-w-[140px]">
+                    <div className="flex justify-between border-t border-[#443849] pt-1.5">
+                      <span className="text-[#8E8295]">SOURCE RESULT ID:</span>
+                      <span className="text-[#B7ACBD] font-mono truncate max-w-[140px]">
                         {selectedEdge.sourceResultId || "UNAVAILABLE"}
                       </span>
                     </div>
                   </div>
                 </div>
               ) : selectedNode ? (
-                <div className="p-3.5 bg-[#0c0e14] border border-[#2d3748] rounded space-y-3">
-                  <div className="flex items-center justify-between border-b border-[#1f2533] pb-2">
-                    <span className="text-[10px] text-white font-bold uppercase">
+                <div className="p-3.5 bg-[#2A2432] border border-[#443849] rounded space-y-3">
+                  <div className="flex items-center justify-between border-b border-[#443849] pb-2">
+                    <span className="text-[10px] text-[#F4EFF6] font-bold uppercase tracking-wider">
                       NODE INSPECTOR
                     </span>
-                    <span className="px-1.5 py-0.2 bg-[#1e293b] text-[#cbd5e1] rounded text-[9px] font-bold">
+                    <span className="px-1.5 py-0.5 bg-[#332B3C] text-[#B7ACBD] rounded text-[9px] font-bold border border-[#443849]">
                       {selectedNode.nodeType}
                     </span>
                   </div>
                   <div className="space-y-1.5 text-xs">
                     <div className="flex justify-between">
-                      <span className="text-[#64748b]">NODE ID:</span>
-                      <span className="text-white font-mono">{selectedNode.id}</span>
+                      <span className="text-[#8E8295]">NODE ID:</span>
+                      <span className="text-[#F4EFF6] font-mono">{selectedNode.id}</span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-[#64748b]">LABEL:</span>
-                      <span className="text-white font-bold">{selectedNode.label}</span>
+                      <span className="text-[#8E8295]">LABEL:</span>
+                      <span className="text-[#F4EFF6] font-bold">{selectedNode.label}</span>
                     </div>
                     {selectedNode.sourceModule && (
                       <div className="flex justify-between">
-                        <span className="text-[#64748b]">MODULE:</span>
-                        <span className="text-[#38bdf8] font-bold">{selectedNode.sourceModule}</span>
+                        <span className="text-[#8E8295]">MODULE:</span>
+                        <span className="text-[#F18B78] font-bold">{selectedNode.sourceModule}</span>
                       </div>
                     )}
                     {selectedNode.priority && (
                       <div className="flex justify-between">
-                        <span className="text-[#64748b]">PRIORITY:</span>
-                        <span className="text-amber-400 font-bold">{selectedNode.priority}</span>
+                        <span className="text-[#8E8295]">PRIORITY:</span>
+                        <span className="text-[#E8B66D] font-bold">{selectedNode.priority}</span>
                       </div>
                     )}
                     {selectedNode.score !== undefined && (
                       <div className="flex justify-between">
-                        <span className="text-[#64748b]">SCORE:</span>
-                        <span className="text-white font-mono">{selectedNode.score.toFixed(1)}</span>
+                        <span className="text-[#8E8295]">SCORE:</span>
+                        <span className="text-[#F4EFF6] font-mono">{selectedNode.score.toFixed(1)}</span>
                       </div>
                     )}
                   </div>
@@ -955,14 +955,14 @@ export const InvestigationView: React.FC<InvestigationViewProps> = ({
                         setSelectedTargetKey(selectedNode.id);
                         setActiveTab("QUEUE");
                       }}
-                      className="w-full mt-2 py-1 bg-[#2563eb] hover:bg-[#1d4ed8] text-white font-bold text-xs rounded transition-colors"
+                      className="w-full mt-2 py-1.5 bg-[#F18B78] hover:bg-[#F39C8B] text-[#211D29] font-bold text-xs rounded transition-colors cursor-pointer"
                     >
                       OPEN TARGET DOSSIER ↗
                     </button>
                   )}
                 </div>
               ) : (
-                <div className="p-6 bg-[#0c0e14] border border-[#1f2533] rounded text-center text-[#64748b]">
+                <div className="p-6 bg-[#2A2432] border border-[#443849] rounded text-center text-[#8E8295] text-xs">
                   Click any node or edge in the graph to inspect evidence relationships, source modules, and provenance result IDs.
                 </div>
               )}
@@ -973,13 +973,13 @@ export const InvestigationView: React.FC<InvestigationViewProps> = ({
 
       {/* TAB 3: EXTENDED FEATURE INVESTIGATION MATRIX */}
       {!isLoading && activeTab === "MATRIX" && (
-        <div className="p-4 bg-[#0c0e14] border border-[#1f2533] rounded space-y-3">
-          <div className="flex items-center justify-between border-b border-[#1f2533] pb-2">
+        <div className="p-4 bg-[#2A2432] border border-[#443849] rounded space-y-3">
+          <div className="flex items-center justify-between border-b border-[#443849] pb-2">
             <div>
-              <div className="text-sm font-bold text-white">
+              <div className="text-sm font-bold text-[#F4EFF6]">
                 FEATURE-CENTRIC INVESTIGATION MATRIX
               </div>
-              <div className="text-xs text-[#94a3b8]">
+              <div className="text-xs text-[#B7ACBD]">
                 Extended matrix integrating drift, importance, error association, robustness sensitivity, and calculated investigation priority.
               </div>
             </div>
@@ -988,14 +988,14 @@ export const InvestigationView: React.FC<InvestigationViewProps> = ({
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs border-collapse">
               <thead>
-                <tr className="border-b border-[#1f2533] text-[#64748b] font-mono text-[10px]">
-                  <th className="py-2 px-2">FEATURE TARGET</th>
-                  <th className="py-2 px-2">PRIORITY</th>
-                  <th className="py-2 px-2 text-right">SCORE</th>
-                  <th className="py-2 px-2 text-center">MODULES</th>
-                  <th className="py-2 px-2 text-center">FINDINGS</th>
-                  <th className="py-2 px-2">INVESTIGATION HYPOTHESIS</th>
-                  <th className="py-2 px-2 text-right">ACTION</th>
+                <tr className="border-b border-[#443849] text-[#8E8295] font-mono text-[10px]">
+                  <th className="py-2.5 px-2">FEATURE TARGET</th>
+                  <th className="py-2.5 px-2">PRIORITY</th>
+                  <th className="py-2.5 px-2 text-right">SCORE</th>
+                  <th className="py-2.5 px-2 text-center">MODULES</th>
+                  <th className="py-2.5 px-2 text-center">FINDINGS</th>
+                  <th className="py-2.5 px-2">INVESTIGATION HYPOTHESIS</th>
+                  <th className="py-2.5 px-2 text-right">ACTION</th>
                 </tr>
               </thead>
               <tbody>
@@ -1004,30 +1004,30 @@ export const InvestigationView: React.FC<InvestigationViewProps> = ({
                   return (
                     <tr
                       key={target.targetKey}
-                      className="border-b border-[#1f2533]/50 hover:bg-[#141822] cursor-pointer"
+                      className="border-b border-[#443849]/50 hover:bg-[#332B3C] cursor-pointer transition-colors"
                       onClick={() => {
                         setSelectedTargetKey(target.targetKey);
                         setActiveTab("QUEUE");
                       }}
                     >
-                      <td className="py-2 px-2 font-bold text-white flex items-center gap-1.5">
-                        <span className="text-[#38bdf8]">{target.displayName}</span>
+                      <td className="py-2 px-2 font-bold text-[#F4EFF6] flex items-center gap-1.5">
+                        <span className="text-[#F18B78]">{target.displayName}</span>
                       </td>
                       <td className="py-2 px-2">
-                        <span className={`px-1.5 py-0.2 text-[9px] rounded ${pStyle.badge}`}>
+                        <span className={`px-1.5 py-0.5 text-[9px] rounded font-bold ${pStyle.badge}`}>
                           {target.priority}
                         </span>
                       </td>
-                      <td className="py-2 px-2 text-right font-mono text-white tabular-nums font-bold">
+                      <td className="py-2 px-2 text-right font-mono text-[#F4EFF6] tabular-nums font-bold">
                         {target.priorityScore.toFixed(1)}
                       </td>
-                      <td className="py-2 px-2 text-center text-[#93c5fd] font-bold">
+                      <td className="py-2 px-2 text-center text-[#B7D7A8] font-bold">
                         {target.supportingModuleCount}
                       </td>
-                      <td className="py-2 px-2 text-center text-[#cbd5e1]">
+                      <td className="py-2 px-2 text-center text-[#B7ACBD]">
                         {target.supportingFindingCount}
                       </td>
-                      <td className="py-2 px-2 text-[#94a3b8] text-[11px] truncate max-w-[320px]">
+                      <td className="py-2 px-2 text-[#B7ACBD] text-[11px] truncate max-w-[320px]">
                         {target.hypothesis}
                       </td>
                       <td className="py-2 px-2 text-right">
@@ -1037,7 +1037,7 @@ export const InvestigationView: React.FC<InvestigationViewProps> = ({
                             setSelectedTargetKey(target.targetKey);
                             setActiveTab("QUEUE");
                           }}
-                          className="px-2 py-0.5 bg-[#1d4ed8] hover:bg-[#2563eb] text-white text-[10px] rounded font-bold transition-colors cursor-pointer"
+                          className="px-2 py-0.5 bg-[#332B3C] hover:bg-[#3D3448] text-[#F18B78] hover:text-[#F39C8B] border border-[#F18B78]/40 text-[10px] rounded font-bold transition-colors cursor-pointer"
                         >
                           DOSSIER ↗
                         </button>

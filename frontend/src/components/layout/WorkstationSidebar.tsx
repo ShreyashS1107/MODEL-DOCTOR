@@ -43,10 +43,10 @@ export const WorkstationSidebar: React.FC<WorkstationSidebarProps> = ({
   onSelectSection,
 }) => {
   return (
-    <aside className="w-56 bg-[#0c0e14] border-r border-[#1f2533] flex flex-col justify-between shrink-0 select-none">
+    <aside className="w-56 bg-[#2A2432] border-r border-[#443849] flex flex-col justify-between shrink-0 select-none">
       {/* Navigation Tree */}
       <div>
-        <div className="px-3 py-2 border-b border-[#1f2533] text-[10px] font-mono text-[#64748b] uppercase tracking-wider">
+        <div className="px-3 py-2 border-b border-[#443849] text-[10px] font-mono text-[#8E8295] uppercase tracking-wider">
           DIAGNOSTIC MODULES
         </div>
 
@@ -58,14 +58,14 @@ export const WorkstationSidebar: React.FC<WorkstationSidebarProps> = ({
               <button
                 key={item.id}
                 onClick={() => onSelectSection(item.id)}
-                className={`w-full flex items-center justify-between px-2.5 py-1.5 text-xs font-mono text-left transition-colors cursor-pointer ${
+                className={`w-full flex items-center justify-between px-2.5 py-1.5 text-xs font-mono text-left transition-colors cursor-pointer rounded-sm ${
                   isActive
-                    ? "bg-[#181d28] text-white font-semibold border-l-2 border-[#3b82f6]"
-                    : "text-[#94a3b8] hover:bg-[#12161f] hover:text-[#f1f3f8] border-l-2 border-transparent"
+                    ? "bg-[#332B3C] text-[#F4EFF6] font-semibold border-l-2 border-[#F18B78]"
+                    : "text-[#B7ACBD] hover:bg-[#332B3C]/50 hover:text-[#F4EFF6] border-l-2 border-transparent"
                 }`}
               >
                 <div className="flex items-center gap-2 truncate">
-                  <span className={`text-[10px] ${isActive ? "text-[#3b82f6]" : "text-[#64748b]"}`}>
+                  <span className={`text-[10px] ${isActive ? "text-[#F18B78] font-bold" : "text-[#8E8295]"}`}>
                     {item.code}
                   </span>
                   <span className="truncate">{item.label}</span>
@@ -74,12 +74,12 @@ export const WorkstationSidebar: React.FC<WorkstationSidebarProps> = ({
                 {/* Severity finding badges */}
                 <div className="flex items-center gap-1 shrink-0 ml-1">
                   {item.criticalCount !== undefined && item.criticalCount > 0 && (
-                    <span className="px-1 py-0.2 text-[9px] font-bold bg-[#ef4444] text-black">
+                    <span className="px-1 py-0.2 text-[9px] font-bold bg-[#F18B78] text-[#211D29] rounded-xs">
                       {item.criticalCount}
                     </span>
                   )}
                   {item.warningCount !== undefined && item.warningCount > 0 && (
-                    <span className="px-1 py-0.2 text-[9px] font-bold bg-[#f59e0b] text-black">
+                    <span className="px-1 py-0.2 text-[9px] font-bold bg-[#E8B66D] text-[#211D29] rounded-xs">
                       {item.warningCount}
                     </span>
                   )}
@@ -91,10 +91,10 @@ export const WorkstationSidebar: React.FC<WorkstationSidebarProps> = ({
       </div>
 
       {/* Workspace Footer Metadata */}
-      <div className="p-3 border-t border-[#1f2533] text-[10px] font-mono text-[#64748b] space-y-1">
-        <div>ORCHESTRATOR: <span className="text-[#94a3b8]">JAVA 21</span></div>
-        <div>ML RUNTIME: <span className="text-[#94a3b8]">PY 3.14 / XGB 2.0</span></div>
-        <div>LATENCY: <span className="text-[#10b981] tabular-nums">14ms</span></div>
+      <div className="p-3 border-t border-[#443849] text-[10px] font-mono text-[#8E8295] space-y-1">
+        <div>ORCHESTRATOR: <span className="text-[#B7ACBD]">JAVA 21</span></div>
+        <div>ML RUNTIME: <span className="text-[#B7ACBD]">PY 3.14 / XGB 2.0</span></div>
+        <div>LATENCY: <span className="text-[#B7D7A8] tabular-nums font-semibold">14ms</span></div>
       </div>
     </aside>
   );

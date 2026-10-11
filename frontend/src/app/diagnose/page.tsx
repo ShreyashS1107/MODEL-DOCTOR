@@ -415,18 +415,18 @@ export default function DiagnosticSetupPage() {
   const isConfigValid = validationResult ? validationResult.valid : false;
 
   return (
-    <div className="min-h-screen bg-[#090b0e] text-[#f1f3f8] flex flex-col font-mono text-xs">
+    <div className="min-h-screen bg-[#211D29] text-[#F4EFF6] flex flex-col font-mono text-xs selection:bg-[#F18B78] selection:text-[#211D29]">
       {/* Header */}
-      <header className="h-12 bg-[#0c0e14] border-b border-[#1f2533] px-4 flex items-center justify-between shrink-0 select-none">
+      <header className="h-12 bg-[#2A2432] border-b border-[#443849] px-4 flex items-center justify-between shrink-0 select-none">
         <div className="flex items-center gap-3">
           <Link
             href="/"
-            className="font-sans font-bold text-sm tracking-wider text-white hover:text-[#3b82f6] transition-colors"
+            className="font-sans font-bold text-sm tracking-wider text-[#F4EFF6] hover:text-[#F18B78] transition-colors"
           >
             MODEL DOCTOR
           </Link>
-          <span className="text-[#333a4d]">/</span>
-          <span className="text-[#94a3b8] font-bold">
+          <span className="text-[#5A4B62]">/</span>
+          <span className="text-[#B7ACBD] font-bold">
             CONFIGURATION CONSOLE &amp; ARTIFACT INTELLIGENCE
           </span>
         </div>
@@ -434,7 +434,7 @@ export default function DiagnosticSetupPage() {
         <div className="flex items-center gap-2 text-[11px]">
           <Link
             href="/"
-            className="px-2.5 py-1 bg-[#141822] hover:bg-[#1a202c] border border-[#222633] text-[#94a3b8] hover:text-white transition-colors"
+            className="px-2.5 py-1 bg-[#332B3C] hover:bg-[#3D3448] border border-[#443849] text-[#B7ACBD] hover:text-[#F4EFF6] transition-colors rounded-sm"
           >
             &larr; BACK TO HOME
           </Link>
@@ -444,23 +444,23 @@ export default function DiagnosticSetupPage() {
       {/* Main Content */}
       <main className="flex-1 max-w-5xl w-full mx-auto p-4 sm:p-6 space-y-6">
         {/* Mode Selector */}
-        <div className="p-3 border border-[#1f2533] bg-[#0c0e14] flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div className="p-3 border border-[#443849] bg-[#2A2432] flex flex-col sm:flex-row sm:items-center justify-between gap-3 rounded-sm">
           <div>
-            <h1 className="text-sm font-bold text-white uppercase tracking-wider">
+            <h1 className="text-sm font-bold text-[#F4EFF6] uppercase tracking-wider">
               DIAGNOSTIC RUN CONFIGURATION
             </h1>
-            <p className="text-[11px] text-[#64748b] mt-0.5">
+            <p className="text-[11px] text-[#8E8295] mt-0.5">
               Select or upload models &amp; datasets with live schema inspection and preflight validation.
             </p>
           </div>
-          <div className="flex items-center gap-1 bg-[#141822] p-1 border border-[#222633]">
+          <div className="flex items-center gap-1 bg-[#1C1824] p-1 border border-[#443849] rounded-sm">
             <button
               type="button"
               onClick={() => setIngestionMode("REAL")}
-              className={`px-3 py-1 text-[11px] font-bold transition-colors cursor-pointer ${
+              className={`px-3 py-1 text-[11px] font-bold transition-colors cursor-pointer rounded-xs ${
                 ingestionMode === "REAL"
-                  ? "bg-[#3b82f6] text-white"
-                  : "text-[#94a3b8] hover:text-white"
+                  ? "bg-[#F18B78] text-[#211D29]"
+                  : "text-[#B7ACBD] hover:text-[#F4EFF6]"
               }`}
             >
               REAL ARTIFACTS
@@ -468,10 +468,10 @@ export default function DiagnosticSetupPage() {
             <button
               type="button"
               onClick={() => setIngestionMode("BENCHMARK")}
-              className={`px-3 py-1 text-[11px] font-bold transition-colors cursor-pointer ${
+              className={`px-3 py-1 text-[11px] font-bold transition-colors cursor-pointer rounded-xs ${
                 ingestionMode === "BENCHMARK"
-                  ? "bg-[#10b981] text-black"
-                  : "text-[#94a3b8] hover:text-white"
+                  ? "bg-[#B7D7A8] text-[#211D29]"
+                  : "text-[#B7ACBD] hover:text-[#F4EFF6]"
               }`}
             >
               BENCHMARK FIXTURES
@@ -483,9 +483,9 @@ export default function DiagnosticSetupPage() {
           {/* =============================================================== */}
           {/* 1. MODEL SELECTION & INGESTION                                  */}
           {/* =============================================================== */}
-          <div className="border border-[#1f2533] bg-[#0c0e14] p-4 space-y-3">
-            <div className="border-b border-[#1f2533] pb-2 flex items-center justify-between">
-              <span className="text-xs font-bold text-white uppercase">
+          <div className="border border-[#443849] bg-[#2A2432] p-4 space-y-3 rounded-sm">
+            <div className="border-b border-[#443849] pb-2 flex items-center justify-between">
+              <span className="text-xs font-bold text-[#F4EFF6] uppercase">
                 1. MODEL ARTIFACT
               </span>
               <div className="flex items-center gap-1">
@@ -494,8 +494,8 @@ export default function DiagnosticSetupPage() {
                     <button
                       type="button"
                       onClick={() => setModelInputMode("stored")}
-                      className={`px-2 py-0.5 text-[10px] font-bold cursor-pointer ${
-                        modelInputMode === "stored" ? "bg-[#2563eb] text-white" : "bg-[#141822] text-[#94a3b8]"
+                      className={`px-2 py-0.5 text-[10px] font-bold cursor-pointer rounded-xs ${
+                        modelInputMode === "stored" ? "bg-[#F18B78] text-[#211D29]" : "bg-[#332B3C] text-[#B7ACBD]"
                       }`}
                     >
                       EXISTING ({storedModels.length})
@@ -503,8 +503,8 @@ export default function DiagnosticSetupPage() {
                     <button
                       type="button"
                       onClick={() => setModelInputMode("upload")}
-                      className={`px-2 py-0.5 text-[10px] font-bold cursor-pointer ${
-                        modelInputMode === "upload" ? "bg-[#2563eb] text-white" : "bg-[#141822] text-[#94a3b8]"
+                      className={`px-2 py-0.5 text-[10px] font-bold cursor-pointer rounded-xs ${
+                        modelInputMode === "upload" ? "bg-[#F18B78] text-[#211D29]" : "bg-[#332B3C] text-[#B7ACBD]"
                       }`}
                     >
                       + UPLOAD NEW
@@ -518,7 +518,7 @@ export default function DiagnosticSetupPage() {
               modelInputMode === "stored" ? (
                 <div className="space-y-2">
                   {storedModels.length === 0 ? (
-                    <div className="p-3 bg-[#141822] border border-[#1f2533] text-[#64748b] text-center">
+                    <div className="p-3 bg-[#1C1824] border border-[#443849] text-[#8E8295] text-center rounded-sm">
                       No stored model artifacts found. Please switch to &ldquo;+ UPLOAD NEW&rdquo; to upload a model.
                     </div>
                   ) : (
@@ -529,23 +529,23 @@ export default function DiagnosticSetupPage() {
                           <div
                             key={m.id}
                             onClick={() => setSelectedModel(m)}
-                            className={`p-2.5 border transition-colors cursor-pointer flex items-center justify-between ${
+                            className={`p-2.5 border transition-colors cursor-pointer flex items-center justify-between rounded-sm ${
                               isSelected
-                                ? "bg-[#172554] border-[#3b82f6]"
-                                : "bg-[#141822] border-[#222633] hover:border-[#333a4d]"
+                                ? "bg-[#332B3C] border-[#F18B78]"
+                                : "bg-[#2A2432] border-[#443849] hover:border-[#5A4B62]"
                             }`}
                           >
                             <div className="space-y-1">
                               <div className="flex items-center gap-2">
-                                <span className="text-white font-bold">{m.originalFilename}</span>
-                                <span className="px-1.5 py-0.2 bg-[#334155] text-white text-[9px] font-bold uppercase">
+                                <span className="text-[#F4EFF6] font-bold">{m.originalFilename}</span>
+                                <span className="px-1.5 py-0.2 bg-[#443849] text-[#F4EFF6] text-[9px] font-bold uppercase rounded-xs">
                                   {m.framework}
                                 </span>
-                                <span className="px-1.5 py-0.2 bg-[#1e293b] text-[#94a3b8] text-[9px]">
+                                <span className="px-1.5 py-0.2 bg-[#1C1824] text-[#B7ACBD] text-[9px] rounded-xs">
                                   {m.taskType}
                                 </span>
                               </div>
-                              <div className="flex items-center gap-3 text-[10px] text-[#64748b]">
+                              <div className="flex items-center gap-3 text-[10px] text-[#8E8295]">
                                 <span>ID: {m.id}</span>
                                 <span>Features: {m.featureCount ?? m.featureNames?.length ?? "N/A"}</span>
                                 <span>Size: {(m.fileSize / 1024).toFixed(1)} KB</span>
@@ -554,7 +554,7 @@ export default function DiagnosticSetupPage() {
                             </div>
                             <div className="flex items-center gap-2">
                               {isSelected && (
-                                <span className="px-2 py-0.5 bg-[#10b981] text-black text-[9px] font-bold">
+                                <span className="px-2 py-0.5 bg-[#B7D7A8] text-[#211D29] text-[9px] font-bold rounded-xs">
                                   SELECTED
                                 </span>
                               )}
@@ -562,7 +562,7 @@ export default function DiagnosticSetupPage() {
                                 type="button"
                                 onClick={(e) => handleDeleteModel(m.id, e)}
                                 title="Soft delete artifact"
-                                className="px-2 py-0.5 bg-[#7f1d1d] hover:bg-[#991b1b] text-white text-[9px] font-bold cursor-pointer"
+                                className="px-2 py-0.5 bg-[#F18B78]/20 hover:bg-[#F18B78] text-[#F18B78] hover:text-[#211D29] border border-[#F18B78]/40 text-[9px] font-bold cursor-pointer rounded-xs transition-colors"
                               >
                                 DELETE
                               </button>
@@ -577,22 +577,22 @@ export default function DiagnosticSetupPage() {
                 <div className="space-y-3 pt-1">
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div>
-                      <label className="block text-[11px] text-[#94a3b8] mb-1">Model Framework:</label>
+                      <label className="block text-[11px] text-[#B7ACBD] mb-1 font-semibold">Model Framework:</label>
                       <select
                         value={modelFramework}
                         onChange={(e) => setModelFramework(e.target.value)}
-                        className="w-full px-2.5 py-1.5 bg-[#141822] border border-[#222633] text-white focus:outline-none focus:border-[#3b82f6]"
+                        className="w-full px-2.5 py-1.5 bg-[#332B3C] border border-[#443849] text-[#F4EFF6] focus:outline-none focus:border-[#F18B78] rounded-sm"
                       >
                         <option value="xgboost">XGBoost Native (.json, .xgb, .bin)</option>
                         <option value="sklearn">Scikit-Learn (.joblib, .pkl)</option>
                       </select>
                     </div>
                     <div>
-                      <label className="block text-[11px] text-[#94a3b8] mb-1">Task Type:</label>
+                      <label className="block text-[11px] text-[#B7ACBD] mb-1 font-semibold">Task Type:</label>
                       <select
                         value={taskType}
                         onChange={(e) => setTaskType(e.target.value)}
-                        className="w-full px-2.5 py-1.5 bg-[#141822] border border-[#222633] text-white focus:outline-none focus:border-[#3b82f6]"
+                        className="w-full px-2.5 py-1.5 bg-[#332B3C] border border-[#443849] text-[#F4EFF6] focus:outline-none focus:border-[#F18B78] rounded-sm"
                       >
                         <option value="binary_classification">Binary Classification (Supported)</option>
                         <option value="multiclass_classification">Multi-Class (Unsupported)</option>
@@ -607,17 +607,17 @@ export default function DiagnosticSetupPage() {
                       accept=".json,.xgb,.bin,.joblib,.pkl"
                       onChange={handleModelFileChange}
                       disabled={isUploadingModel}
-                      className="text-xs text-[#94a3b8] file:mr-3 file:py-1.5 file:px-3 file:border file:border-[#222633] file:bg-[#141822] file:text-white file:font-mono file:text-xs hover:file:bg-[#1a202c] cursor-pointer"
+                      className="text-xs text-[#B7ACBD] file:mr-3 file:py-1.5 file:px-3 file:border file:border-[#443849] file:bg-[#332B3C] file:text-[#F4EFF6] file:font-mono file:text-xs hover:file:bg-[#3D3448] file:rounded-sm cursor-pointer"
                     />
                     {isUploadingModel && (
-                      <span className="text-[#3b82f6] text-[11px] font-bold animate-pulse">
+                      <span className="text-[#F18B78] text-[11px] font-bold animate-pulse">
                         Ingesting &amp; Hashing Model...
                       </span>
                     )}
                   </div>
 
                   {modelUploadError && (
-                    <div className="p-2 border border-[#ef4444] bg-[#1a0f0f] text-[#fca5a5] text-[11px]">
+                    <div className="p-2 border border-[#F18B78] bg-[#F18B78]/10 text-[#F18B78] text-[11px] rounded-sm">
                       {modelUploadError}
                     </div>
                   )}
@@ -629,9 +629,9 @@ export default function DiagnosticSetupPage() {
                   type="text"
                   value={modelName}
                   onChange={(e) => setModelName(e.target.value)}
-                  className="w-full px-2.5 py-1.5 bg-[#141822] border border-[#222633] text-white focus:outline-none focus:border-[#3b82f6]"
+                  className="w-full px-2.5 py-1.5 bg-[#332B3C] border border-[#443849] text-[#F4EFF6] focus:outline-none focus:border-[#F18B78] rounded-sm"
                 />
-                <span className="text-[10px] text-[#64748b]">
+                <span className="text-[10px] text-[#8E8295]">
                   Deterministic fraud benchmark model with 47 tabular features.
                 </span>
               </div>
@@ -641,9 +641,9 @@ export default function DiagnosticSetupPage() {
           {/* =============================================================== */}
           {/* 2. EVALUATION DATASET SELECTION & INGESTION                     */}
           {/* =============================================================== */}
-          <div className="border border-[#1f2533] bg-[#0c0e14] p-4 space-y-3">
-            <div className="border-b border-[#1f2533] pb-2 flex items-center justify-between">
-              <span className="text-xs font-bold text-white uppercase">
+          <div className="border border-[#443849] bg-[#2A2432] p-4 space-y-3 rounded-sm">
+            <div className="border-b border-[#443849] pb-2 flex items-center justify-between">
+              <span className="text-xs font-bold text-[#F4EFF6] uppercase">
                 2. EVALUATION DATASET (REQUIRED)
               </span>
               <div className="flex items-center gap-1">
@@ -652,8 +652,8 @@ export default function DiagnosticSetupPage() {
                     <button
                       type="button"
                       onClick={() => setEvalInputMode("stored")}
-                      className={`px-2 py-0.5 text-[10px] font-bold cursor-pointer ${
-                        evalInputMode === "stored" ? "bg-[#2563eb] text-white" : "bg-[#141822] text-[#94a3b8]"
+                      className={`px-2 py-0.5 text-[10px] font-bold cursor-pointer rounded-xs ${
+                        evalInputMode === "stored" ? "bg-[#F18B78] text-[#211D29]" : "bg-[#332B3C] text-[#B7ACBD]"
                       }`}
                     >
                       EXISTING ({storedDatasets.length})
@@ -661,8 +661,8 @@ export default function DiagnosticSetupPage() {
                     <button
                       type="button"
                       onClick={() => setEvalInputMode("upload")}
-                      className={`px-2 py-0.5 text-[10px] font-bold cursor-pointer ${
-                        evalInputMode === "upload" ? "bg-[#2563eb] text-white" : "bg-[#141822] text-[#94a3b8]"
+                      className={`px-2 py-0.5 text-[10px] font-bold cursor-pointer rounded-xs ${
+                        evalInputMode === "upload" ? "bg-[#F18B78] text-[#211D29]" : "bg-[#332B3C] text-[#B7ACBD]"
                       }`}
                     >
                       + UPLOAD NEW
@@ -676,7 +676,7 @@ export default function DiagnosticSetupPage() {
               evalInputMode === "stored" ? (
                 <div className="space-y-2">
                   {storedDatasets.length === 0 ? (
-                    <div className="p-3 bg-[#141822] border border-[#1f2533] text-[#64748b] text-center">
+                    <div className="p-3 bg-[#1C1824] border border-[#443849] text-[#8E8295] text-center rounded-sm">
                       No stored dataset artifacts found. Please switch to &ldquo;+ UPLOAD NEW&rdquo; to upload a dataset.
                     </div>
                   ) : (
@@ -687,20 +687,20 @@ export default function DiagnosticSetupPage() {
                           <div
                             key={d.id}
                             onClick={() => setSelectedEvalDataset(d)}
-                            className={`p-2.5 border transition-colors cursor-pointer flex items-center justify-between ${
+                            className={`p-2.5 border transition-colors cursor-pointer flex items-center justify-between rounded-sm ${
                               isSelected
-                                ? "bg-[#172554] border-[#3b82f6]"
-                                : "bg-[#141822] border-[#222633] hover:border-[#333a4d]"
+                                ? "bg-[#332B3C] border-[#F18B78]"
+                                : "bg-[#2A2432] border-[#443849] hover:border-[#5A4B62]"
                             }`}
                           >
                             <div className="space-y-1">
                               <div className="flex items-center gap-2">
-                                <span className="text-white font-bold">{d.originalFilename}</span>
-                                <span className="px-1.5 py-0.2 bg-[#334155] text-white text-[9px] font-bold uppercase">
+                                <span className="text-[#F4EFF6] font-bold">{d.originalFilename}</span>
+                                <span className="px-1.5 py-0.2 bg-[#443849] text-[#F4EFF6] text-[9px] font-bold uppercase rounded-xs">
                                   {d.datasetFormat}
                                 </span>
                               </div>
-                              <div className="flex items-center gap-3 text-[10px] text-[#64748b]">
+                              <div className="flex items-center gap-3 text-[10px] text-[#8E8295]">
                                 <span>ID: {d.id}</span>
                                 <span>Rows: {d.rowCount?.toLocaleString()}</span>
                                 <span>Cols: {d.columnCount}</span>
@@ -709,7 +709,7 @@ export default function DiagnosticSetupPage() {
                             </div>
                             <div className="flex items-center gap-2">
                               {isSelected && (
-                                <span className="px-2 py-0.5 bg-[#10b981] text-black text-[9px] font-bold">
+                                <span className="px-2 py-0.5 bg-[#B7D7A8] text-[#211D29] text-[9px] font-bold rounded-xs">
                                   SELECTED
                                 </span>
                               )}
@@ -717,7 +717,7 @@ export default function DiagnosticSetupPage() {
                                 type="button"
                                 onClick={(e) => handleDeleteDataset(d.id, e)}
                                 title="Soft delete artifact"
-                                className="px-2 py-0.5 bg-[#7f1d1d] hover:bg-[#991b1b] text-white text-[9px] font-bold cursor-pointer"
+                                className="px-2 py-0.5 bg-[#F18B78]/20 hover:bg-[#F18B78] text-[#F18B78] hover:text-[#211D29] border border-[#F18B78]/40 text-[9px] font-bold cursor-pointer rounded-xs transition-colors"
                               >
                                 DELETE
                               </button>
@@ -735,15 +735,15 @@ export default function DiagnosticSetupPage() {
                     accept=".csv,.parquet,.json,.txt"
                     onChange={handleEvalFileChange}
                     disabled={isUploadingEval}
-                    className="text-xs text-[#94a3b8] file:mr-3 file:py-1.5 file:px-3 file:border file:border-[#222633] file:bg-[#141822] file:text-white file:font-mono file:text-xs hover:file:bg-[#1a202c] cursor-pointer"
+                    className="text-xs text-[#B7ACBD] file:mr-3 file:py-1.5 file:px-3 file:border file:border-[#443849] file:bg-[#332B3C] file:text-[#F4EFF6] file:font-mono file:text-xs hover:file:bg-[#3D3448] file:rounded-sm cursor-pointer"
                   />
                   {isUploadingEval && (
-                    <span className="text-[#3b82f6] text-[11px] font-bold animate-pulse">
+                    <span className="text-[#F18B78] text-[11px] font-bold animate-pulse">
                       Parsing Schema &amp; Profiling Statistics...
                     </span>
                   )}
                   {evalUploadError && (
-                    <div className="p-2 border border-[#ef4444] bg-[#1a0f0f] text-[#fca5a5] text-[11px]">
+                    <div className="p-2 border border-[#F18B78] bg-[#F18B78]/10 text-[#F18B78] text-[11px] rounded-sm">
                       {evalUploadError}
                     </div>
                   )}
@@ -755,9 +755,9 @@ export default function DiagnosticSetupPage() {
                   type="text"
                   value={evalDatasetName}
                   onChange={(e) => setEvalDatasetName(e.target.value)}
-                  className="w-full px-2.5 py-1.5 bg-[#141822] border border-[#222633] text-white focus:outline-none focus:border-[#3b82f6]"
+                  className="w-full px-2.5 py-1.5 bg-[#332B3C] border border-[#443849] text-[#F4EFF6] focus:outline-none focus:border-[#F18B78] rounded-sm"
                 />
-                <span className="text-[10px] text-[#64748b]">
+                <span className="text-[10px] text-[#8E8295]">
                   Synthetic fraud test dataset with 5,000 samples.
                 </span>
               </div>
@@ -767,9 +767,9 @@ export default function DiagnosticSetupPage() {
           {/* =============================================================== */}
           {/* 3. BASELINE DATASET (OPTIONAL)                                  */}
           {/* =============================================================== */}
-          <div className="border border-[#1f2533] bg-[#0c0e14] p-4 space-y-3">
-            <div className="border-b border-[#1f2533] pb-2 flex items-center justify-between">
-              <span className="text-xs font-bold text-white uppercase">
+          <div className="border border-[#443849] bg-[#2A2432] p-4 space-y-3 rounded-sm">
+            <div className="border-b border-[#443849] pb-2 flex items-center justify-between">
+              <span className="text-xs font-bold text-[#F4EFF6] uppercase">
                 3. BASELINE REFERENCE DATASET (OPTIONAL)
               </span>
               <div className="flex items-center gap-1">
@@ -778,8 +778,8 @@ export default function DiagnosticSetupPage() {
                     <button
                       type="button"
                       onClick={() => setBaselineInputMode("stored")}
-                      className={`px-2 py-0.5 text-[10px] font-bold cursor-pointer ${
-                        baselineInputMode === "stored" ? "bg-[#2563eb] text-white" : "bg-[#141822] text-[#94a3b8]"
+                      className={`px-2 py-0.5 text-[10px] font-bold cursor-pointer rounded-xs ${
+                        baselineInputMode === "stored" ? "bg-[#F18B78] text-[#211D29]" : "bg-[#332B3C] text-[#B7ACBD]"
                       }`}
                     >
                       EXISTING ({storedDatasets.length})
@@ -787,8 +787,8 @@ export default function DiagnosticSetupPage() {
                     <button
                       type="button"
                       onClick={() => setBaselineInputMode("upload")}
-                      className={`px-2 py-0.5 text-[10px] font-bold cursor-pointer ${
-                        baselineInputMode === "upload" ? "bg-[#2563eb] text-white" : "bg-[#141822] text-[#94a3b8]"
+                      className={`px-2 py-0.5 text-[10px] font-bold cursor-pointer rounded-xs ${
+                        baselineInputMode === "upload" ? "bg-[#F18B78] text-[#211D29]" : "bg-[#332B3C] text-[#B7ACBD]"
                       }`}
                     >
                       + UPLOAD NEW
@@ -799,8 +799,8 @@ export default function DiagnosticSetupPage() {
                         setBaselineInputMode("none");
                         setSelectedBaselineDataset(null);
                       }}
-                      className={`px-2 py-0.5 text-[10px] font-bold cursor-pointer ${
-                        baselineInputMode === "none" ? "bg-[#475569] text-white" : "bg-[#141822] text-[#94a3b8]"
+                      className={`px-2 py-0.5 text-[10px] font-bold cursor-pointer rounded-xs ${
+                        baselineInputMode === "none" ? "bg-[#5A4B62] text-[#F4EFF6]" : "bg-[#332B3C] text-[#B7ACBD]"
                       }`}
                     >
                       NONE
@@ -820,20 +820,20 @@ export default function DiagnosticSetupPage() {
                         <div
                           key={d.id}
                           onClick={() => setSelectedBaselineDataset(d)}
-                          className={`p-2 border transition-colors cursor-pointer flex items-center justify-between ${
+                          className={`p-2 border transition-colors cursor-pointer flex items-center justify-between rounded-sm ${
                             isSelected
-                              ? "bg-[#172554] border-[#3b82f6]"
-                              : "bg-[#141822] border-[#222633] hover:border-[#333a4d]"
+                              ? "bg-[#332B3C] border-[#F18B78]"
+                              : "bg-[#2A2432] border-[#443849] hover:border-[#5A4B62]"
                           }`}
                         >
                           <div className="flex items-center gap-3">
-                            <span className="text-white font-bold text-[11px]">{d.originalFilename}</span>
-                            <span className="text-[10px] text-[#64748b]">
+                            <span className="text-[#F4EFF6] font-bold text-[11px]">{d.originalFilename}</span>
+                            <span className="text-[10px] text-[#8E8295]">
                               {d.rowCount?.toLocaleString()} rows &bull; {d.columnCount} cols
                             </span>
                           </div>
                           {isSelected && (
-                            <span className="px-1.5 py-0.2 bg-[#10b981] text-black text-[9px] font-bold">
+                            <span className="px-1.5 py-0.2 bg-[#B7D7A8] text-[#211D29] text-[9px] font-bold rounded-xs">
                               SELECTED
                             </span>
                           )}
@@ -849,21 +849,21 @@ export default function DiagnosticSetupPage() {
                     accept=".csv,.parquet,.json,.txt"
                     onChange={handleBaselineFileChange}
                     disabled={isUploadingBaseline}
-                    className="text-xs text-[#94a3b8] file:mr-3 file:py-1.5 file:px-3 file:border file:border-[#222633] file:bg-[#141822] file:text-white file:font-mono file:text-xs hover:file:bg-[#1a202c] cursor-pointer"
+                    className="text-xs text-[#B7ACBD] file:mr-3 file:py-1.5 file:px-3 file:border file:border-[#443849] file:bg-[#332B3C] file:text-[#F4EFF6] file:font-mono file:text-xs hover:file:bg-[#3D3448] file:rounded-sm cursor-pointer"
                   />
                   {isUploadingBaseline && (
-                    <span className="text-[#3b82f6] text-[11px] font-bold animate-pulse">
+                    <span className="text-[#F18B78] text-[11px] font-bold animate-pulse">
                       Ingesting Baseline...
                     </span>
                   )}
                   {baselineUploadError && (
-                    <div className="p-2 border border-[#ef4444] bg-[#1a0f0f] text-[#fca5a5] text-[11px]">
+                    <div className="p-2 border border-[#F18B78] bg-[#F18B78]/10 text-[#F18B78] text-[11px] rounded-sm">
                       {baselineUploadError}
                     </div>
                   )}
                 </div>
               ) : (
-                <div className="text-[11px] text-[#64748b]">
+                <div className="text-[11px] text-[#8E8295]">
                   No baseline dataset selected. Modules requiring baseline comparison (DRIFT) will be flagged.
                 </div>
               )
@@ -873,7 +873,7 @@ export default function DiagnosticSetupPage() {
                   type="text"
                   value={baselineDatasetName}
                   onChange={(e) => setBaselineDatasetName(e.target.value)}
-                  className="w-full px-2.5 py-1.5 bg-[#141822] border border-[#222633] text-white focus:outline-none focus:border-[#3b82f6]"
+                  className="w-full px-2.5 py-1.5 bg-[#332B3C] border border-[#443849] text-[#F4EFF6] focus:outline-none focus:border-[#F18B78] rounded-sm"
                 />
               </div>
             )}
@@ -882,13 +882,13 @@ export default function DiagnosticSetupPage() {
           {/* =============================================================== */}
           {/* 4. SCHEMA INSPECTION, TARGET INTELLIGENCE & BINDING             */}
           {/* =============================================================== */}
-          <div className="border border-[#1f2533] bg-[#0c0e14] p-4 space-y-4">
-            <div className="border-b border-[#1f2533] pb-2 flex items-center justify-between">
-              <span className="text-xs font-bold text-white uppercase">
+          <div className="border border-[#443849] bg-[#2A2432] p-4 space-y-4 rounded-sm">
+            <div className="border-b border-[#443849] pb-2 flex items-center justify-between">
+              <span className="text-xs font-bold text-[#F4EFF6] uppercase">
                 4. SCHEMA INTELLIGENCE &amp; BINDING
               </span>
               {selectedEvalDataset && (
-                <span className="text-[10px] text-[#3b82f6] font-bold">
+                <span className="text-[10px] text-[#F18B78] font-bold">
                   {selectedEvalDataset.columnCount} COLUMNS PROFILED
                 </span>
               )}
@@ -896,9 +896,9 @@ export default function DiagnosticSetupPage() {
 
             {/* Target Suggestions Banner */}
             {validationResult?.targetSuggestions && validationResult.targetSuggestions.length > 0 && (
-              <div className="p-2.5 bg-[#141822] border border-[#222633] space-y-1.5">
-                <div className="text-[10px] text-[#94a3b8] font-bold uppercase tracking-wider flex items-center gap-1.5">
-                  <span className="text-[#3b82f6]">✦</span> TARGET COLUMN SUGGESTIONS (CLICK TO SELECT):
+              <div className="p-2.5 bg-[#1C1824] border border-[#443849] space-y-1.5 rounded-sm">
+                <div className="text-[10px] text-[#B7ACBD] font-bold uppercase tracking-wider flex items-center gap-1.5">
+                  <span className="text-[#F18B78]">✦</span> TARGET COLUMN SUGGESTIONS (CLICK TO SELECT):
                 </div>
                 <div className="flex flex-wrap gap-2">
                   {validationResult.targetSuggestions.map((s) => (
@@ -906,14 +906,14 @@ export default function DiagnosticSetupPage() {
                       key={s.column}
                       type="button"
                       onClick={() => setTargetColumn(s.column)}
-                      className={`px-2.5 py-1 text-[11px] font-bold border transition-colors flex items-center gap-1.5 cursor-pointer ${
+                      className={`px-2.5 py-1 text-[11px] font-bold border transition-colors flex items-center gap-1.5 cursor-pointer rounded-xs ${
                         targetColumn === s.column
-                          ? "bg-[#1d4ed8] border-[#3b82f6] text-white"
-                          : "bg-[#090b0e] border-[#222633] text-[#94a3b8] hover:border-[#3b82f6] hover:text-white"
+                          ? "bg-[#F18B78] border-[#F18B78] text-[#211D29]"
+                          : "bg-[#332B3C] border-[#443849] text-[#B7ACBD] hover:border-[#F18B78] hover:text-[#F4EFF6]"
                       }`}
                     >
                       <span>{s.column}</span>
-                      <span className="px-1 py-0.2 bg-[#090b0e] text-[#10b981] text-[9px]">
+                      <span className="px-1 py-0.2 bg-[#211D29] text-[#B7D7A8] text-[9px] rounded-xs font-mono">
                         {Math.round(s.score * 100)}%
                       </span>
                     </button>
@@ -925,41 +925,41 @@ export default function DiagnosticSetupPage() {
             {/* Schema Mapping Form Fields */}
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               <div>
-                <label className="block text-[11px] text-[#94a3b8] mb-1 font-bold">
+                <label className="block text-[11px] text-[#B7ACBD] mb-1 font-bold">
                   Target / Ground Truth Column:
                 </label>
                 <input
                   type="text"
                   value={targetColumn}
                   onChange={(e) => setTargetColumn(e.target.value)}
-                  className="w-full px-2.5 py-1.5 bg-[#141822] border border-[#222633] text-white focus:outline-none focus:border-[#3b82f6]"
+                  className="w-full px-2.5 py-1.5 bg-[#332B3C] border border-[#443849] text-[#F4EFF6] focus:outline-none focus:border-[#F18B78] rounded-sm"
                   placeholder="e.g. is_fraud"
                   required
                 />
               </div>
 
               <div>
-                <label className="block text-[11px] text-[#94a3b8] mb-1">
+                <label className="block text-[11px] text-[#B7ACBD] mb-1">
                   Prediction Probability Column (Optional):
                 </label>
                 <input
                   type="text"
                   value={predictionColumn}
                   onChange={(e) => setPredictionColumn(e.target.value)}
-                  className="w-full px-2.5 py-1.5 bg-[#141822] border border-[#222633] text-white focus:outline-none focus:border-[#3b82f6]"
+                  className="w-full px-2.5 py-1.5 bg-[#332B3C] border border-[#443849] text-[#F4EFF6] focus:outline-none focus:border-[#F18B78] rounded-sm"
                   placeholder="e.g. pred_prob"
                 />
               </div>
 
               <div>
-                <label className="block text-[11px] text-[#94a3b8] mb-1">
+                <label className="block text-[11px] text-[#B7ACBD] mb-1">
                   Protected Attribute (Bias / Fairness):
                 </label>
                 <input
                   type="text"
                   value={protectedAttribute}
                   onChange={(e) => setProtectedAttribute(e.target.value)}
-                  className="w-full px-2.5 py-1.5 bg-[#141822] border border-[#222633] text-white focus:outline-none focus:border-[#3b82f6]"
+                  className="w-full px-2.5 py-1.5 bg-[#332B3C] border border-[#443849] text-[#F4EFF6] focus:outline-none focus:border-[#F18B78] rounded-sm"
                   placeholder="e.g. is_foreign_ip"
                 />
               </div>
@@ -967,12 +967,12 @@ export default function DiagnosticSetupPage() {
 
             {/* Feature Compatibility Summary */}
             {validationResult?.compatibility && (
-              <div className="p-2.5 bg-[#141822] border border-[#222633] space-y-1 text-[11px]">
+              <div className="p-2.5 bg-[#1C1824] border border-[#443849] space-y-1 text-[11px] rounded-sm">
                 <div className="flex items-center justify-between font-bold">
-                  <span className="text-[#94a3b8]">MODEL ↔ DATASET FEATURE COMPATIBILITY:</span>
+                  <span className="text-[#B7ACBD]">MODEL ↔ DATASET FEATURE COMPATIBILITY:</span>
                   <span
                     className={
-                      validationResult.compatibility.isFeatureCompatible ? "text-[#10b981]" : "text-[#ef4444]"
+                      validationResult.compatibility.isFeatureCompatible ? "text-[#B7D7A8]" : "text-[#F18B78]"
                     }
                   >
                     {validationResult.compatibility.isFeatureCompatible
@@ -981,12 +981,12 @@ export default function DiagnosticSetupPage() {
                   </span>
                 </div>
                 {(validationResult.compatibility.missingModelFeatures?.length ?? 0) > 0 && (
-                  <div className="text-[#f87171] text-[10px]">
+                  <div className="text-[#F18B78] text-[10px]">
                     Missing Features: {validationResult.compatibility.missingModelFeatures?.join(", ")}
                   </div>
                 )}
                 {(validationResult.compatibility.extraDatasetFeatures?.length ?? 0) > 0 && (
-                  <div className="text-[#94a3b8] text-[10px]">
+                  <div className="text-[#8E8295] text-[10px]">
                     Non-model Features in Dataset: {validationResult.compatibility.extraDatasetFeatures?.join(", ")}
                   </div>
                 )}
@@ -999,16 +999,16 @@ export default function DiagnosticSetupPage() {
                 <button
                   type="button"
                   onClick={() => setShowFullSchema(!showFullSchema)}
-                  className="text-[11px] text-[#3b82f6] hover:underline font-bold cursor-pointer"
+                  className="text-[11px] text-[#F18B78] hover:underline font-bold cursor-pointer"
                 >
                   {showFullSchema ? "▼ Hide Detailed Column Statistics" : "▶ View Detailed Column Profiles & Statistics (" + selectedEvalDataset.schemaSummary.columns.length + " cols)"}
                 </button>
 
                 {showFullSchema && (
-                  <div className="overflow-x-auto border border-[#222633] bg-[#090b0e]">
+                  <div className="overflow-x-auto border border-[#443849] bg-[#1C1824] rounded-sm">
                     <table className="w-full text-left border-collapse text-[10px]">
                       <thead>
-                        <tr className="bg-[#141822] border-b border-[#222633] text-[#94a3b8]">
+                        <tr className="bg-[#332B3C] border-b border-[#443849] text-[#B7ACBD]">
                           <th className="p-2">COLUMN</th>
                           <th className="p-2">TYPE</th>
                           <th className="p-2">DTYPE</th>
@@ -1021,35 +1021,35 @@ export default function DiagnosticSetupPage() {
                       </thead>
                       <tbody>
                         {selectedEvalDataset.schemaSummary.columns.map((col: ColumnProfile) => (
-                          <tr key={col.name} className="border-b border-[#141822] hover:bg-[#141822]">
-                            <td className="p-2 font-bold text-white">{col.name}</td>
+                          <tr key={col.name} className="border-b border-[#332B3C] hover:bg-[#332B3C]">
+                            <td className="p-2 font-bold text-[#F4EFF6]">{col.name}</td>
                             <td className="p-2">
-                              <span className="px-1.5 py-0.2 bg-[#1e293b] text-[#94a3b8] font-mono uppercase text-[9px]">
+                              <span className="px-1.5 py-0.2 bg-[#443849] text-[#B7ACBD] font-mono uppercase text-[9px] rounded-xs">
                                 {col.classification}
                               </span>
                             </td>
-                            <td className="p-2 text-[#94a3b8]">{col.dtype}</td>
-                            <td className="p-2 text-[#94a3b8]">
+                            <td className="p-2 text-[#B7ACBD]">{col.dtype}</td>
+                            <td className="p-2 text-[#B7ACBD]">
                               {col.nullCount} ({col.nullPercentage}%)
                             </td>
-                            <td className="p-2 text-[#94a3b8]">
+                            <td className="p-2 text-[#B7ACBD]">
                               {col.uniqueCount} ({col.uniquePercentage}%)
                             </td>
-                            <td className="p-2 text-[#94a3b8]">
+                            <td className="p-2 text-[#B7ACBD]">
                               {col.min != null && col.max != null ? `${col.min} / ${col.max}` : "-"}
                             </td>
-                            <td className="p-2 text-[#94a3b8]">
+                            <td className="p-2 text-[#B7ACBD]">
                               {col.mean != null ? col.mean.toFixed(2) : "-"}
                             </td>
                             <td className="p-2 space-x-1">
                               {col.isConstant && (
-                                <span className="px-1 bg-[#ef4444] text-white text-[8px] font-bold">CONSTANT</span>
+                                <span className="px-1 bg-[#F18B78] text-[#211D29] text-[8px] font-bold rounded-xs">CONSTANT</span>
                               )}
                               {col.isIdentifierLike && (
-                                <span className="px-1 bg-[#f59e0b] text-black text-[8px] font-bold">ID</span>
+                                <span className="px-1 bg-[#E8B66D] text-[#211D29] text-[8px] font-bold rounded-xs">ID</span>
                               )}
                               {col.isHighCardinality && (
-                                <span className="px-1 bg-[#8b5cf6] text-white text-[8px] font-bold">HIGH-CARD</span>
+                                <span className="px-1 bg-[#B7ACBD] text-[#211D29] text-[8px] font-bold rounded-xs">HIGH-CARD</span>
                               )}
                             </td>
                           </tr>
@@ -1065,12 +1065,12 @@ export default function DiagnosticSetupPage() {
           {/* =============================================================== */}
           {/* 5. DIAGNOSTIC MODULE SELECTION & PREREQUISITES                   */}
           {/* =============================================================== */}
-          <div className="border border-[#1f2533] bg-[#0c0e14] p-4 space-y-3">
-            <div className="border-b border-[#1f2533] pb-2 flex items-center justify-between">
-              <span className="text-xs font-bold text-white uppercase">
+          <div className="border border-[#443849] bg-[#2A2432] p-4 space-y-3 rounded-sm">
+            <div className="border-b border-[#443849] pb-2 flex items-center justify-between">
+              <span className="text-xs font-bold text-[#F4EFF6] uppercase">
                 5. DIAGNOSTIC ANALYTICAL MODULES
               </span>
-              <span className="text-[10px] text-[#64748b]">
+              <span className="text-[10px] text-[#8E8295]">
                 {modules.filter((m) => m.enabled).length} / {modules.length} SELECTED
               </span>
             </div>
@@ -1085,10 +1085,10 @@ export default function DiagnosticSetupPage() {
                   <div
                     key={m.id}
                     onClick={() => toggleModule(m.id)}
-                    className={`p-2.5 border transition-colors cursor-pointer flex items-start justify-between gap-3 ${
+                    className={`p-2.5 border transition-colors cursor-pointer flex items-start justify-between gap-3 rounded-sm ${
                       m.enabled
-                        ? "bg-[#141822] border-[#2c3447]"
-                        : "bg-[#090b0e] border-[#1f2533] opacity-60"
+                        ? "bg-[#332B3C] border-[#5A4B62]"
+                        : "bg-[#1C1824] border-[#443849] opacity-60"
                     }`}
                   >
                     <div className="flex items-start gap-2.5">
@@ -1096,22 +1096,22 @@ export default function DiagnosticSetupPage() {
                         type="checkbox"
                         checked={m.enabled}
                         onChange={() => {}}
-                        className="mt-0.5 accent-[#3b82f6]"
+                        className="mt-0.5 accent-[#F18B78]"
                       />
                       <div>
                         <div className="flex items-center gap-2">
-                          <span className="text-[#3b82f6] text-[10px] font-bold">
+                          <span className="text-[#F18B78] text-[10px] font-bold">
                             {m.code}
                           </span>
-                          <span className="text-white font-bold text-xs">
+                          <span className="text-[#F4EFF6] font-bold text-xs">
                             {m.name}
                           </span>
                         </div>
-                        <div className="text-[11px] text-[#94a3b8] mt-0.5 leading-tight">
+                        <div className="text-[11px] text-[#B7ACBD] mt-0.5 leading-tight">
                           {m.description}
                         </div>
                         {!isModValid && m.enabled && (
-                          <div className="text-[#f87171] text-[10px] mt-1 font-bold">
+                          <div className="text-[#F18B78] text-[10px] mt-1 font-bold">
                             Prerequisite missing: {modVal?.missingPrerequisites?.join(", ")}
                           </div>
                         )}
@@ -1119,12 +1119,12 @@ export default function DiagnosticSetupPage() {
                     </div>
 
                     <span
-                      className={`px-1.5 py-0.5 text-[9px] font-bold shrink-0 ${
+                      className={`px-1.5 py-0.5 text-[9px] font-bold shrink-0 rounded-xs ${
                         !isModValid && m.enabled
-                          ? "bg-[#ef4444] text-white"
+                          ? "bg-[#F18B78] text-[#211D29]"
                           : m.enabled
-                          ? "bg-[#10b981] text-black"
-                          : "bg-[#1f2533] text-[#64748b]"
+                          ? "bg-[#B7D7A8] text-[#211D29]"
+                          : "bg-[#443849] text-[#8E8295]"
                       }`}
                     >
                       {!isModValid && m.enabled ? "BLOCKED" : m.enabled ? "READY" : "DISABLED"}
@@ -1138,13 +1138,13 @@ export default function DiagnosticSetupPage() {
           {/* =============================================================== */}
           {/* 6. PREFLIGHT CONSOLE & EXECUTION                                */}
           {/* =============================================================== */}
-          <div className="border border-[#1f2533] bg-[#0c0e14] p-4 space-y-4">
-            <div className="border-b border-[#1f2533] pb-2 flex items-center justify-between">
-              <span className="text-xs font-bold text-white uppercase">
+          <div className="border border-[#443849] bg-[#2A2432] p-4 space-y-4 rounded-sm">
+            <div className="border-b border-[#443849] pb-2 flex items-center justify-between">
+              <span className="text-xs font-bold text-[#F4EFF6] uppercase">
                 6. PREFLIGHT VALIDATION STATUS
               </span>
               {isValidating && (
-                <span className="text-[10px] text-[#3b82f6] animate-pulse">
+                <span className="text-[10px] text-[#F18B78] animate-pulse">
                   Validating Configuration...
                 </span>
               )}
@@ -1153,10 +1153,10 @@ export default function DiagnosticSetupPage() {
             {/* Validation Banner */}
             {validationResult && (
               <div
-                className={`p-3 border space-y-2 ${
+                className={`p-3 border space-y-2 rounded-sm ${
                   validationResult.valid
-                    ? "bg-[#064e3b]/20 border-[#10b981] text-[#a7f3d0]"
-                    : "bg-[#7f1d1d]/20 border-[#ef4444] text-[#fca5a5]"
+                    ? "bg-[#B7D7A8]/10 border-[#B7D7A8]/50 text-[#B7D7A8]"
+                    : "bg-[#F18B78]/10 border-[#F18B78]/50 text-[#F18B78]"
                 }`}
               >
                 <div className="flex items-center gap-2 font-bold text-xs">
@@ -1166,7 +1166,7 @@ export default function DiagnosticSetupPage() {
                 {validationResult.errors.length > 0 && (
                   <div className="space-y-1 pt-1">
                     {validationResult.errors.map((err, i) => (
-                      <div key={i} className="text-[11px] text-[#f87171] flex items-start gap-1.5">
+                      <div key={i} className="text-[11px] text-[#F18B78] flex items-start gap-1.5">
                         <span className="font-bold">[{err.code}]</span>
                         <span>{err.message}</span>
                       </div>
@@ -1175,9 +1175,9 @@ export default function DiagnosticSetupPage() {
                 )}
 
                 {validationResult.warnings.length > 0 && (
-                  <div className="space-y-1 pt-1 border-t border-[#334155]/40">
+                  <div className="space-y-1 pt-1 border-t border-[#443849]">
                     {validationResult.warnings.map((w, i) => (
-                      <div key={i} className="text-[10px] text-[#fde047] flex items-start gap-1.5">
+                      <div key={i} className="text-[10px] text-[#E8B66D] flex items-start gap-1.5">
                         <span className="font-bold">[{w.code}]</span>
                         <span>{w.message}</span>
                       </div>
@@ -1188,16 +1188,16 @@ export default function DiagnosticSetupPage() {
             )}
 
             {errorMessage && (
-              <div className="p-3 border border-[#ef4444] bg-[#1a0f0f] text-[#f87171] text-xs font-mono space-y-1">
-                <div className="font-bold flex items-center gap-1.5 text-[#ef4444]">
+              <div className="p-3 border border-[#F18B78] bg-[#F18B78]/10 text-[#F18B78] text-xs font-mono space-y-1 rounded-sm">
+                <div className="font-bold flex items-center gap-1.5 text-[#F18B78]">
                   <span>[ERROR]</span> DIAGNOSTIC SUBMISSION REJECTED
                 </div>
-                <div className="text-[11px] text-[#fca5a5]">{errorMessage}</div>
+                <div className="text-[11px] text-[#F4EFF6]">{errorMessage}</div>
               </div>
             )}
 
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pt-2">
-              <div className="text-[11px] text-[#64748b]">
+              <div className="text-[11px] text-[#8E8295]">
                 {ingestionMode === "REAL"
                   ? `Model: ${selectedModel?.originalFilename || "None"} • Eval: ${selectedEvalDataset?.originalFilename || "None"}`
                   : `Benchmark Fixture • ${modelName}`}
@@ -1206,10 +1206,10 @@ export default function DiagnosticSetupPage() {
               <button
                 type="submit"
                 disabled={isRunning || !isConfigValid}
-                className={`w-full sm:w-auto px-6 py-2.5 font-mono text-xs font-bold tracking-wider border transition-colors cursor-pointer shrink-0 ${
+                className={`w-full sm:w-auto px-6 py-2.5 font-mono text-xs font-bold tracking-wider border transition-colors cursor-pointer shrink-0 rounded-sm ${
                   isConfigValid && !isRunning
-                    ? "bg-[#1d4ed8] hover:bg-[#2563eb] text-white border-[#3b82f6]"
-                    : "bg-[#141822] text-[#64748b] border-[#222633] cursor-not-allowed opacity-50"
+                    ? "bg-[#F18B78] hover:bg-[#F39C8B] text-[#211D29] border-[#F18B78] shadow-sm"
+                    : "bg-[#332B3C] text-[#8E8295] border-[#443849] cursor-not-allowed opacity-50"
                 }`}
               >
                 {isRunning ? "PROCESSING AUDIT..." : "RUN DIAGNOSTIC →"}
@@ -1221,20 +1221,20 @@ export default function DiagnosticSetupPage() {
         {/* Execution Overlay Modal */}
         {isRunning && (
           <div className="fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4">
-            <div className="max-w-md w-full bg-[#0c0e14] border border-[#1f2533] p-5 space-y-4">
-              <div className="text-xs font-bold text-white uppercase border-b border-[#1f2533] pb-2">
+            <div className="max-w-md w-full bg-[#2A2432] border border-[#443849] p-5 space-y-4 rounded-sm shadow-2xl">
+              <div className="text-xs font-bold text-[#F4EFF6] uppercase border-b border-[#443849] pb-2">
                 RUNNING MODEL DOCTOR DIAGNOSTIC PIPELINE
               </div>
 
               <div className="space-y-2">
-                <div className="p-3 bg-[#141822] border border-[#3b82f6] text-center">
-                  <div className="text-xs text-white font-bold">{progressStep}</div>
-                  <div className="text-[10px] text-[#64748b] mt-1">
+                <div className="p-3 bg-[#332B3C] border border-[#F18B78] text-center rounded-sm">
+                  <div className="text-xs text-[#F4EFF6] font-bold">{progressStep}</div>
+                  <div className="text-[10px] text-[#8E8295] mt-1">
                     Spring Boot &harr; Python ML Engine &harr; PostgreSQL
                   </div>
                 </div>
 
-                <div className="text-[10px] text-[#64748b] text-center">
+                <div className="text-[10px] text-[#8E8295] text-center">
                   Mode: {ingestionMode} &bull; Model: {selectedModel?.originalFilename || modelName}
                 </div>
               </div>

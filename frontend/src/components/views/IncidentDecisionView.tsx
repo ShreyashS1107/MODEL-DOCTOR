@@ -33,42 +33,42 @@ export interface IncidentDecisionViewProps {
 }
 
 const SEVERITY_STYLES: Record<string, { bg: string; text: string; border: string }> = {
-  CRITICAL: { bg: "bg-[#ef4444]/15", text: "text-[#f87171]", border: "border-[#ef4444]/40" },
-  HIGH: { bg: "bg-[#f97316]/15", text: "text-[#fb923c]", border: "border-[#f97316]/40" },
-  MEDIUM: { bg: "bg-[#f59e0b]/15", text: "text-[#fbbf24]", border: "border-[#f59e0b]/40" },
-  WARNING: { bg: "bg-[#f59e0b]/15", text: "text-[#fbbf24]", border: "border-[#f59e0b]/40" },
-  LOW: { bg: "bg-[#3b82f6]/15", text: "text-[#60a5fa]", border: "border-[#3b82f6]/40" },
-  INFO: { bg: "bg-[#3b82f6]/15", text: "text-[#60a5fa]", border: "border-[#3b82f6]/40" },
+  CRITICAL: { bg: "bg-[#F18B78]/15", text: "text-[#F18B78]", border: "border-[#F18B78]/40" },
+  HIGH: { bg: "bg-[#F18B78]/15", text: "text-[#F18B78]", border: "border-[#F18B78]/40" },
+  MEDIUM: { bg: "bg-[#E8B66D]/15", text: "text-[#E8B66D]", border: "border-[#E8B66D]/40" },
+  WARNING: { bg: "bg-[#E8B66D]/15", text: "text-[#E8B66D]", border: "border-[#E8B66D]/40" },
+  LOW: { bg: "bg-[#B7D7A8]/15", text: "text-[#B7D7A8]", border: "border-[#B7D7A8]/40" },
+  INFO: { bg: "bg-[#332B3C]", text: "text-[#B7ACBD]", border: "border-[#443849]" },
 };
 
 const LIFECYCLE_STYLES: Record<IncidentLifecycleState, { bg: string; text: string; border: string }> = {
-  OPEN: { bg: "bg-[#ef4444]/15", text: "text-[#f87171]", border: "border-[#ef4444]/40" },
-  ACKNOWLEDGED: { bg: "bg-[#f59e0b]/15", text: "text-[#fbbf24]", border: "border-[#f59e0b]/40" },
-  INVESTIGATING: { bg: "bg-[#3b82f6]/15", text: "text-[#60a5fa]", border: "border-[#3b82f6]/40" },
-  MITIGATION_PLANNED: { bg: "bg-[#8b5cf6]/15", text: "text-[#a78bfa]", border: "border-[#8b5cf6]/40" },
-  VALIDATING: { bg: "bg-[#06b6d4]/15", text: "text-[#22d3ee]", border: "border-[#06b6d4]/40" },
-  MONITORING: { bg: "bg-[#10b981]/15", text: "text-[#34d399]", border: "border-[#10b981]/40" },
-  RESOLVED: { bg: "bg-[#10b981]/20", text: "text-[#10b981]", border: "border-[#10b981]/50" },
-  REOPENED: { bg: "bg-[#ec4899]/15", text: "text-[#f472b6]", border: "border-[#ec4899]/40" },
-  SUPPRESSED: { bg: "bg-[#64748b]/15", text: "text-[#94a3b8]", border: "border-[#64748b]/40" },
+  OPEN: { bg: "bg-[#F18B78]/15", text: "text-[#F18B78]", border: "border-[#F18B78]/40" },
+  ACKNOWLEDGED: { bg: "bg-[#E8B66D]/15", text: "text-[#E8B66D]", border: "border-[#E8B66D]/40" },
+  INVESTIGATING: { bg: "bg-[#332B3C]", text: "text-[#F18B78]", border: "border-[#F18B78]/40" },
+  MITIGATION_PLANNED: { bg: "bg-[#332B3C]", text: "text-[#B7ACBD]", border: "border-[#443849]" },
+  VALIDATING: { bg: "bg-[#E8B66D]/15", text: "text-[#E8B66D]", border: "border-[#E8B66D]/40" },
+  MONITORING: { bg: "bg-[#B7D7A8]/15", text: "text-[#B7D7A8]", border: "border-[#B7D7A8]/40" },
+  RESOLVED: { bg: "bg-[#B7D7A8]/20", text: "text-[#B7D7A8]", border: "border-[#B7D7A8]/50" },
+  REOPENED: { bg: "bg-[#F18B78]/20", text: "text-[#F18B78]", border: "border-[#F18B78]/50" },
+  SUPPRESSED: { bg: "bg-[#443849]/30", text: "text-[#8E8295]", border: "border-[#443849]" },
 };
 
 const DECISION_STYLES: Record<IncidentDecisionState, { bg: string; text: string; border: string }> = {
-  NO_ACTION: { bg: "bg-[#10b981]/15", text: "text-[#34d399]", border: "border-[#10b981]/40" },
-  INVESTIGATE: { bg: "bg-[#3b82f6]/15", text: "text-[#60a5fa]", border: "border-[#3b82f6]/40" },
-  REVIEW_REMEDIATION: { bg: "bg-[#8b5cf6]/15", text: "text-[#a78bfa]", border: "border-[#8b5cf6]/40" },
-  VALIDATE_REMEDIATION: { bg: "bg-[#06b6d4]/15", text: "text-[#22d3ee]", border: "border-[#06b6d4]/40" },
-  MONITOR: { bg: "bg-[#f59e0b]/15", text: "text-[#fbbf24]", border: "border-[#f59e0b]/40" },
-  REOPEN_INVESTIGATION: { bg: "bg-[#ec4899]/15", text: "text-[#f472b6]", border: "border-[#ec4899]/40" },
-  ESCALATE: { bg: "bg-[#ef4444]/20", text: "text-[#ef4444]", border: "border-[#ef4444]/50" },
-  INSUFFICIENT_EVIDENCE: { bg: "bg-[#64748b]/15", text: "text-[#94a3b8]", border: "border-[#64748b]/40" },
+  NO_ACTION: { bg: "bg-[#B7D7A8]/15", text: "text-[#B7D7A8]", border: "border-[#B7D7A8]/40" },
+  INVESTIGATE: { bg: "bg-[#F18B78]/15", text: "text-[#F18B78]", border: "border-[#F18B78]/40" },
+  REVIEW_REMEDIATION: { bg: "bg-[#332B3C]", text: "text-[#F4EFF6]", border: "border-[#443849]" },
+  VALIDATE_REMEDIATION: { bg: "bg-[#E8B66D]/15", text: "text-[#E8B66D]", border: "border-[#E8B66D]/40" },
+  MONITOR: { bg: "bg-[#B7D7A8]/15", text: "text-[#B7D7A8]", border: "border-[#B7D7A8]/40" },
+  REOPEN_INVESTIGATION: { bg: "bg-[#F18B78]/15", text: "text-[#F18B78]", border: "border-[#F18B78]/40" },
+  ESCALATE: { bg: "bg-[#F18B78]/20", text: "text-[#F18B78]", border: "border-[#F18B78]/50" },
+  INSUFFICIENT_EVIDENCE: { bg: "bg-[#332B3C]", text: "text-[#8E8295]", border: "border-[#443849]" },
 };
 
 const CONFIDENCE_BADGES: Record<DecisionConfidence, { bg: string; text: string; border: string }> = {
-  HIGH: { bg: "bg-[#10b981]/20", text: "text-[#34d399]", border: "border-[#10b981]/50" },
-  MEDIUM: { bg: "bg-[#f59e0b]/20", text: "text-[#fbbf24]", border: "border-[#f59e0b]/50" },
-  LOW: { bg: "bg-[#ef4444]/20", text: "text-[#f87171]", border: "border-[#ef4444]/50" },
-  INSUFFICIENT: { bg: "bg-[#64748b]/20", text: "text-[#94a3b8]", border: "border-[#64748b]/50" },
+  HIGH: { bg: "bg-[#B7D7A8]/20", text: "text-[#B7D7A8]", border: "border-[#B7D7A8]/50" },
+  MEDIUM: { bg: "bg-[#E8B66D]/20", text: "text-[#E8B66D]", border: "border-[#E8B66D]/50" },
+  LOW: { bg: "bg-[#F18B78]/20", text: "text-[#F18B78]", border: "border-[#F18B78]/50" },
+  INSUFFICIENT: { bg: "bg-[#443849]/30", text: "text-[#8E8295]", border: "border-[#443849]" },
 };
 
 export const IncidentDecisionView: React.FC<IncidentDecisionViewProps> = ({
@@ -263,46 +263,46 @@ export const IncidentDecisionView: React.FC<IncidentDecisionViewProps> = ({
   }, [incidents]);
 
   return (
-    <div className="flex flex-col h-full bg-[#0a0c10] text-[#e2e8f0] font-mono select-none overflow-hidden">
+    <div className="flex flex-col h-full bg-[#211D29] text-[#F4EFF6] font-mono select-none overflow-hidden">
       {/* 1. TOP DENSE HUD */}
-      <div className="flex items-center justify-between px-4 py-2 bg-[#0d1117] border-b border-[#1f2533] shrink-0">
+      <div className="flex items-center justify-between px-4 py-2 bg-[#2A2432] border-b border-[#443849] shrink-0">
         <div className="flex items-center gap-3">
           <div className="flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-[#3b82f6] animate-pulse" />
-            <span className="text-xs font-bold tracking-wider text-white">INCIDENT DECISION WORKSPACE</span>
-            <span className="px-1.5 py-0.5 text-[10px] font-bold bg-[#1e293b] text-[#94a3b8] rounded border border-[#334155]">
+            <span className="w-2 h-2 rounded-full bg-[#F18B78] animate-pulse" />
+            <span className="text-xs font-bold tracking-wider text-[#F4EFF6]">INCIDENT DECISION WORKSPACE</span>
+            <span className="px-1.5 py-0.5 text-[10px] font-bold bg-[#332B3C] text-[#B7ACBD] rounded border border-[#443849]">
               PHASE 11
             </span>
           </div>
 
-          <span className="text-[#334155]">|</span>
+          <span className="text-[#443849]">|</span>
 
           <div className="flex items-center gap-3 text-xs">
-            <span className="text-[#64748b]">LINEAGE:</span>
-            <span className="text-white font-bold">{runSummary?.runId || runId}</span>
+            <span className="text-[#8E8295]">LINEAGE:</span>
+            <span className="text-[#F4EFF6] font-bold">{runSummary?.runId || runId}</span>
           </div>
 
-          <span className="text-[#334155]">|</span>
+          <span className="text-[#443849]">|</span>
 
           {/* HUD Counters */}
           <div className="flex items-center gap-2 text-[11px]">
-            <span className="text-[#64748b]">ACTIVE:</span>
-            <span className="font-bold text-white bg-[#1e293b] px-1.5 py-0.2 rounded border border-[#334155]">
+            <span className="text-[#8E8295]">ACTIVE:</span>
+            <span className="font-bold text-[#F4EFF6] bg-[#332B3C] px-1.5 py-0.2 rounded border border-[#443849]">
               {stats.active}
             </span>
 
-            <span className="text-[#64748b] ml-1">CRITICAL:</span>
-            <span className="font-bold text-[#f87171] bg-[#ef4444]/15 px-1.5 py-0.2 rounded border border-[#ef4444]/30">
+            <span className="text-[#8E8295] ml-1">CRITICAL:</span>
+            <span className="font-bold text-[#F18B78] bg-[#F18B78]/15 px-1.5 py-0.2 rounded border border-[#F18B78]/30">
               {stats.critical}
             </span>
 
-            <span className="text-[#64748b] ml-1">HIGH:</span>
-            <span className="font-bold text-[#fb923c] bg-[#f97316]/15 px-1.5 py-0.2 rounded border border-[#f97316]/30">
+            <span className="text-[#8E8295] ml-1">HIGH:</span>
+            <span className="font-bold text-[#F18B78] bg-[#F18B78]/15 px-1.5 py-0.2 rounded border border-[#F18B78]/30">
               {stats.high}
             </span>
 
-            <span className="text-[#64748b] ml-1">RESOLVED:</span>
-            <span className="font-bold text-[#34d399] bg-[#10b981]/15 px-1.5 py-0.2 rounded border border-[#10b981]/30">
+            <span className="text-[#8E8295] ml-1">RESOLVED:</span>
+            <span className="font-bold text-[#B7D7A8] bg-[#B7D7A8]/15 px-1.5 py-0.2 rounded border border-[#B7D7A8]/30">
               {stats.resolved}
             </span>
           </div>
@@ -310,7 +310,7 @@ export const IncidentDecisionView: React.FC<IncidentDecisionViewProps> = ({
 
         <div className="flex items-center gap-2">
           {statusNotification && (
-            <span className="text-[11px] text-[#34d399] bg-[#10b981]/10 px-2 py-0.5 rounded border border-[#10b981]/30 animate-fade-in">
+            <span className="text-[11px] text-[#B7D7A8] bg-[#B7D7A8]/10 px-2 py-0.5 rounded border border-[#B7D7A8]/30 animate-fade-in">
               {statusNotification}
             </span>
           )}
@@ -318,7 +318,7 @@ export const IncidentDecisionView: React.FC<IncidentDecisionViewProps> = ({
           <button
             onClick={handleRecalculate}
             disabled={isRecalculating}
-            className="flex items-center gap-1.5 px-2.5 py-1 text-xs font-semibold bg-[#1e293b] hover:bg-[#334155] text-[#38bdf8] border border-[#0284c7]/40 rounded transition-colors cursor-pointer disabled:opacity-50"
+            className="flex items-center gap-1.5 px-2.5 py-1 text-xs font-semibold bg-[#F18B78] hover:bg-[#F39C8B] text-[#211D29] font-bold rounded transition-colors cursor-pointer disabled:opacity-50"
           >
             <span className={isRecalculating ? "animate-spin" : ""}>↻</span>
             {isRecalculating ? "RECALCULATING..." : "RECALCULATE INCIDENTS"}
@@ -327,20 +327,20 @@ export const IncidentDecisionView: React.FC<IncidentDecisionViewProps> = ({
       </div>
 
       {errorMessage && (
-        <div className="px-4 py-2 bg-[#ef4444]/10 border-b border-[#ef4444]/30 text-xs text-[#f87171] flex justify-between items-center shrink-0">
+        <div className="px-4 py-2 bg-[#F18B78]/10 border-b border-[#F18B78]/30 text-xs text-[#F18B78] flex justify-between items-center shrink-0">
           <span>⚠️ {errorMessage}</span>
-          <button onClick={() => setErrorMessage(null)} className="text-[#94a3b8] hover:text-white">✕</button>
+          <button onClick={() => setErrorMessage(null)} className="text-[#B7ACBD] hover:text-[#F4EFF6]">✕</button>
         </div>
       )}
 
       {/* 2. MAIN SPLIT CONSOLE */}
       <div className="flex flex-1 min-h-0">
         {/* LEFT COLUMN: INCIDENT QUEUE */}
-        <div className="w-[420px] flex flex-col border-r border-[#1f2533] bg-[#0c0f16] shrink-0">
+        <div className="w-[420px] flex flex-col border-r border-[#443849] bg-[#2A2432] shrink-0">
           {/* Queue Filter Bar */}
-          <div className="p-2 border-b border-[#1f2533] space-y-1.5">
+          <div className="p-2 border-b border-[#443849] space-y-1.5">
             <div className="flex items-center justify-between">
-              <span className="text-[10px] text-[#64748b] uppercase tracking-wider font-bold">
+              <span className="text-[10px] text-[#8E8295] uppercase tracking-wider font-bold">
                 INCIDENT QUEUE ({filteredIncidents.length})
               </span>
               <div className="flex items-center gap-1 text-[10px]">
@@ -348,10 +348,10 @@ export const IncidentDecisionView: React.FC<IncidentDecisionViewProps> = ({
                   <button
                     key={sev}
                     onClick={() => setSeverityFilter(sev)}
-                    className={`px-1.5 py-0.5 rounded text-[10px] ${
+                    className={`px-1.5 py-0.5 rounded text-[10px] cursor-pointer ${
                       severityFilter === sev
-                        ? "bg-[#3b82f6] text-white font-bold"
-                        : "bg-[#181d28] text-[#94a3b8] hover:bg-[#232938]"
+                        ? "bg-[#F18B78] text-[#211D29] font-bold"
+                        : "bg-[#332B3C] text-[#B7ACBD] hover:bg-[#3D3448]"
                     }`}
                   >
                     {sev}
@@ -366,12 +366,12 @@ export const IncidentDecisionView: React.FC<IncidentDecisionViewProps> = ({
                 value={searchTarget}
                 onChange={(e) => setSearchTarget(e.target.value)}
                 placeholder="Filter target (e.g. FEATURE::income)..."
-                className="w-full bg-[#141822] text-xs px-2 py-1 border border-[#263044] rounded text-white focus:outline-none focus:border-[#3b82f6]"
+                className="w-full bg-[#1C1824] text-xs px-2 py-1 border border-[#443849] rounded text-[#F4EFF6] focus:outline-none focus:border-[#F18B78]"
               />
               {searchTarget && (
                 <button
                   onClick={() => setSearchTarget("")}
-                  className="text-xs text-[#64748b] hover:text-white px-1"
+                  className="text-xs text-[#8E8295] hover:text-[#F4EFF6] px-1"
                 >
                   ✕
                 </button>
@@ -384,10 +384,10 @@ export const IncidentDecisionView: React.FC<IncidentDecisionViewProps> = ({
                 <button
                   key={state}
                   onClick={() => setLifecycleFilter(state)}
-                  className={`px-1.5 py-0.5 rounded whitespace-nowrap ${
+                  className={`px-1.5 py-0.5 rounded whitespace-nowrap cursor-pointer ${
                     lifecycleFilter === state
-                      ? "bg-[#334155] text-white font-bold"
-                      : "bg-[#121620] text-[#64748b] hover:text-[#cbd5e1]"
+                      ? "bg-[#332B3C] text-[#F4EFF6] border border-[#F18B78] font-bold"
+                      : "bg-[#1C1824] text-[#8E8295] hover:text-[#B7ACBD]"
                   }`}
                 >
                   {state}
@@ -399,12 +399,12 @@ export const IncidentDecisionView: React.FC<IncidentDecisionViewProps> = ({
           {/* Queue List */}
           <div className="flex-1 overflow-y-auto p-1.5 space-y-1">
             {isLoading ? (
-              <div className="p-8 text-center text-xs text-[#64748b]">
+              <div className="p-8 text-center text-xs text-[#8E8295]">
                 <span className="inline-block animate-spin mr-2">⟳</span>
                 Correlating operational incidents...
               </div>
             ) : filteredIncidents.length === 0 ? (
-              <div className="p-8 text-center text-xs text-[#64748b]">
+              <div className="p-8 text-center text-xs text-[#8E8295]">
                 No operational incidents matching current filters.
               </div>
             ) : (
@@ -420,8 +420,8 @@ export const IncidentDecisionView: React.FC<IncidentDecisionViewProps> = ({
                     onClick={() => setSelectedIncidentId(inc.id)}
                     className={`p-2.5 rounded border transition-all cursor-pointer ${
                       isSelected
-                        ? "bg-[#182030] border-[#3b82f6] shadow-sm"
-                        : "bg-[#10141e] border-[#1e2536] hover:bg-[#141a26] hover:border-[#2d374d]"
+                        ? "bg-[#332B3C] border-[#F18B78] shadow-sm"
+                        : "bg-[#211D29] border-[#443849] hover:bg-[#2A2432] hover:border-[#5A4B62]"
                     }`}
                   >
                     <div className="flex items-center justify-between mb-1">
@@ -429,28 +429,28 @@ export const IncidentDecisionView: React.FC<IncidentDecisionViewProps> = ({
                         <span className={`px-1.5 py-0.2 text-[9px] font-bold rounded border ${sevStyle.bg} ${sevStyle.text} ${sevStyle.border}`}>
                           {inc.currentSeverity}
                         </span>
-                        <span className="text-xs font-bold text-white">{inc.incidentCode}</span>
+                        <span className="text-xs font-bold text-[#F4EFF6]">{inc.incidentCode}</span>
                       </div>
 
                       <div className="flex items-center gap-1.5">
-                        <span className="text-[10px] text-[#64748b]">PRIORITY:</span>
-                        <span className="text-xs font-bold text-white bg-[#1e293b] px-1.5 py-0.2 rounded border border-[#334155] tabular-nums">
+                        <span className="text-[10px] text-[#8E8295]">PRIORITY:</span>
+                        <span className="text-xs font-bold text-[#F4EFF6] bg-[#332B3C] px-1.5 py-0.2 rounded border border-[#443849] tabular-nums">
                           {inc.priorityScore}
                         </span>
                       </div>
                     </div>
 
-                    <div className="text-xs font-semibold text-[#38bdf8] truncate mb-1">
+                    <div className="text-xs font-semibold text-[#F18B78] truncate mb-1">
                       {inc.primaryTarget}
                     </div>
 
-                    <div className="flex items-center justify-between text-[10px] text-[#94a3b8] mb-1.5">
+                    <div className="flex items-center justify-between text-[10px] text-[#B7ACBD] mb-1.5">
                       <div className="flex items-center gap-2">
                         <span>{inc.independentModuleCount} mod</span>
                         <span>•</span>
                         <span>{inc.relatedAlertsCount} alerts</span>
                         {inc.hasContradictoryEvidence && (
-                          <span className="text-[#f59e0b] font-bold" title="Contradictory evidence detected">
+                          <span className="text-[#E8B66D] font-bold" title="Contradictory evidence detected">
                             ⚠️ CONFLICT
                           </span>
                         )}
@@ -462,8 +462,8 @@ export const IncidentDecisionView: React.FC<IncidentDecisionViewProps> = ({
                     </div>
 
                     {/* Recommendation Pill */}
-                    <div className="flex items-center justify-between pt-1 border-t border-[#1e2536] text-[10px]">
-                      <span className="text-[#64748b]">DECISION:</span>
+                    <div className="flex items-center justify-between pt-1 border-t border-[#443849] text-[10px]">
+                      <span className="text-[#8E8295]">DECISION:</span>
                       <span className={`px-1.5 py-0.2 rounded font-bold border ${decStyle.bg} ${decStyle.text} ${decStyle.border}`}>
                         {inc.decisionRecommendation}
                       </span>
@@ -476,44 +476,44 @@ export const IncidentDecisionView: React.FC<IncidentDecisionViewProps> = ({
         </div>
 
         {/* RIGHT COLUMN: INCIDENT EVIDENCE DOSSIER & DECISION CONSOLE */}
-        <div className="flex-1 flex flex-col bg-[#0a0c10] overflow-y-auto">
+        <div className="flex-1 flex flex-col bg-[#211D29] overflow-y-auto">
           {isDossierLoading && !dossier ? (
-            <div className="flex-1 flex items-center justify-center text-xs text-[#64748b]">
+            <div className="flex-1 flex items-center justify-center text-xs text-[#8E8295]">
               <span className="inline-block animate-spin mr-2">⟳</span>
               Loading comprehensive incident evidence dossier...
             </div>
           ) : !dossier ? (
-            <div className="flex-1 flex items-center justify-center text-xs text-[#64748b]">
+            <div className="flex-1 flex items-center justify-center text-xs text-[#8E8295]">
               Select an incident from the queue to inspect evidence and operator decision state.
             </div>
           ) : (
             <div className="p-4 space-y-4 max-w-6xl">
               {/* Incident Header Card */}
-              <div className="p-4 rounded bg-[#0f1420] border border-[#1f293d]">
+              <div className="p-4 rounded bg-[#2A2432] border border-[#443849]">
                 <div className="flex items-start justify-between">
                   <div>
                     <div className="flex items-center gap-2 mb-1">
-                      <span className="text-base font-bold text-white">{dossier.incidentCode}</span>
-                      <span className="text-sm font-semibold text-[#94a3b8]">— {dossier.title}</span>
+                      <span className="text-base font-bold text-[#F4EFF6]">{dossier.incidentCode}</span>
+                      <span className="text-sm font-semibold text-[#B7ACBD]">— {dossier.title}</span>
                     </div>
 
-                    <div className="flex items-center gap-3 text-xs text-[#64748b]">
+                    <div className="flex items-center gap-3 text-xs text-[#8E8295]">
                       <div>
-                        CATEGORY: <span className="text-[#cbd5e1] font-semibold">{dossier.category}</span>
+                        CATEGORY: <span className="text-[#F4EFF6] font-semibold">{dossier.category}</span>
                       </div>
                       <div>•</div>
                       <div>
                         PRIMARY TARGET:{" "}
                         <button
                           onClick={() => onSelectFeature && onSelectFeature(dossier.primaryTarget.replace("FEATURE::", ""))}
-                          className="text-[#38bdf8] font-bold hover:underline cursor-pointer"
+                          className="text-[#F18B78] font-bold hover:underline cursor-pointer"
                         >
                           {dossier.primaryTarget}
                         </button>
                       </div>
                       <div>•</div>
                       <div>
-                        LINEAGE: <span className="text-[#94a3b8]">{dossier.modelLineageId}</span>
+                        LINEAGE: <span className="text-[#B7ACBD]">{dossier.modelLineageId}</span>
                       </div>
                     </div>
                   </div>
@@ -521,10 +521,10 @@ export const IncidentDecisionView: React.FC<IncidentDecisionViewProps> = ({
                   {/* Priority and Severity HUD */}
                   <div className="flex items-center gap-3">
                     <div className="text-right">
-                      <div className="text-[10px] text-[#64748b]">PRIORITY SCORE</div>
-                      <div className="text-xl font-bold text-white tabular-nums">
+                      <div className="text-[10px] text-[#8E8295]">PRIORITY SCORE</div>
+                      <div className="text-xl font-bold text-[#F4EFF6] tabular-nums">
                         {dossier.priorityScore}
-                        <span className="text-xs text-[#64748b]">/100</span>
+                        <span className="text-xs text-[#8E8295]">/100</span>
                       </div>
                     </div>
 
@@ -541,18 +541,18 @@ export const IncidentDecisionView: React.FC<IncidentDecisionViewProps> = ({
 
                 {/* Priority Breakdown Chips */}
                 {dossier.priorityBreakdown && (
-                  <div className="mt-3 pt-3 border-t border-[#1e2536] flex items-center gap-2 flex-wrap text-[11px]">
-                    <span className="text-[#64748b] font-bold">SCORE COMPOSITION:</span>
-                    <span className="bg-[#182030] text-[#cbd5e1] px-2 py-0.5 rounded border border-[#2d374d]">
+                  <div className="mt-3 pt-3 border-t border-[#443849] flex items-center gap-2 flex-wrap text-[11px]">
+                    <span className="text-[#8E8295] font-bold">SCORE COMPOSITION:</span>
+                    <span className="bg-[#332B3C] text-[#F4EFF6] px-2 py-0.5 rounded border border-[#443849]">
                       Severity: +{dossier.priorityBreakdown.severityContribution}
                     </span>
-                    <span className="bg-[#182030] text-[#cbd5e1] px-2 py-0.5 rounded border border-[#2d374d]">
+                    <span className="bg-[#332B3C] text-[#F4EFF6] px-2 py-0.5 rounded border border-[#443849]">
                       Independent Modules ({dossier.independentModuleCount}): +{dossier.priorityBreakdown.independentEvidenceContribution}
                     </span>
-                    <span className="bg-[#182030] text-[#cbd5e1] px-2 py-0.5 rounded border border-[#2d374d]">
+                    <span className="bg-[#332B3C] text-[#F4EFF6] px-2 py-0.5 rounded border border-[#443849]">
                       Persistence/Escalation: +{dossier.priorityBreakdown.persistenceContribution}
                     </span>
-                    <span className="bg-[#182030] text-[#cbd5e1] px-2 py-0.5 rounded border border-[#2d374d]">
+                    <span className="bg-[#332B3C] text-[#F4EFF6] px-2 py-0.5 rounded border border-[#443849]">
                       Health Impact: +{dossier.priorityBreakdown.healthImpactContribution}
                     </span>
                   </div>
@@ -561,50 +561,50 @@ export const IncidentDecisionView: React.FC<IncidentDecisionViewProps> = ({
 
               {/* Contradictory Evidence Alert (If Present) */}
               {dossier.contradictoryEvidence?.hasConflict && (
-                <div className="p-3.5 rounded bg-[#78350f]/20 border border-[#f59e0b]/50 text-xs text-[#fbbf24] space-y-1.5">
+                <div className="p-3.5 rounded bg-[#E8B66D]/15 border border-[#E8B66D]/40 text-xs text-[#E8B66D] space-y-1.5">
                   <div className="flex items-center gap-2 font-bold">
                     <span>⚠️ CONTRADICTORY EVIDENCE DETECTED</span>
-                    <span className="text-[10px] px-1.5 py-0.2 rounded bg-[#f59e0b]/30 text-white font-mono">
+                    <span className="text-[10px] px-1.5 py-0.2 rounded bg-[#E8B66D]/30 text-[#F4EFF6] font-mono">
                       CONFIDENCE PENALTY APPLIED
                     </span>
                   </div>
-                  <p className="text-[#fef3c7]">{dossier.contradictoryEvidence.summary}</p>
-                  <ul className="list-disc list-inside space-y-0.5 text-[11px] text-[#fde68a]">
+                  <p className="text-[#F4EFF6]">{dossier.contradictoryEvidence.summary}</p>
+                  <ul className="list-disc list-inside space-y-0.5 text-[11px] text-[#E8B66D]">
                     {dossier.contradictoryEvidence.conflictingSignals.map((sig, idx) => (
                       <li key={idx}>{sig}</li>
                     ))}
                   </ul>
-                  <div className="text-[11px] text-[#fbbf24] pt-1 border-t border-[#f59e0b]/20">
+                  <div className="text-[11px] text-[#E8B66D] pt-1 border-t border-[#E8B66D]/20">
                     Impact: {dossier.contradictoryEvidence.confidenceImpact} • Recommended Action: {dossier.contradictoryEvidence.recommendedAction}
                   </div>
                 </div>
               )}
 
               {/* Evidence Synthesis Summary */}
-              <div className="p-4 rounded bg-[#0f1420] border border-[#1f293d] space-y-2">
-                <div className="text-xs font-bold text-[#94a3b8] uppercase tracking-wider">
+              <div className="p-4 rounded bg-[#2A2432] border border-[#443849] space-y-2">
+                <div className="text-xs font-bold text-[#B7ACBD] uppercase tracking-wider">
                   EVIDENCE SYNTHESIS & ASSOCIATIVE SUMMARY
                 </div>
-                <div className="text-xs font-mono bg-[#080a0f] p-3 rounded border border-[#1a2030] text-[#e2e8f0] whitespace-pre-wrap leading-relaxed">
+                <div className="text-xs font-mono bg-[#1C1824] p-3 rounded border border-[#443849] text-[#F4EFF6] whitespace-pre-wrap leading-relaxed">
                   {dossier.evidenceSummary}
                 </div>
               </div>
 
               {/* DENSE EVIDENCE MATRIX TABLE */}
-              <div className="p-4 rounded bg-[#0f1420] border border-[#1f293d] space-y-2">
+              <div className="p-4 rounded bg-[#2A2432] border border-[#443849] space-y-2">
                 <div className="flex items-center justify-between">
-                  <div className="text-xs font-bold text-[#94a3b8] uppercase tracking-wider">
+                  <div className="text-xs font-bold text-[#B7ACBD] uppercase tracking-wider">
                     EVIDENCE MATRIX ({dossier.evidenceMatrix?.length || 0} SIGNALS)
                   </div>
-                  <span className="text-[10px] text-[#64748b]">
+                  <span className="text-[10px] text-[#8E8295]">
                     {dossier.independentModuleCount} INDEPENDENT DIAGNOSTIC MODULES
                   </span>
                 </div>
 
-                <div className="overflow-x-auto border border-[#1e2536] rounded">
+                <div className="overflow-x-auto border border-[#443849] rounded">
                   <table className="w-full text-left text-xs border-collapse">
                     <thead>
-                      <tr className="bg-[#141a26] text-[#64748b] text-[10px] font-bold uppercase border-b border-[#1e2536]">
+                      <tr className="bg-[#332B3C] text-[#8E8295] text-[10px] font-bold uppercase border-b border-[#443849]">
                         <th className="p-2">EVIDENCE TYPE</th>
                         <th className="p-2">MODULE</th>
                         <th className="p-2">METRIC</th>
@@ -615,27 +615,27 @@ export const IncidentDecisionView: React.FC<IncidentDecisionViewProps> = ({
                         <th className="p-2">TRIGGER REASON</th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-[#1e2536] text-[11px]">
+                    <tbody className="divide-y divide-[#443849] text-[11px]">
                       {dossier.evidenceMatrix?.map((row, idx) => {
                         const sev = SEVERITY_STYLES[row.severity] || SEVERITY_STYLES.INFO;
                         return (
-                          <tr key={idx} className="hover:bg-[#141b2b] transition-colors">
-                            <td className="p-2 font-semibold text-white">{row.alertType}</td>
+                          <tr key={idx} className="hover:bg-[#332B3C]/50 transition-colors">
+                            <td className="p-2 font-semibold text-[#F4EFF6]">{row.alertType}</td>
                             <td className="p-2">
-                              <span className="px-1.5 py-0.2 rounded bg-[#1e293b] text-[#38bdf8] text-[10px] font-bold border border-[#334155]">
+                              <span className="px-1.5 py-0.2 rounded bg-[#332B3C] text-[#F18B78] text-[10px] font-bold border border-[#443849]">
                                 {row.module}
                               </span>
                             </td>
-                            <td className="p-2 text-[#94a3b8] font-mono">{row.metric}</td>
-                            <td className="p-2 text-right font-bold text-white tabular-nums">{row.value}</td>
-                            <td className="p-2 text-right text-[#64748b] tabular-nums">{row.threshold}</td>
+                            <td className="p-2 text-[#B7ACBD] font-mono">{row.metric}</td>
+                            <td className="p-2 text-right font-bold text-[#F4EFF6] tabular-nums">{row.value}</td>
+                            <td className="p-2 text-right text-[#8E8295] tabular-nums">{row.threshold}</td>
                             <td className="p-2 text-center">
                               <span className={`px-1.5 py-0.2 rounded text-[9px] font-bold border ${sev.bg} ${sev.text} ${sev.border}`}>
                                 {row.severity}
                               </span>
                             </td>
-                            <td className="p-2 text-[#94a3b8] font-mono text-[10px]">{row.runId}</td>
-                            <td className="p-2 text-[#cbd5e1] max-w-xs truncate" title={row.triggerDescription}>
+                            <td className="p-2 text-[#B7ACBD] font-mono text-[10px]">{row.runId}</td>
+                            <td className="p-2 text-[#B7ACBD] max-w-xs truncate" title={row.triggerDescription}>
                               {row.triggerDescription}
                             </td>
                           </tr>
@@ -647,28 +647,28 @@ export const IncidentDecisionView: React.FC<IncidentDecisionViewProps> = ({
               </div>
 
               {/* CROSS-PHASE PIPELINE INTEGRATION CHAIN */}
-              <div className="p-4 rounded bg-[#0f1420] border border-[#1f293d] space-y-3">
-                <div className="text-xs font-bold text-[#94a3b8] uppercase tracking-wider">
+              <div className="p-4 rounded bg-[#2A2432] border border-[#443849] space-y-3">
+                <div className="text-xs font-bold text-[#B7ACBD] uppercase tracking-wider">
                   CROSS-PHASE DIAGNOSTIC & REMEDIATION PIPELINE
                 </div>
 
                 <div className="grid grid-cols-3 gap-3">
                   {/* Phase 6 Investigation Link */}
-                  <div className="p-3 rounded bg-[#0a0d14] border border-[#1c2436] space-y-1.5">
-                    <div className="flex items-center justify-between text-[10px] text-[#64748b]">
-                      <span className="font-bold text-[#38bdf8]">PHASE 6 ROOT-CAUSE</span>
+                  <div className="p-3 rounded bg-[#332B3C] border border-[#443849] space-y-1.5">
+                    <div className="flex items-center justify-between text-[10px] text-[#8E8295]">
+                      <span className="font-bold text-[#F18B78]">PHASE 6 ROOT-CAUSE</span>
                       {dossier.investigationTarget ? (
-                        <span className="text-[#34d399] font-bold">LINKED</span>
+                        <span className="text-[#B7D7A8] font-bold">LINKED</span>
                       ) : (
-                        <span className="text-[#64748b]">NO TARGET</span>
+                        <span className="text-[#8E8295]">NO TARGET</span>
                       )}
                     </div>
                     {dossier.investigationTarget ? (
                       <div className="space-y-1">
-                        <div className="text-xs font-bold text-white truncate">
+                        <div className="text-xs font-bold text-[#F4EFF6] truncate">
                           {dossier.investigationTarget.targetKey}
                         </div>
-                        <p className="text-[11px] text-[#94a3b8] line-clamp-2">
+                        <p className="text-[11px] text-[#B7ACBD] line-clamp-2">
                           {dossier.investigationTarget.hypothesis}
                         </p>
                         {navigate && (
@@ -677,82 +677,82 @@ export const IncidentDecisionView: React.FC<IncidentDecisionViewProps> = ({
                               if (onSelectInvestigationTarget) onSelectInvestigationTarget(dossier.investigationTarget!.targetKey);
                               navigate("06_INVESTIGATION");
                             }}
-                            className="text-[10px] text-[#38bdf8] hover:underline block pt-1"
+                            className="text-[10px] text-[#F18B78] hover:underline block pt-1 cursor-pointer"
                           >
                             Inspect in Phase 6 →
                           </button>
                         )}
                       </div>
                     ) : (
-                      <p className="text-[11px] text-[#64748b] italic">
+                      <p className="text-[11px] text-[#8E8295] italic">
                         No active Phase 6 investigation target formulated for this target.
                       </p>
                     )}
                   </div>
 
                   {/* Phase 7 Remediation Link */}
-                  <div className="p-3 rounded bg-[#0a0d14] border border-[#1c2436] space-y-1.5">
-                    <div className="flex items-center justify-between text-[10px] text-[#64748b]">
-                      <span className="font-bold text-[#a78bfa]">PHASE 7 REMEDIATION</span>
+                  <div className="p-3 rounded bg-[#332B3C] border border-[#443849] space-y-1.5">
+                    <div className="flex items-center justify-between text-[10px] text-[#8E8295]">
+                      <span className="font-bold text-[#F18B78]">PHASE 7 REMEDIATION</span>
                       {dossier.remediation ? (
-                        <span className="text-[#34d399] font-bold">PROPOSED</span>
+                        <span className="text-[#B7D7A8] font-bold">PROPOSED</span>
                       ) : (
-                        <span className="text-[#64748b]">NO REMEDIATION</span>
+                        <span className="text-[#8E8295]">NO REMEDIATION</span>
                       )}
                     </div>
                     {dossier.remediation ? (
                       <div className="space-y-1">
-                        <div className="text-xs font-bold text-white truncate">
+                        <div className="text-xs font-bold text-[#F4EFF6] truncate">
                           {dossier.remediation.title}
                         </div>
-                        <p className="text-[11px] text-[#94a3b8] line-clamp-2">
+                        <p className="text-[11px] text-[#B7ACBD] line-clamp-2">
                           {dossier.remediation.hypothesis}
                         </p>
                         {navigate && (
                           <button
                             onClick={() => navigate("07_REMEDIATION")}
-                            className="text-[10px] text-[#a78bfa] hover:underline block pt-1"
+                            className="text-[10px] text-[#F18B78] hover:underline block pt-1 cursor-pointer"
                           >
                             Review in Phase 7 →
                           </button>
                         )}
                       </div>
                     ) : (
-                      <p className="text-[11px] text-[#64748b] italic">
+                      <p className="text-[11px] text-[#8E8295] italic">
                         No remediation proposal formulated yet. Requires investigation review.
                       </p>
                     )}
                   </div>
 
                   {/* Phase 8 Experiment Link */}
-                  <div className="p-3 rounded bg-[#0a0d14] border border-[#1c2436] space-y-1.5">
-                    <div className="flex items-center justify-between text-[10px] text-[#64748b]">
-                      <span className="font-bold text-[#22d3ee]">PHASE 8 VALIDATION</span>
+                  <div className="p-3 rounded bg-[#332B3C] border border-[#443849] space-y-1.5">
+                    <div className="flex items-center justify-between text-[10px] text-[#8E8295]">
+                      <span className="font-bold text-[#B7D7A8]">PHASE 8 VALIDATION</span>
                       {dossier.experiment ? (
-                        <span className="text-[#34d399] font-bold">{dossier.experiment.status}</span>
+                        <span className="text-[#B7D7A8] font-bold">{dossier.experiment.status}</span>
                       ) : (
-                        <span className="text-[#64748b]">NO EXPERIMENT</span>
+                        <span className="text-[#8E8295]">NO EXPERIMENT</span>
                       )}
                     </div>
                     {dossier.experiment ? (
                       <div className="space-y-1">
-                        <div className="text-xs font-bold text-white truncate">
+                        <div className="text-xs font-bold text-[#F4EFF6] truncate">
                           {dossier.experiment.id} — {dossier.experiment.title}
                         </div>
-                        <p className="text-[11px] text-[#94a3b8] line-clamp-2">
+                        <p className="text-[11px] text-[#B7ACBD] line-clamp-2">
                           Conclusion: {dossier.experiment.conclusion || "In validation"}
                         </p>
                         {navigate && (
                           <button
                             onClick={() => navigate("08_EXPERIMENT")}
-                            className="text-[10px] text-[#22d3ee] hover:underline block pt-1"
+                            className="text-[10px] text-[#B7D7A8] hover:underline block pt-1 cursor-pointer"
                           >
                             Inspect in Phase 8 →
                           </button>
                         )}
                       </div>
                     ) : (
-                      <p className="text-[11px] text-[#64748b] italic">
+                      <p className="text-[11px] text-[#8E8295] italic">
                         No experimental validation runs executed for this remediation.
                       </p>
                     )}
@@ -762,46 +762,46 @@ export const IncidentDecisionView: React.FC<IncidentDecisionViewProps> = ({
 
               {/* OPERATOR DECISION CONSOLE */}
               {dossier.decision && (
-                <div className="p-4 rounded bg-[#0f1420] border border-[#1f293d] space-y-3">
+                <div className="p-4 rounded bg-[#2A2432] border border-[#443849] space-y-3">
                   <div className="flex items-center justify-between">
-                    <div className="text-xs font-bold text-[#94a3b8] uppercase tracking-wider">
+                    <div className="text-xs font-bold text-[#B7ACBD] uppercase tracking-wider">
                       OPERATOR DECISION RECOMMENDATION
                     </div>
 
                     <div className="flex items-center gap-2">
-                      <span className="text-xs text-[#64748b]">CONFIDENCE:</span>
+                      <span className="text-xs text-[#8E8295]">CONFIDENCE:</span>
                       <span className={`px-2 py-0.5 text-xs font-bold rounded border ${CONFIDENCE_BADGES[dossier.decision.confidence]?.bg} ${CONFIDENCE_BADGES[dossier.decision.confidence]?.text} ${CONFIDENCE_BADGES[dossier.decision.confidence]?.border}`}>
                         {dossier.decision.confidence}
                       </span>
                     </div>
                   </div>
 
-                  <div className="p-3 rounded bg-[#080b11] border border-[#1e2536] space-y-2">
+                  <div className="p-3 rounded bg-[#1C1824] border border-[#443849] space-y-2">
                     <div className="flex items-center gap-2">
-                      <span className="text-xs text-[#64748b]">RECOMMENDED ACTION:</span>
+                      <span className="text-xs text-[#8E8295]">RECOMMENDED ACTION:</span>
                       <span className={`px-2.5 py-1 text-xs font-bold rounded border ${DECISION_STYLES[dossier.decision.recommendation]?.bg} ${DECISION_STYLES[dossier.decision.recommendation]?.text} ${DECISION_STYLES[dossier.decision.recommendation]?.border}`}>
                         {dossier.decision.recommendation}
                       </span>
                     </div>
 
-                    <div className="text-xs text-[#e2e8f0]">
-                      <span className="text-[#64748b] font-semibold">RATIONALE:</span>{" "}
+                    <div className="text-xs text-[#F4EFF6]">
+                      <span className="text-[#8E8295] font-semibold">RATIONALE:</span>{" "}
                       {dossier.decision.rationale}
                     </div>
 
-                    <div className="text-xs text-[#38bdf8]">
-                      <span className="text-[#64748b] font-semibold">NEXT ACTION:</span>{" "}
+                    <div className="text-xs text-[#F18B78]">
+                      <span className="text-[#8E8295] font-semibold">NEXT ACTION:</span>{" "}
                       {dossier.decision.nextAction}
                     </div>
 
-                    <div className="text-[10px] text-[#64748b] italic pt-1 border-t border-[#1a202c]">
+                    <div className="text-[10px] text-[#8E8295] italic pt-1 border-t border-[#443849]">
                       {dossier.decision.constraints}
                     </div>
                   </div>
 
                   {/* LIFECYCLE ACTION BUTTONS */}
-                  <div className="pt-2 border-t border-[#1e2536] flex items-center justify-between flex-wrap gap-2">
-                    <div className="text-[11px] text-[#64748b]">OPERATOR ACTIONS:</div>
+                  <div className="pt-2 border-t border-[#443849] flex items-center justify-between flex-wrap gap-2">
+                    <div className="text-[11px] text-[#8E8295]">OPERATOR ACTIONS:</div>
                     <div className="flex items-center gap-2 flex-wrap">
                       {dossier.lifecycleState === "OPEN" && (
                         <button
@@ -809,7 +809,7 @@ export const IncidentDecisionView: React.FC<IncidentDecisionViewProps> = ({
                             setActiveModal("ACKNOWLEDGE");
                             setModalText("");
                           }}
-                          className="px-2.5 py-1 text-xs font-bold bg-[#f59e0b]/20 hover:bg-[#f59e0b]/30 text-[#fbbf24] border border-[#f59e0b]/40 rounded transition-colors"
+                          className="px-2.5 py-1 text-xs font-bold bg-[#E8B66D]/20 hover:bg-[#E8B66D]/30 text-[#E8B66D] border border-[#E8B66D]/40 rounded transition-colors cursor-pointer"
                         >
                           ACKNOWLEDGE
                         </button>
@@ -821,7 +821,7 @@ export const IncidentDecisionView: React.FC<IncidentDecisionViewProps> = ({
                             setActiveModal("INVESTIGATE");
                             setModalText("");
                           }}
-                          className="px-2.5 py-1 text-xs font-bold bg-[#3b82f6]/20 hover:bg-[#3b82f6]/30 text-[#60a5fa] border border-[#3b82f6]/40 rounded transition-colors"
+                          className="px-2.5 py-1 text-xs font-bold bg-[#F18B78]/20 hover:bg-[#F18B78]/30 text-[#F18B78] border border-[#F18B78]/40 rounded transition-colors cursor-pointer"
                         >
                           INVESTIGATE
                         </button>
@@ -833,7 +833,7 @@ export const IncidentDecisionView: React.FC<IncidentDecisionViewProps> = ({
                             setActiveModal("PLAN_MITIGATION");
                             setModalText("");
                           }}
-                          className="px-2.5 py-1 text-xs font-bold bg-[#8b5cf6]/20 hover:bg-[#8b5cf6]/30 text-[#a78bfa] border border-[#8b5cf6]/40 rounded transition-colors"
+                          className="px-2.5 py-1 text-xs font-bold bg-[#332B3C] hover:bg-[#3D3448] text-[#F4EFF6] border border-[#443849] rounded transition-colors cursor-pointer"
                         >
                           PLAN MITIGATION
                         </button>
@@ -845,7 +845,7 @@ export const IncidentDecisionView: React.FC<IncidentDecisionViewProps> = ({
                             setActiveModal("START_VALIDATION");
                             setModalText("");
                           }}
-                          className="px-2.5 py-1 text-xs font-bold bg-[#06b6d4]/20 hover:bg-[#06b6d4]/30 text-[#22d3ee] border border-[#06b6d4]/40 rounded transition-colors"
+                          className="px-2.5 py-1 text-xs font-bold bg-[#E8B66D]/20 hover:bg-[#E8B66D]/30 text-[#E8B66D] border border-[#E8B66D]/40 rounded transition-colors cursor-pointer"
                         >
                           START VALIDATION
                         </button>
@@ -858,7 +858,7 @@ export const IncidentDecisionView: React.FC<IncidentDecisionViewProps> = ({
                               setActiveModal("RESOLVE");
                               setModalText("");
                             }}
-                            className="px-2.5 py-1 text-xs font-bold bg-[#10b981]/20 hover:bg-[#10b981]/30 text-[#34d399] border border-[#10b981]/40 rounded transition-colors"
+                            className="px-2.5 py-1 text-xs font-bold bg-[#B7D7A8]/20 hover:bg-[#B7D7A8]/30 text-[#B7D7A8] border border-[#B7D7A8]/40 rounded transition-colors cursor-pointer"
                           >
                             RESOLVE
                           </button>
@@ -868,7 +868,7 @@ export const IncidentDecisionView: React.FC<IncidentDecisionViewProps> = ({
                               setActiveModal("SUPPRESS");
                               setModalText("");
                             }}
-                            className="px-2.5 py-1 text-xs font-bold bg-[#64748b]/20 hover:bg-[#64748b]/30 text-[#94a3b8] border border-[#64748b]/40 rounded transition-colors"
+                            className="px-2.5 py-1 text-xs font-bold bg-[#332B3C] hover:bg-[#3D3448] text-[#8E8295] border border-[#443849] rounded transition-colors cursor-pointer"
                           >
                             SUPPRESS
                           </button>
@@ -881,23 +881,23 @@ export const IncidentDecisionView: React.FC<IncidentDecisionViewProps> = ({
 
               {/* AUDIT EVENT LOG */}
               {dossier.auditEvents && dossier.auditEvents.length > 0 && (
-                <div className="p-4 rounded bg-[#0f1420] border border-[#1f293d] space-y-2">
-                  <div className="text-xs font-bold text-[#94a3b8] uppercase tracking-wider">
+                <div className="p-4 rounded bg-[#2A2432] border border-[#443849] space-y-2">
+                  <div className="text-xs font-bold text-[#B7ACBD] uppercase tracking-wider">
                     INCIDENT AUDIT LOG ({dossier.auditEvents.length} EVENTS)
                   </div>
                   <div className="space-y-1.5 max-h-48 overflow-y-auto">
                     {dossier.auditEvents.map((evt) => (
                       <div
                         key={evt.id}
-                        className="p-2 rounded bg-[#090c12] border border-[#1a2030] flex items-center justify-between text-[11px]"
+                        className="p-2 rounded bg-[#1C1824] border border-[#443849] flex items-center justify-between text-[11px]"
                       >
                         <div className="flex items-center gap-2">
-                          <span className="text-[#38bdf8] font-bold">{evt.action}</span>
-                          <span className="text-[#64748b]">({evt.previousState} → {evt.newState})</span>
-                          <span className="text-[#cbd5e1]">{evt.reason}</span>
+                          <span className="text-[#F18B78] font-bold">{evt.action}</span>
+                          <span className="text-[#8E8295]">({evt.previousState} → {evt.newState})</span>
+                          <span className="text-[#F4EFF6]">{evt.reason}</span>
                         </div>
 
-                        <div className="flex items-center gap-2 text-[10px] text-[#64748b]">
+                        <div className="flex items-center gap-2 text-[10px] text-[#8E8295]">
                           <span>by {evt.actor}</span>
                           <span>•</span>
                           <span>{new Date(evt.timestamp).toLocaleTimeString()}</span>
@@ -912,17 +912,16 @@ export const IncidentDecisionView: React.FC<IncidentDecisionViewProps> = ({
         </div>
       </div>
 
-      {/* OPERATOR ACTION MODAL */}
       {activeModal && (
         <div className="fixed inset-0 bg-black/70 backdrop-blur-xs flex items-center justify-center z-50 p-4">
-          <div className="bg-[#0f1420] border border-[#1f293d] rounded-lg p-5 max-w-md w-full space-y-4 shadow-2xl">
-            <div className="flex items-center justify-between border-b border-[#1f293d] pb-2">
-              <span className="text-sm font-bold text-white">
+          <div className="bg-[#2A2432] border border-[#443849] rounded-lg p-5 max-w-md w-full space-y-4 shadow-2xl">
+            <div className="flex items-center justify-between border-b border-[#443849] pb-2">
+              <span className="text-sm font-bold text-[#F4EFF6]">
                 TRANSITION INCIDENT: {activeModal}
               </span>
               <button
                 onClick={() => setActiveModal(null)}
-                className="text-[#64748b] hover:text-white"
+                className="text-[#8E8295] hover:text-[#F4EFF6] cursor-pointer"
               >
                 ✕
               </button>
@@ -930,17 +929,17 @@ export const IncidentDecisionView: React.FC<IncidentDecisionViewProps> = ({
 
             <div className="space-y-3 text-xs">
               <div>
-                <label className="text-[#64748b] block mb-1">ACTOR</label>
+                <label className="text-[#8E8295] block mb-1">ACTOR</label>
                 <input
                   type="text"
                   value={modalActor}
                   onChange={(e) => setModalActor(e.target.value)}
-                  className="w-full bg-[#141822] text-white px-2.5 py-1.5 border border-[#263044] rounded"
+                  className="w-full bg-[#1C1824] text-[#F4EFF6] px-2.5 py-1.5 border border-[#443849] rounded focus:outline-none focus:border-[#F18B78]"
                 />
               </div>
 
               <div>
-                <label className="text-[#64748b] block mb-1">
+                <label className="text-[#8E8295] block mb-1">
                   {activeModal === "RESOLVE" ? "RESOLUTION REASON" : "OPERATOR NOTE / RATIONALE"}
                 </label>
                 <textarea
@@ -948,27 +947,27 @@ export const IncidentDecisionView: React.FC<IncidentDecisionViewProps> = ({
                   value={modalText}
                   onChange={(e) => setModalText(e.target.value)}
                   placeholder="Enter detailed engineering justification..."
-                  className="w-full bg-[#141822] text-white px-2.5 py-1.5 border border-[#263044] rounded focus:outline-none focus:border-[#3b82f6]"
+                  className="w-full bg-[#1C1824] text-[#F4EFF6] px-2.5 py-1.5 border border-[#443849] rounded focus:outline-none focus:border-[#F18B78]"
                 />
               </div>
 
               {activeModal === "SUPPRESS" && (
                 <div>
-                  <label className="text-[#64748b] block mb-1">SUPPRESSION DURATION (HOURS)</label>
+                  <label className="text-[#8E8295] block mb-1">SUPPRESSION DURATION (HOURS)</label>
                   <input
                     type="number"
                     value={modalDuration}
                     onChange={(e) => setModalDuration(parseInt(e.target.value) || 24)}
-                    className="w-full bg-[#141822] text-white px-2.5 py-1.5 border border-[#263044] rounded"
+                    className="w-full bg-[#1C1824] text-[#F4EFF6] px-2.5 py-1.5 border border-[#443849] rounded focus:outline-none focus:border-[#F18B78]"
                   />
                 </div>
               )}
             </div>
 
-            <div className="flex items-center justify-end gap-2 pt-2 border-t border-[#1f293d]">
+            <div className="flex items-center justify-end gap-2 pt-2 border-t border-[#443849]">
               <button
                 onClick={() => setActiveModal(null)}
-                className="px-3 py-1.5 text-xs text-[#94a3b8] hover:bg-[#1a202c] rounded"
+                className="px-3 py-1.5 text-xs text-[#B7ACBD] hover:bg-[#332B3C] rounded cursor-pointer"
               >
                 CANCEL
               </button>
@@ -981,7 +980,7 @@ export const IncidentDecisionView: React.FC<IncidentDecisionViewProps> = ({
                   else if (activeModal === "RESOLVE") handleResolve();
                   else if (activeModal === "SUPPRESS") handleSuppress();
                 }}
-                className="px-4 py-1.5 text-xs font-bold bg-[#3b82f6] hover:bg-[#2563eb] text-white rounded"
+                className="px-4 py-1.5 text-xs font-bold bg-[#F18B78] hover:bg-[#F39C8B] text-[#211D29] rounded cursor-pointer"
               >
                 CONFIRM TRANSITION
               </button>

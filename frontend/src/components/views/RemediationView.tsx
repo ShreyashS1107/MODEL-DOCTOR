@@ -28,31 +28,31 @@ export interface RemediationViewProps {
 }
 
 const MODULE_COLORS: Record<string, { bg: string; text: string; border: string }> = {
-  DRIFT: { bg: "bg-cyan-950/40", text: "text-cyan-400", border: "border-cyan-500/40" },
-  EXPLAINABILITY: { bg: "bg-purple-950/40", text: "text-purple-400", border: "border-purple-500/40" },
-  ERROR_FORENSICS: { bg: "bg-rose-950/40", text: "text-rose-400", border: "border-rose-500/40" },
-  ROBUSTNESS: { bg: "bg-orange-950/40", text: "text-orange-400", border: "border-orange-500/40" },
-  DATA_QUALITY: { bg: "bg-yellow-950/40", text: "text-yellow-400", border: "border-yellow-500/40" },
-  LEAKAGE: { bg: "bg-amber-950/40", text: "text-amber-400", border: "border-amber-500/40" },
-  BIAS: { bg: "bg-emerald-950/40", text: "text-emerald-400", border: "border-emerald-500/40" },
-  PERFORMANCE: { bg: "bg-indigo-950/40", text: "text-indigo-400", border: "border-indigo-500/40" },
+  DRIFT: { bg: "bg-[#F18B78]/15", text: "text-[#F18B78]", border: "border-[#F18B78]/30" },
+  EXPLAINABILITY: { bg: "bg-[#332B3C]", text: "text-[#B7ACBD]", border: "border-[#443849]" },
+  ERROR_FORENSICS: { bg: "bg-[#F18B78]/20", text: "text-[#F18B78]", border: "border-[#F18B78]/40" },
+  ROBUSTNESS: { bg: "bg-[#E8B66D]/20", text: "text-[#E8B66D]", border: "border-[#E8B66D]/40" },
+  DATA_QUALITY: { bg: "bg-[#E8B66D]/15", text: "text-[#E8B66D]", border: "border-[#E8B66D]/30" },
+  LEAKAGE: { bg: "bg-[#F18B78]/20", text: "text-[#F18B78]", border: "border-[#F18B78]/40" },
+  BIAS: { bg: "bg-[#B7D7A8]/15", text: "text-[#B7D7A8]", border: "border-[#B7D7A8]/30" },
+  PERFORMANCE: { bg: "bg-[#332B3C]", text: "text-[#F4EFF6]", border: "border-[#443849]" },
 };
 
 const PRIORITY_BADGES: Record<string, { bg: string; text: string; border: string }> = {
-  CRITICAL: { bg: "bg-rose-950/60", text: "text-rose-300", border: "border-rose-500/60" },
-  HIGH: { bg: "bg-amber-950/60", text: "text-amber-300", border: "border-amber-500/60" },
-  MEDIUM: { bg: "bg-blue-950/60", text: "text-blue-300", border: "border-blue-500/60" },
-  LOW: { bg: "bg-slate-800/60", text: "text-slate-300", border: "border-slate-600/60" },
-  INFO: { bg: "bg-slate-900/60", text: "text-slate-400", border: "border-slate-700/60" },
+  CRITICAL: { bg: "bg-[#F18B78]/20", text: "text-[#F18B78]", border: "border-[#F18B78]/50" },
+  HIGH: { bg: "bg-[#E8B66D]/20", text: "text-[#E8B66D]", border: "border-[#E8B66D]/50" },
+  MEDIUM: { bg: "bg-[#332B3C]", text: "text-[#B7ACBD]", border: "border-[#443849]" },
+  LOW: { bg: "bg-[#2A2432]", text: "text-[#8E8295]", border: "border-[#443849]" },
+  INFO: { bg: "bg-[#2A2432]", text: "text-[#8E8295]", border: "border-[#443849]" },
 };
 
 const STATUS_BADGES: Record<string, { bg: string; text: string; border: string }> = {
-  PROPOSED: { bg: "bg-slate-800", text: "text-slate-300", border: "border-slate-600" },
-  SELECTED: { bg: "bg-indigo-950", text: "text-indigo-300", border: "border-indigo-500" },
-  VALIDATING: { bg: "bg-amber-950", text: "text-amber-300", border: "border-amber-500" },
-  VALIDATED: { bg: "bg-emerald-950", text: "text-emerald-300", border: "border-emerald-500" },
-  REJECTED: { bg: "bg-rose-950", text: "text-rose-400", border: "border-rose-700" },
-  SUPERSEDED: { bg: "bg-zinc-900", text: "text-zinc-500", border: "border-zinc-700" },
+  PROPOSED: { bg: "bg-[#332B3C]", text: "text-[#B7ACBD]", border: "border-[#443849]" },
+  SELECTED: { bg: "bg-[#F18B78]/20", text: "text-[#F18B78]", border: "border-[#F18B78]/50" },
+  VALIDATING: { bg: "bg-[#E8B66D]/20", text: "text-[#E8B66D]", border: "border-[#E8B66D]/50" },
+  VALIDATED: { bg: "bg-[#B7D7A8]/20", text: "text-[#B7D7A8]", border: "border-[#B7D7A8]/50" },
+  REJECTED: { bg: "bg-[#F18B78]/20", text: "text-[#F18B78]", border: "border-[#F18B78]/40" },
+  SUPERSEDED: { bg: "bg-[#1C1824]", text: "text-[#8E8295]", border: "border-[#443849]" },
 };
 
 export const RemediationView: React.FC<RemediationViewProps> = ({
@@ -203,40 +203,40 @@ export const RemediationView: React.FC<RemediationViewProps> = ({
   }, [remediations]);
 
   return (
-    <div className="flex flex-col h-full bg-slate-950 text-slate-100 font-mono text-xs select-none">
+    <div className="flex flex-col h-full bg-[#211D29] text-[#F4EFF6] font-mono text-xs select-none">
       {/* 1. TOP ENGINEERING HUD HEADER */}
-      <div className="border-b border-slate-800 bg-slate-900/90 px-4 py-3 shrink-0">
+      <div className="border-b border-[#443849] bg-[#2A2432] px-4 py-3 shrink-0">
         <div className="flex flex-wrap items-center justify-between gap-4">
           <div className="flex items-center space-x-3">
             <div className="flex items-center space-x-2">
-              <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse" />
-              <h1 className="text-sm font-bold tracking-wider text-slate-100 uppercase">
+              <span className="w-2.5 h-2.5 rounded-full bg-[#B7D7A8] animate-pulse" />
+              <h1 className="text-sm font-bold tracking-wider text-[#F4EFF6] uppercase">
                 07 REMEDIATION DECISION SUPPORT & VALIDATION
               </h1>
             </div>
-            <span className="text-slate-500 text-[11px]">|</span>
-            <span className="text-slate-400 text-[11px]">RUN: {runId}</span>
+            <span className="text-[#5A4B62] text-[11px]">|</span>
+            <span className="text-[#B7ACBD] text-[11px]">RUN: {runId}</span>
           </div>
 
           {/* Metric Stats Counters */}
           <div className="flex items-center space-x-3 text-[11px]">
-            <div className="px-2.5 py-1 rounded bg-slate-800 border border-slate-700">
-              <span className="text-slate-400">TOTAL: </span>
-              <span className="font-bold text-slate-200">{counts.total}</span>
+            <div className="px-2.5 py-1 rounded bg-[#332B3C] border border-[#443849]">
+              <span className="text-[#8E8295]">TOTAL: </span>
+              <span className="font-bold text-[#F4EFF6]">{counts.total}</span>
             </div>
-            <div className="px-2.5 py-1 rounded bg-rose-950/60 border border-rose-800/60 text-rose-300">
+            <div className="px-2.5 py-1 rounded bg-[#F18B78]/15 border border-[#F18B78]/40 text-[#F18B78]">
               <span>CRITICAL: </span>
               <span className="font-bold">{counts.critical}</span>
             </div>
-            <div className="px-2.5 py-1 rounded bg-amber-950/60 border border-amber-800/60 text-amber-300">
+            <div className="px-2.5 py-1 rounded bg-[#E8B66D]/15 border border-[#E8B66D]/40 text-[#E8B66D]">
               <span>HIGH: </span>
               <span className="font-bold">{counts.high}</span>
             </div>
-            <div className="px-2.5 py-1 rounded bg-indigo-950/60 border border-indigo-800/60 text-indigo-300">
+            <div className="px-2.5 py-1 rounded bg-[#332B3C] border border-[#F18B78]/40 text-[#F18B78]">
               <span>SELECTED: </span>
               <span className="font-bold">{counts.selected}</span>
             </div>
-            <div className="px-2.5 py-1 rounded bg-emerald-950/60 border border-emerald-800/60 text-emerald-300">
+            <div className="px-2.5 py-1 rounded bg-[#B7D7A8]/15 border border-[#B7D7A8]/40 text-[#B7D7A8]">
               <span>VALIDATED: </span>
               <span className="font-bold">{counts.validated}</span>
             </div>
@@ -244,7 +244,7 @@ export const RemediationView: React.FC<RemediationViewProps> = ({
             <button
               onClick={handleRecalculate}
               disabled={isRecalculating}
-              className="px-3 py-1 bg-blue-600/80 hover:bg-blue-500 text-white rounded font-bold transition disabled:opacity-50 flex items-center space-x-1"
+              className="px-3 py-1 bg-[#F18B78] hover:bg-[#F39C8B] text-[#211D29] rounded font-bold transition disabled:opacity-50 flex items-center space-x-1 cursor-pointer"
             >
               {isRecalculating ? <span>RECALCULATING...</span> : <span>RECALCULATE</span>}
             </button>
@@ -252,34 +252,34 @@ export const RemediationView: React.FC<RemediationViewProps> = ({
         </div>
 
         {/* 2. NON-CAUSALITY & SAFETY DIRECTIVE BANNER */}
-        <div className="mt-2 px-3 py-1.5 bg-amber-950/30 border border-amber-500/30 rounded flex items-center justify-between text-[11px] text-amber-300/90">
+        <div className="mt-2.5 px-3 py-1.5 bg-[#E8B66D]/10 border border-[#E8B66D]/30 rounded flex items-center justify-between text-[11px] text-[#E8B66D]">
           <div className="flex items-center space-x-2">
-            <span className="text-amber-400 font-bold">SAFETY DIRECTIVE:</span>
+            <span className="text-[#E8B66D] font-bold">SAFETY DIRECTIVE:</span>
             <span>
               Remediation recommendations are evidence-driven hypotheses. The system does not establish causality or guarantee performance improvements. Models are not automatically modified.
             </span>
           </div>
-          <span className="text-[10px] text-amber-500/80 uppercase font-semibold">NON-AUTONOMOUS SYSTEM</span>
+          <span className="text-[10px] text-[#E8B66D]/80 uppercase font-semibold">NON-AUTONOMOUS SYSTEM</span>
         </div>
 
         {/* View Switcher Tabs */}
-        <div className="flex items-center space-x-2 mt-3 pt-2 border-t border-slate-800/60">
+        <div className="flex items-center space-x-2 mt-3 pt-2 border-t border-[#443849]">
           <button
             onClick={() => setActiveTab("QUEUE")}
-            className={`px-3 py-1 rounded text-[11px] font-semibold transition ${
+            className={`px-3 py-1 rounded text-[11px] font-semibold transition cursor-pointer ${
               activeTab === "QUEUE"
-                ? "bg-blue-600 text-white shadow-sm"
-                : "bg-slate-800/80 text-slate-400 hover:text-slate-200"
+                ? "bg-[#332B3C] text-[#F18B78] border border-[#F18B78]/50 shadow-sm"
+                : "bg-[#2A2432] text-[#B7ACBD] hover:text-[#F4EFF6] border border-transparent"
             }`}
           >
             01 REMEDIATION QUEUE & DOSSIER
           </button>
           <button
             onClick={() => setActiveTab("COMPARISON")}
-            className={`px-3 py-1 rounded text-[11px] font-semibold transition ${
+            className={`px-3 py-1 rounded text-[11px] font-semibold transition cursor-pointer ${
               activeTab === "COMPARISON"
-                ? "bg-blue-600 text-white shadow-sm"
-                : "bg-slate-800/80 text-slate-400 hover:text-slate-200"
+                ? "bg-[#332B3C] text-[#F18B78] border border-[#F18B78]/50 shadow-sm"
+                : "bg-[#2A2432] text-[#B7ACBD] hover:text-[#F4EFF6] border border-transparent"
             }`}
           >
             02 BEFORE / AFTER RUN COMPARISON
@@ -291,22 +291,22 @@ export const RemediationView: React.FC<RemediationViewProps> = ({
       {activeTab === "QUEUE" ? (
         <div className="flex-1 flex overflow-hidden">
           {/* LEFT: REMEDIATION QUEUE */}
-          <div className="w-1/3 border-r border-slate-800 flex flex-col bg-slate-900/40">
+          <div className="w-1/3 border-r border-[#443849] flex flex-col bg-[#2A2432]/60">
             {/* Filters */}
-            <div className="p-3 border-b border-slate-800 bg-slate-900/60 space-y-2">
+            <div className="p-3 border-b border-[#443849] bg-[#2A2432] space-y-2">
               <input
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Filter by target, title, or rule..."
-                className="w-full px-2.5 py-1 bg-slate-950 border border-slate-800 rounded text-slate-200 placeholder-slate-500 focus:outline-none focus:border-blue-500 text-xs"
+                className="w-full px-2.5 py-1 bg-[#1C1824] border border-[#443849] rounded text-[#F4EFF6] placeholder-[#8E8295] focus:outline-none focus:border-[#F18B78] text-xs"
               />
 
               <div className="grid grid-cols-3 gap-1.5 text-[10px]">
                 <select
                   value={statusFilter}
                   onChange={(e) => setStatusFilter(e.target.value)}
-                  className="bg-slate-950 border border-slate-800 rounded px-1.5 py-0.5 text-slate-300"
+                  className="bg-[#1C1824] border border-[#443849] rounded px-1.5 py-0.5 text-[#B7ACBD]"
                 >
                   <option value="ALL">Status: ALL</option>
                   <option value="PROPOSED">PROPOSED</option>
@@ -318,7 +318,7 @@ export const RemediationView: React.FC<RemediationViewProps> = ({
                 <select
                   value={priorityFilter}
                   onChange={(e) => setPriorityFilter(e.target.value)}
-                  className="bg-slate-950 border border-slate-800 rounded px-1.5 py-0.5 text-slate-300"
+                  className="bg-[#1C1824] border border-[#443849] rounded px-1.5 py-0.5 text-[#B7ACBD]"
                 >
                   <option value="ALL">Priority: ALL</option>
                   <option value="CRITICAL">CRITICAL</option>
@@ -330,7 +330,7 @@ export const RemediationView: React.FC<RemediationViewProps> = ({
                 <select
                   value={typeFilter}
                   onChange={(e) => setTypeFilter(e.target.value)}
-                  className="bg-slate-950 border border-slate-800 rounded px-1.5 py-0.5 text-slate-300"
+                  className="bg-[#1C1824] border border-[#443849] rounded px-1.5 py-0.5 text-[#B7ACBD]"
                 >
                   <option value="ALL">Type: ALL</option>
                   {uniqueTypes.map((t) => (
@@ -343,11 +343,11 @@ export const RemediationView: React.FC<RemediationViewProps> = ({
             </div>
 
             {/* Candidate List */}
-            <div className="flex-1 overflow-y-auto divide-y divide-slate-800/60 p-2 space-y-1.5">
+            <div className="flex-1 overflow-y-auto divide-y divide-[#443849]/60 p-2 space-y-1.5">
               {isLoading ? (
-                <div className="p-8 text-center text-slate-500">Loading remediation queue...</div>
+                <div className="p-8 text-center text-[#8E8295]">Loading remediation queue...</div>
               ) : filteredRemediations.length === 0 ? (
-                <div className="p-8 text-center text-slate-500">No remediation candidates match filters.</div>
+                <div className="p-8 text-center text-[#8E8295]">No remediation candidates match filters.</div>
               ) : (
                 filteredRemediations.map((rem) => {
                   const isSelected = selectedRemediation?.id === rem.id;
@@ -360,8 +360,8 @@ export const RemediationView: React.FC<RemediationViewProps> = ({
                       onClick={() => setSelectedRemediationId(rem.id)}
                       className={`p-3 rounded border cursor-pointer transition ${
                         isSelected
-                          ? "bg-slate-800/90 border-blue-500 shadow-md ring-1 ring-blue-500/30"
-                          : "bg-slate-900/50 border-slate-800/80 hover:bg-slate-800/50"
+                          ? "bg-[#332B3C] border-[#F18B78] shadow-md ring-1 ring-[#F18B78]/40"
+                          : "bg-[#2A2432] border-[#443849] hover:bg-[#332B3C]/50"
                       }`}
                     >
                       <div className="flex items-center justify-between gap-2 mb-1.5">
@@ -377,23 +377,23 @@ export const RemediationView: React.FC<RemediationViewProps> = ({
                             {rem.status}
                           </span>
                         </div>
-                        <span className="text-[10px] text-slate-400 font-semibold truncate max-w-[120px]">
+                        <span className="text-[10px] text-[#8E8295] font-semibold truncate max-w-[120px]">
                           {rem.targetKey}
                         </span>
                       </div>
 
-                      <h3 className="font-bold text-slate-200 text-xs line-clamp-1 mb-1">{rem.title}</h3>
-                      <p className="text-slate-400 text-[11px] line-clamp-2 mb-2">{rem.description}</p>
+                      <h3 className="font-bold text-[#F4EFF6] text-xs line-clamp-1 mb-1">{rem.title}</h3>
+                      <p className="text-[#B7ACBD] text-[11px] line-clamp-2 mb-2">{rem.description}</p>
 
                       <div className="flex items-center justify-between text-[10px]">
-                        <span className="text-slate-500">{rem.remediationType.replace(/_/g, " ")}</span>
+                        <span className="text-[#8E8295]">{rem.remediationType.replace(/_/g, " ")}</span>
                         <div className="flex items-center space-x-1">
                           {rem.requiredModules.slice(0, 3).map((m) => {
-                            const modColor = MODULE_COLORS[m] || { bg: "bg-slate-800", text: "text-slate-400", border: "border-slate-700" };
+                            const modColor = MODULE_COLORS[m] || { bg: "bg-[#332B3C]", text: "#B7ACBD", border: "border-[#443849]" };
                             return (
                               <span
                                 key={m}
-                                className={`px-1 py-0.2 rounded text-[8px] font-semibold ${modColor.bg} ${modColor.text} border ${modColor.border}`}
+                                className={`px-1 py-0.5 rounded text-[8px] font-semibold ${modColor.bg} ${modColor.text} border ${modColor.border}`}
                               >
                                 {m}
                               </span>
@@ -409,23 +409,23 @@ export const RemediationView: React.FC<RemediationViewProps> = ({
           </div>
 
           {/* RIGHT: REMEDIATION DOSSIER */}
-          <div className="w-2/3 flex flex-col bg-slate-950 overflow-y-auto">
+          <div className="w-2/3 flex flex-col bg-[#211D29] overflow-y-auto">
             {selectedRemediation ? (
               <div className="p-5 space-y-6 max-w-4xl">
                 {/* Header Profile */}
-                <div className="border border-slate-800 bg-slate-900/60 p-4 rounded space-y-3">
+                <div className="border border-[#443849] bg-[#2A2432] p-4 rounded space-y-3">
                   <div className="flex items-start justify-between gap-4">
                     <div>
                       <div className="flex items-center space-x-2 mb-1">
-                        <span className="px-2 py-0.5 rounded bg-blue-950 text-blue-300 border border-blue-700 text-[10px] font-bold">
+                        <span className="px-2 py-0.5 rounded bg-[#332B3C] text-[#F18B78] border border-[#F18B78]/40 text-[10px] font-bold">
                           {selectedRemediation.targetType}: {selectedRemediation.targetKey}
                         </span>
-                        <span className="px-2 py-0.5 rounded bg-slate-800 text-slate-300 border border-slate-700 text-[10px]">
+                        <span className="px-2 py-0.5 rounded bg-[#332B3C] text-[#B7ACBD] border border-[#443849] text-[10px]">
                           RULE: {selectedRemediation.remediationType}
                         </span>
                       </div>
-                      <h2 className="text-base font-bold text-slate-100">{selectedRemediation.title}</h2>
-                      <p className="text-slate-300 text-xs mt-1">{selectedRemediation.description}</p>
+                      <h2 className="text-base font-bold text-[#F4EFF6]">{selectedRemediation.title}</h2>
+                      <p className="text-[#B7ACBD] text-xs mt-1">{selectedRemediation.description}</p>
                     </div>
 
                     {/* Action Controls */}
@@ -436,39 +436,39 @@ export const RemediationView: React.FC<RemediationViewProps> = ({
                             <button
                               onClick={() => handleSelectRemediation(selectedRemediation.id)}
                               disabled={isActionLoading}
-                              className="px-3 py-1 bg-indigo-600 hover:bg-indigo-500 text-white rounded font-bold text-xs"
+                              className="px-3 py-1 bg-[#F18B78] hover:bg-[#F39C8B] text-[#211D29] rounded font-bold text-xs cursor-pointer transition-colors"
                             >
                               SELECT FOR ACTION
                             </button>
                             <button
                               onClick={() => setShowRejectModal(true)}
                               disabled={isActionLoading}
-                              className="px-3 py-1 bg-rose-900/60 hover:bg-rose-800 text-rose-200 border border-rose-700 rounded font-bold text-xs"
+                              className="px-3 py-1 bg-[#332B3C] hover:bg-[#3D3448] text-[#F18B78] border border-[#F18B78]/40 rounded font-bold text-xs cursor-pointer transition-colors"
                             >
                               REJECT
                             </button>
                           </>
                         )}
                         {selectedRemediation.status === "SELECTED" && (
-                          <span className="px-3 py-1 bg-indigo-950 text-indigo-300 border border-indigo-600 rounded font-bold text-xs">
+                          <span className="px-3 py-1 bg-[#F18B78]/15 text-[#F18B78] border border-[#F18B78]/40 rounded font-bold text-xs">
                             SELECTED BY ENGINEER
                           </span>
                         )}
                         {selectedRemediation.status === "REJECTED" && (
-                          <span className="px-3 py-1 bg-rose-950 text-rose-400 border border-rose-800 rounded font-bold text-xs">
+                          <span className="px-3 py-1 bg-[#332B3C] text-[#F18B78] border border-[#F18B78]/40 rounded font-bold text-xs">
                             REJECTED
                           </span>
                         )}
                       </div>
 
-                      <div className="text-[10px] text-slate-400">
-                        Priority Score: <span className="font-bold text-slate-200">{selectedRemediation.priorityScore.toFixed(1)} / 100</span>
+                      <div className="text-[10px] text-[#8E8295]">
+                        Priority Score: <span className="font-bold text-[#F4EFF6]">{selectedRemediation.priorityScore.toFixed(1)} / 100</span>
                       </div>
                     </div>
                   </div>
 
                   {selectedRemediation.rejectionReason && (
-                    <div className="p-2 bg-rose-950/40 border border-rose-800 rounded text-rose-300 text-[11px]">
+                    <div className="p-2 bg-[#F18B78]/10 border border-[#F18B78]/30 rounded text-[#F18B78] text-[11px]">
                       <span className="font-bold">Rejection Rationale: </span>
                       {selectedRemediation.rejectionReason}
                     </div>
@@ -476,62 +476,62 @@ export const RemediationView: React.FC<RemediationViewProps> = ({
                 </div>
 
                 {/* Section 1: Validation Hypothesis */}
-                <div className="border border-slate-800 bg-slate-900/40 p-4 rounded space-y-2">
+                <div className="border border-[#443849] bg-[#2A2432] p-4 rounded space-y-2">
                   <div className="flex items-center space-x-2">
-                    <span className="w-2 h-2 bg-purple-500 rounded-sm" />
-                    <h3 className="font-bold text-slate-200 uppercase text-xs">1. Validation Hypothesis (Non-Causal)</h3>
+                    <span className="w-2 h-2 bg-[#F18B78] rounded-sm" />
+                    <h3 className="font-bold text-[#F4EFF6] uppercase text-xs">1. Validation Hypothesis (Non-Causal)</h3>
                   </div>
-                  <div className="p-3 bg-slate-950 border border-slate-800/80 rounded text-slate-300 text-xs leading-relaxed">
+                  <div className="p-3 bg-[#1C1824] border border-[#443849] rounded text-[#B7ACBD] text-xs leading-relaxed">
                     {selectedRemediation.hypothesis}
                   </div>
-                  <div className="text-[10px] text-slate-500 italic">
+                  <div className="text-[10px] text-[#8E8295] italic">
                     Note: Expected outcomes are deterministic empirical hypotheses that require re-evaluation in a future diagnostic run.
                   </div>
                 </div>
 
                 {/* Section 2: Expected Diagnostic Impact */}
-                <div className="border border-slate-800 bg-slate-900/40 p-4 rounded space-y-3">
+                <div className="border border-[#443849] bg-[#2A2432] p-4 rounded space-y-3">
                   <div className="flex items-center space-x-2">
-                    <span className="w-2 h-2 bg-blue-500 rounded-sm" />
-                    <h3 className="font-bold text-slate-200 uppercase text-xs">2. Expected Diagnostic Impact (Hypotheses)</h3>
+                    <span className="w-2 h-2 bg-[#B7D7A8] rounded-sm" />
+                    <h3 className="font-bold text-[#F4EFF6] uppercase text-xs">2. Expected Diagnostic Impact (Hypotheses)</h3>
                   </div>
                   <div className="overflow-x-auto">
                     <table className="w-full text-left border-collapse">
                       <thead>
-                        <tr className="border-b border-slate-800 text-slate-400 text-[10px]">
-                          <th className="py-1.5 px-2">METRIC</th>
-                          <th className="py-1.5 px-2">EXPECTED DIRECTION</th>
-                          <th className="py-1.5 px-2">RATIONALE</th>
-                          <th className="py-1.5 px-2">CONFIDENCE</th>
-                          <th className="py-1.5 px-2">EST. MAGNITUDE</th>
+                        <tr className="border-b border-[#443849] text-[#8E8295] text-[10px] bg-[#1C1824]">
+                          <th className="py-2 px-2.5">METRIC</th>
+                          <th className="py-2 px-2.5">EXPECTED DIRECTION</th>
+                          <th className="py-2 px-2.5">RATIONALE</th>
+                          <th className="py-2 px-2.5">CONFIDENCE</th>
+                          <th className="py-2 px-2.5">EST. MAGNITUDE</th>
                         </tr>
                       </thead>
-                      <tbody className="divide-y divide-slate-800/60 text-xs">
+                      <tbody className="divide-y divide-[#443849]/60 text-xs">
                         {selectedRemediation.expectedImpact && selectedRemediation.expectedImpact.length > 0 ? (
                           selectedRemediation.expectedImpact.map((imp, idx) => (
-                            <tr key={idx} className="hover:bg-slate-900/60">
-                              <td className="py-2 px-2 font-bold text-slate-200">{imp.metric}</td>
-                              <td className="py-2 px-2">
+                            <tr key={idx} className="hover:bg-[#332B3C]/40 transition-colors">
+                              <td className="py-2 px-2.5 font-bold text-[#F4EFF6]">{imp.metric}</td>
+                              <td className="py-2 px-2.5">
                                 <span
                                   className={`px-1.5 py-0.5 rounded text-[10px] font-bold ${
                                     imp.expectedDirection === "DECREASE"
-                                      ? "bg-cyan-950 text-cyan-300 border border-cyan-800"
+                                      ? "bg-[#B7D7A8]/15 text-[#B7D7A8] border border-[#B7D7A8]/40"
                                       : imp.expectedDirection === "INCREASE"
-                                      ? "bg-emerald-950 text-emerald-300 border border-emerald-800"
-                                      : "bg-slate-800 text-slate-300"
+                                      ? "bg-[#F18B78]/15 text-[#F18B78] border border-[#F18B78]/40"
+                                      : "bg-[#332B3C] text-[#B7ACBD] border border-[#443849]"
                                   }`}
                                 >
                                   {imp.expectedDirection}
                                 </span>
                               </td>
-                              <td className="py-2 px-2 text-slate-300 text-[11px]">{imp.rationale}</td>
-                              <td className="py-2 px-2 text-slate-400 text-[10px] font-semibold">{imp.confidence}</td>
-                              <td className="py-2 px-2 text-slate-500 text-[10px] uppercase">{imp.expectedMagnitude || "UNKNOWN"}</td>
+                              <td className="py-2 px-2.5 text-[#B7ACBD] text-[11px]">{imp.rationale}</td>
+                              <td className="py-2 px-2.5 text-[#8E8295] text-[10px] font-semibold">{imp.confidence}</td>
+                              <td className="py-2 px-2.5 text-[#8E8295] text-[10px] uppercase">{imp.expectedMagnitude || "UNKNOWN"}</td>
                             </tr>
                           ))
                         ) : (
                           <tr>
-                            <td colSpan={5} className="py-2 px-2 text-slate-500 italic">No specific metric impacts defined.</td>
+                            <td colSpan={5} className="py-2 px-2.5 text-[#8E8295] italic">No specific metric impacts defined.</td>
                           </tr>
                         )}
                       </tbody>
@@ -541,17 +541,17 @@ export const RemediationView: React.FC<RemediationViewProps> = ({
 
                 {/* Section 3: Validation Plan & Acceptance Criteria */}
                 <div className="grid grid-cols-2 gap-4">
-                  <div className="border border-slate-800 bg-slate-900/40 p-4 rounded space-y-2">
-                    <h3 className="font-bold text-slate-200 uppercase text-xs">3. Validation Strategy</h3>
-                    <p className="text-slate-300 text-xs leading-relaxed">{selectedRemediation.validationStrategy}</p>
+                  <div className="border border-[#443849] bg-[#2A2432] p-4 rounded space-y-2">
+                    <h3 className="font-bold text-[#F4EFF6] uppercase text-xs">3. Validation Strategy</h3>
+                    <p className="text-[#B7ACBD] text-xs leading-relaxed">{selectedRemediation.validationStrategy}</p>
 
-                    <div className="pt-2 border-t border-slate-800/60 space-y-1">
-                      <span className="text-[10px] text-slate-400 font-bold">REQUIRED MODULES:</span>
+                    <div className="pt-2 border-t border-[#443849] space-y-1">
+                      <span className="text-[10px] text-[#8E8295] font-bold">REQUIRED MODULES:</span>
                       <div className="flex flex-wrap gap-1">
                         {selectedRemediation.requiredModules.map((m) => (
                           <span
                             key={m}
-                            className="px-1.5 py-0.5 bg-slate-800 text-slate-300 border border-slate-700 rounded text-[10px]"
+                            className="px-1.5 py-0.5 bg-[#332B3C] text-[#B7ACBD] border border-[#443849] rounded text-[10px]"
                           >
                             {m}
                           </span>
@@ -560,12 +560,12 @@ export const RemediationView: React.FC<RemediationViewProps> = ({
                     </div>
 
                     <div className="pt-2 space-y-1">
-                      <span className="text-[10px] text-slate-400 font-bold">REGRESSION GUARDS:</span>
+                      <span className="text-[10px] text-[#8E8295] font-bold">REGRESSION GUARDS:</span>
                       <div className="flex flex-wrap gap-1">
                         {selectedRemediation.regressionGuards.map((g) => (
                           <span
                             key={g}
-                            className="px-1.5 py-0.5 bg-rose-950/40 text-rose-300 border border-rose-800/60 rounded text-[10px]"
+                            className="px-1.5 py-0.5 bg-[#F18B78]/15 text-[#F18B78] border border-[#F18B78]/40 rounded text-[10px]"
                           >
                             {g}
                           </span>
@@ -574,12 +574,12 @@ export const RemediationView: React.FC<RemediationViewProps> = ({
                     </div>
                   </div>
 
-                  <div className="border border-slate-800 bg-slate-900/40 p-4 rounded space-y-2">
-                    <h3 className="font-bold text-slate-200 uppercase text-xs">4. Measurable Acceptance Criteria</h3>
-                    <ul className="space-y-1.5 text-xs text-slate-300">
+                  <div className="border border-[#443849] bg-[#2A2432] p-4 rounded space-y-2">
+                    <h3 className="font-bold text-[#F4EFF6] uppercase text-xs">4. Measurable Acceptance Criteria</h3>
+                    <ul className="space-y-1.5 text-xs text-[#B7ACBD]">
                       {selectedRemediation.acceptanceCriteria.map((crit, idx) => (
                         <li key={idx} className="flex items-start space-x-2">
-                          <span className="text-blue-400 font-bold">✓</span>
+                          <span className="text-[#B7D7A8] font-bold">✓</span>
                           <span>{crit}</span>
                         </li>
                       ))}
@@ -588,50 +588,50 @@ export const RemediationView: React.FC<RemediationViewProps> = ({
                 </div>
 
                 {/* Section 4: Provenance & Diagnostic Trace */}
-                <div className="border border-slate-800 bg-slate-900/40 p-4 rounded space-y-2">
-                  <h3 className="font-bold text-slate-200 uppercase text-xs">5. Provenance & Observational Trace</h3>
-                  <div className="text-[11px] text-slate-400 space-y-1">
+                <div className="border border-[#443849] bg-[#2A2432] p-4 rounded space-y-2">
+                  <h3 className="font-bold text-[#F4EFF6] uppercase text-xs">5. Provenance & Observational Trace</h3>
+                  <div className="text-[11px] text-[#8E8295] space-y-1">
                     <div>
-                      <span className="text-slate-500 font-bold">SOURCE RUN ID: </span>
-                      <span className="text-slate-300">{selectedRemediation.runId}</span>
+                      <span className="text-[#8E8295] font-bold">SOURCE RUN ID: </span>
+                      <span className="text-[#F4EFF6] font-mono">{selectedRemediation.runId}</span>
                     </div>
                     {selectedRemediation.sourceInvestigationTarget && (
                       <div>
-                        <span className="text-slate-500 font-bold">INVESTIGATION TARGET: </span>
-                        <span className="text-blue-400 cursor-pointer hover:underline" onClick={() => onSelectSection && onSelectSection("06_INVESTIGATION")}>
+                        <span className="text-[#8E8295] font-bold">INVESTIGATION TARGET: </span>
+                        <span className="text-[#F18B78] cursor-pointer hover:underline" onClick={() => onSelectSection && onSelectSection("06_INVESTIGATION")}>
                           {selectedRemediation.sourceInvestigationTarget}
                         </span>
                       </div>
                     )}
                     <div>
-                      <span className="text-slate-500 font-bold">SOURCE RESULT IDS: </span>
-                      <span className="text-slate-300">{JSON.stringify(selectedRemediation.sourceResultIds)}</span>
+                      <span className="text-[#8E8295] font-bold">SOURCE RESULT IDS: </span>
+                      <span className="text-[#B7ACBD] font-mono">{JSON.stringify(selectedRemediation.sourceResultIds)}</span>
                     </div>
                   </div>
 
                   {/* Navigation Shortcuts */}
-                  <div className="flex flex-wrap items-center gap-2 pt-2 border-t border-slate-800/60">
+                  <div className="flex flex-wrap items-center gap-2 pt-2 border-t border-[#443849]">
                     <button
                       onClick={() => onSelectSection && onSelectSection("08_EXPERIMENT")}
-                      className="px-2 py-1 bg-blue-900/60 hover:bg-blue-800 text-blue-200 border border-blue-700 rounded text-[10px] font-bold"
+                      className="px-2.5 py-1 bg-[#F18B78] hover:bg-[#F39C8B] text-[#211D29] rounded text-[10px] font-bold transition-colors cursor-pointer"
                     >
                       → TEST IN 08 EXPERIMENTAL VALIDATION
                     </button>
                     <button
                       onClick={() => onSelectSection && onSelectSection("06_INVESTIGATION")}
-                      className="px-2 py-1 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded text-[10px]"
+                      className="px-2.5 py-1 bg-[#332B3C] hover:bg-[#3D3448] text-[#F4EFF6] border border-[#443849] rounded text-[10px] transition-colors cursor-pointer"
                     >
                       → JUMP TO 06 ROOT-CAUSE INVESTIGATION
                     </button>
                     <button
                       onClick={() => onSelectSection && onSelectSection("00_INTELLIGENCE")}
-                      className="px-2 py-1 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded text-[10px]"
+                      className="px-2.5 py-1 bg-[#332B3C] hover:bg-[#3D3448] text-[#F4EFF6] border border-[#443849] rounded text-[10px] transition-colors cursor-pointer"
                     >
                       → JUMP TO 00 DIAGNOSTIC INTEL
                     </button>
                     <button
                       onClick={() => onSelectSection && onSelectSection("05_ERROR_FORENSICS")}
-                      className="px-2 py-1 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded text-[10px]"
+                      className="px-2.5 py-1 bg-[#332B3C] hover:bg-[#3D3448] text-[#F4EFF6] border border-[#443849] rounded text-[10px] transition-colors cursor-pointer"
                     >
                       → JUMP TO 05 ERROR FORENSICS
                     </button>
@@ -639,7 +639,7 @@ export const RemediationView: React.FC<RemediationViewProps> = ({
                 </div>
               </div>
             ) : (
-              <div className="p-12 text-center text-slate-500">No remediation candidate selected.</div>
+              <div className="p-12 text-center text-[#8E8295]">No remediation candidate selected.</div>
             )}
           </div>
         </div>
@@ -647,18 +647,18 @@ export const RemediationView: React.FC<RemediationViewProps> = ({
         /* 4. BEFORE / AFTER RUN COMPARISON VIEW */
         <div className="flex-1 flex flex-col p-5 overflow-y-auto space-y-5">
           {/* Candidate Selection Bar */}
-          <div className="border border-slate-800 bg-slate-900/60 p-4 rounded flex flex-wrap items-center justify-between gap-4">
+          <div className="border border-[#443849] bg-[#2A2432] p-4 rounded flex flex-wrap items-center justify-between gap-4">
             <div className="flex items-center space-x-3">
-              <span className="text-slate-400 font-bold">BASELINE RUN:</span>
-              <span className="px-2 py-1 bg-slate-950 border border-slate-800 rounded font-bold text-slate-200">
+              <span className="text-[#8E8295] font-bold">BASELINE RUN:</span>
+              <span className="px-2 py-1 bg-[#1C1824] border border-[#443849] rounded font-bold text-[#F4EFF6] font-mono">
                 {runId}
               </span>
-              <span className="text-slate-500">VS</span>
-              <span className="text-slate-400 font-bold">CANDIDATE RUN:</span>
+              <span className="text-[#5A4B62]">VS</span>
+              <span className="text-[#8E8295] font-bold">CANDIDATE RUN:</span>
               <select
                 value={candidateRunId}
                 onChange={(e) => setCandidateRunId(e.target.value)}
-                className="px-2 py-1 bg-slate-950 border border-slate-700 rounded text-slate-200 text-xs"
+                className="px-2.5 py-1 bg-[#1C1824] border border-[#443849] rounded text-[#F4EFF6] text-xs font-mono"
               >
                 <option value="">Select Candidate Run...</option>
                 {recentRuns
@@ -672,7 +672,7 @@ export const RemediationView: React.FC<RemediationViewProps> = ({
               <button
                 onClick={() => handleRunComparison(candidateRunId)}
                 disabled={!candidateRunId || isComparing}
-                className="px-4 py-1 bg-blue-600 hover:bg-blue-500 text-white rounded font-bold text-xs disabled:opacity-50"
+                className="px-4 py-1.5 bg-[#F18B78] hover:bg-[#F39C8B] text-[#211D29] rounded font-bold text-xs disabled:opacity-50 cursor-pointer transition-colors"
               >
                 {isComparing ? "COMPARING..." : "COMPARE RUNS"}
               </button>
@@ -683,12 +683,12 @@ export const RemediationView: React.FC<RemediationViewProps> = ({
                 <span
                   className={`px-3 py-1 rounded font-bold ${
                     comparison.overallAssessment === "IMPROVED"
-                      ? "bg-emerald-950 text-emerald-300 border border-emerald-600"
+                      ? "bg-[#B7D7A8]/15 text-[#B7D7A8] border border-[#B7D7A8]/40"
                       : comparison.overallAssessment === "REGRESSED"
-                      ? "bg-rose-950 text-rose-300 border border-rose-600"
+                      ? "bg-[#F18B78]/15 text-[#F18B78] border border-[#F18B78]/40"
                       : comparison.overallAssessment === "MIXED"
-                      ? "bg-amber-950 text-amber-300 border border-amber-600"
-                      : "bg-slate-800 text-slate-300 border border-slate-700"
+                      ? "bg-[#E8B66D]/15 text-[#E8B66D] border border-[#E8B66D]/40"
+                      : "bg-[#332B3C] text-[#B7ACBD] border border-[#443849]"
                   }`}
                 >
                   ASSESSMENT: {comparison.overallAssessment}
@@ -698,7 +698,7 @@ export const RemediationView: React.FC<RemediationViewProps> = ({
           </div>
 
           {comparisonError && (
-            <div className="p-3 bg-rose-950/40 border border-rose-800 rounded text-rose-300 text-xs">
+            <div className="p-3 bg-[#F18B78]/15 border border-[#F18B78]/40 rounded text-[#F18B78] text-xs">
               {comparisonError}
             </div>
           )}
@@ -706,33 +706,33 @@ export const RemediationView: React.FC<RemediationViewProps> = ({
           {comparison ? (
             <div className="space-y-4">
               {/* Assessment Rationale Card */}
-              <div className="p-4 bg-slate-900/50 border border-slate-800 rounded space-y-1">
-                <div className="text-[10px] text-slate-500 font-bold uppercase">Assessment Rationale</div>
-                <p className="text-slate-200 text-xs">{comparison.assessmentRationale}</p>
+              <div className="p-4 bg-[#2A2432] border border-[#443849] rounded space-y-1">
+                <div className="text-[10px] text-[#8E8295] font-bold uppercase tracking-wider">Assessment Rationale</div>
+                <p className="text-[#F4EFF6] text-xs">{comparison.assessmentRationale}</p>
                 <div className="flex items-center space-x-4 pt-2 text-[11px]">
-                  <span className="text-emerald-400 font-bold">Improved: {comparison.improvedMetricCount}</span>
-                  <span className="text-rose-400 font-bold">Regressed: {comparison.regressedMetricCount}</span>
-                  <span className="text-slate-400">Unchanged: {comparison.unchangedMetricCount}</span>
+                  <span className="text-[#B7D7A8] font-bold">Improved: {comparison.improvedMetricCount}</span>
+                  <span className="text-[#F18B78] font-bold">Regressed: {comparison.regressedMetricCount}</span>
+                  <span className="text-[#B7ACBD]">Unchanged: {comparison.unchangedMetricCount}</span>
                   {comparison.missingMetricCount > 0 && (
-                    <span className="text-amber-400 font-bold">Missing Metrics: {comparison.missingMetricCount}</span>
+                    <span className="text-[#E8B66D] font-bold">Missing Metrics: {comparison.missingMetricCount}</span>
                   )}
                 </div>
               </div>
 
               {/* Metric Delta Comparison Table */}
-              <div className="border border-slate-800 bg-slate-900/40 rounded overflow-hidden">
-                <div className="px-4 py-2 border-b border-slate-800 bg-slate-900/80 flex items-center justify-between">
-                  <h3 className="font-bold text-slate-200 text-xs uppercase">Observed Metric Deltas</h3>
-                  <div className="text-[10px] text-slate-400">
-                    Baseline: <span className="text-slate-200">{comparison.baselineModelName}</span> | Candidate:{" "}
-                    <span className="text-slate-200">{comparison.candidateModelName}</span>
+              <div className="border border-[#443849] bg-[#2A2432] rounded overflow-hidden">
+                <div className="px-4 py-2 border-b border-[#443849] bg-[#332B3C] flex items-center justify-between">
+                  <h3 className="font-bold text-[#F4EFF6] text-xs uppercase">Observed Metric Deltas</h3>
+                  <div className="text-[10px] text-[#B7ACBD]">
+                    Baseline: <span className="text-[#F4EFF6] font-bold">{comparison.baselineModelName}</span> | Candidate:{" "}
+                    <span className="text-[#F4EFF6] font-bold">{comparison.candidateModelName}</span>
                   </div>
                 </div>
 
                 <div className="overflow-x-auto">
                   <table className="w-full text-left border-collapse">
                     <thead>
-                      <tr className="border-b border-slate-800 text-slate-400 text-[10px] bg-slate-950">
+                      <tr className="border-b border-[#443849] text-[#8E8295] text-[10px] bg-[#1C1824]">
                         <th className="py-2 px-3">METRIC</th>
                         <th className="py-2 px-3">MODULE</th>
                         <th className="py-2 px-3">BASELINE</th>
@@ -743,41 +743,41 @@ export const RemediationView: React.FC<RemediationViewProps> = ({
                         <th className="py-2 px-3">INTERPRETATION</th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-slate-800/60 text-xs">
+                    <tbody className="divide-y divide-[#443849]/60 text-xs">
                       {comparison.metricComparisons.map((mc, idx) => (
-                        <tr key={idx} className="hover:bg-slate-800/30">
-                          <td className="py-2 px-3 font-bold text-slate-200">{mc.metricName}</td>
-                          <td className="py-2 px-3 text-slate-400 text-[10px]">{mc.module}</td>
-                          <td className="py-2 px-3 text-slate-300 font-mono">{mc.baselineValue.toFixed(4)}</td>
-                          <td className="py-2 px-3 text-slate-300 font-mono">{mc.candidateValue.toFixed(4)}</td>
+                        <tr key={idx} className="hover:bg-[#332B3C]/50 transition-colors">
+                          <td className="py-2 px-3 font-bold text-[#F4EFF6]">{mc.metricName}</td>
+                          <td className="py-2 px-3 text-[#B7ACBD] text-[10px]">{mc.module}</td>
+                          <td className="py-2 px-3 text-[#B7ACBD] font-mono">{mc.baselineValue.toFixed(4)}</td>
+                          <td className="py-2 px-3 text-[#B7ACBD] font-mono">{mc.candidateValue.toFixed(4)}</td>
                           <td
                             className={`py-2 px-3 font-mono font-bold ${
                               mc.assessment === "IMPROVED"
-                                ? "text-emerald-400"
+                                ? "text-[#B7D7A8]"
                                 : mc.assessment === "REGRESSED"
-                                ? "text-rose-400"
-                                : "text-slate-400"
+                                ? "text-[#F18B78]"
+                                : "text-[#B7ACBD]"
                             }`}
                           >
                             {mc.delta > 0 ? `+${mc.delta.toFixed(4)}` : mc.delta.toFixed(4)}
                           </td>
-                          <td className="py-2 px-3 font-mono text-slate-400 text-[11px]">
+                          <td className="py-2 px-3 font-mono text-[#8E8295] text-[11px]">
                             {mc.relativeChangePct > 0 ? `+${mc.relativeChangePct.toFixed(1)}%` : `${mc.relativeChangePct.toFixed(1)}%`}
                           </td>
                           <td className="py-2 px-3">
                             <span
                               className={`px-1.5 py-0.5 rounded text-[9px] font-bold ${
                                 mc.assessment === "IMPROVED"
-                                  ? "bg-emerald-950 text-emerald-300 border border-emerald-800"
+                                  ? "bg-[#B7D7A8]/15 text-[#B7D7A8] border border-[#B7D7A8]/40"
                                   : mc.assessment === "REGRESSED"
-                                  ? "bg-rose-950 text-rose-300 border border-rose-800"
-                                  : "bg-slate-800 text-slate-400"
+                                  ? "bg-[#F18B78]/15 text-[#F18B78] border border-[#F18B78]/40"
+                                  : "bg-[#332B3C] text-[#B7ACBD] border border-[#443849]"
                               }`}
                             >
                               {mc.assessment}
                             </span>
                           </td>
-                          <td className="py-2 px-3 text-slate-400 text-[11px]">{mc.interpretation}</td>
+                          <td className="py-2 px-3 text-[#B7ACBD] text-[11px]">{mc.interpretation}</td>
                         </tr>
                       ))}
                     </tbody>
@@ -787,11 +787,11 @@ export const RemediationView: React.FC<RemediationViewProps> = ({
 
               {/* Missing Metrics Warning Card */}
               {comparison.missingMetrics && comparison.missingMetrics.length > 0 && (
-                <div className="p-3 bg-amber-950/20 border border-amber-800/40 rounded space-y-1">
-                  <div className="text-[10px] text-amber-400 font-bold uppercase">Missing Metrics (Not in both runs)</div>
+                <div className="p-3 bg-[#E8B66D]/10 border border-[#E8B66D]/30 rounded space-y-1">
+                  <div className="text-[10px] text-[#E8B66D] font-bold uppercase tracking-wider">Missing Metrics (Not in both runs)</div>
                   <div className="flex flex-wrap gap-1">
                     {comparison.missingMetrics.map((m, idx) => (
-                      <span key={idx} className="px-2 py-0.5 bg-amber-950/60 text-amber-300 border border-amber-800/60 rounded text-[10px]">
+                      <span key={idx} className="px-2 py-0.5 bg-[#E8B66D]/15 text-[#E8B66D] border border-[#E8B66D]/30 rounded text-[10px]">
                         {m}
                       </span>
                     ))}
@@ -800,7 +800,7 @@ export const RemediationView: React.FC<RemediationViewProps> = ({
               )}
             </div>
           ) : (
-            <div className="p-16 text-center text-slate-500 border border-dashed border-slate-800 rounded">
+            <div className="p-16 text-center text-[#8E8295] border border-dashed border-[#443849] rounded">
               Select a candidate run above and click &quot;COMPARE RUNS&quot; to perform deterministic metric comparison.
             </div>
           )}
@@ -809,10 +809,10 @@ export const RemediationView: React.FC<RemediationViewProps> = ({
 
       {/* Reject Modal */}
       {showRejectModal && selectedRemediation && (
-        <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-          <div className="bg-slate-900 border border-slate-800 rounded p-5 max-w-md w-full space-y-4">
-            <h3 className="text-sm font-bold text-slate-100 uppercase">Reject Remediation Candidate</h3>
-            <p className="text-xs text-slate-400">
+        <div className="fixed inset-0 bg-[#211D29]/80 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <div className="bg-[#2A2432] border border-[#443849] rounded p-5 max-w-md w-full space-y-4 shadow-xl">
+            <h3 className="text-sm font-bold text-[#F4EFF6] uppercase">Reject Remediation Candidate</h3>
+            <p className="text-xs text-[#B7ACBD]">
               Provide an optional rationale for rejecting candidate &quot;{selectedRemediation.title}&quot;.
             </p>
             <textarea
@@ -820,19 +820,19 @@ export const RemediationView: React.FC<RemediationViewProps> = ({
               onChange={(e) => setRejectReason(e.target.value)}
               placeholder="e.g. Risk of revenue degradation in high-value transactions..."
               rows={3}
-              className="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded text-slate-200 text-xs focus:outline-none focus:border-rose-500"
+              className="w-full px-3 py-2 bg-[#1C1824] border border-[#443849] rounded text-[#F4EFF6] placeholder-[#8E8295] text-xs focus:outline-none focus:border-[#F18B78]"
             />
             <div className="flex items-center justify-end space-x-2 pt-2">
               <button
                 onClick={() => setShowRejectModal(false)}
-                className="px-3 py-1 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded text-xs"
+                className="px-3 py-1 bg-[#332B3C] hover:bg-[#3D3448] text-[#B7ACBD] hover:text-[#F4EFF6] border border-[#443849] rounded text-xs cursor-pointer transition-colors"
               >
                 Cancel
               </button>
               <button
                 onClick={() => handleRejectRemediation(selectedRemediation.id)}
                 disabled={isActionLoading}
-                className="px-4 py-1 bg-rose-600 hover:bg-rose-500 text-white font-bold rounded text-xs"
+                className="px-4 py-1 bg-[#F18B78] hover:bg-[#F39C8B] text-[#211D29] font-bold rounded text-xs cursor-pointer transition-colors"
               >
                 Confirm Rejection
               </button>

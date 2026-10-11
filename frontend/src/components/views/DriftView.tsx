@@ -12,16 +12,16 @@ export interface DriftViewProps {
 export const DriftView: React.FC<DriftViewProps> = ({ result, status, statusMessage }) => {
   if (status === "FAILED") {
     return (
-      <div className="space-y-4 font-mono text-xs">
-        <div className="p-4 border border-[#ef4444] bg-[#1a0f0f] text-[#f87171] space-y-2">
+      <div className="space-y-4 font-mono text-xs text-[#F4EFF6]">
+        <div className="p-4 border border-[#F18B78] bg-[#F18B78]/10 text-[#F18B78] rounded space-y-2">
           <div className="flex items-center gap-2">
-            <span className="px-1.5 py-0.5 text-[9px] font-bold bg-[#ef4444] text-black">FAILED</span>
-            <span className="text-sm font-bold text-white uppercase">DISTRIBUTION &amp; COVARIATE DRIFT AUDIT FAILED</span>
+            <span className="px-1.5 py-0.5 text-[9px] font-bold bg-[#F18B78] text-[#211D29] rounded">FAILED</span>
+            <span className="text-sm font-bold text-[#F4EFF6] uppercase">DISTRIBUTION &amp; COVARIATE DRIFT AUDIT FAILED</span>
           </div>
-          <p className="text-xs text-[#fca5a5]">
+          <p className="text-xs text-[#F18B78]">
             {statusMessage || "Diagnostic engine reported an execution failure during covariate and concept drift analysis."}
           </p>
-          <div className="text-[10px] text-[#94a3b8] pt-1 border-t border-[#331518]">
+          <div className="text-[10px] text-[#8E8295] pt-1 border-t border-[#F18B78]/30">
             Engine execution terminated without producing valid drift metrics. Synthetic demo data is suppressed for failed live runs.
           </div>
         </div>
@@ -31,13 +31,13 @@ export const DriftView: React.FC<DriftViewProps> = ({ result, status, statusMess
 
   if (status === "NOT_IMPLEMENTED") {
     return (
-      <div className="space-y-4 font-mono text-xs">
-        <div className="p-4 border border-[#f59e0b] bg-[#16120b] text-[#fde047] space-y-2">
+      <div className="space-y-4 font-mono text-xs text-[#F4EFF6]">
+        <div className="p-4 border border-[#E8B66D] bg-[#E8B66D]/10 text-[#E8B66D] rounded space-y-2">
           <div className="flex items-center gap-2">
-            <span className="px-1.5 py-0.5 text-[9px] font-bold bg-[#f59e0b] text-black">DEFERRED</span>
-            <span className="text-sm font-bold text-white uppercase">DRIFT ENGINE DEFERRED</span>
+            <span className="px-1.5 py-0.5 text-[9px] font-bold bg-[#E8B66D] text-[#211D29] rounded">DEFERRED</span>
+            <span className="text-sm font-bold text-[#F4EFF6] uppercase">DRIFT ENGINE DEFERRED</span>
           </div>
-          <p className="text-xs text-[#fef08a]">
+          <p className="text-xs text-[#E8B66D]">
             {statusMessage || "Module is registered for subsequent analytical phases."}
           </p>
         </div>
@@ -83,36 +83,36 @@ export const DriftView: React.FC<DriftViewProps> = ({ result, status, statusMess
     : null;
 
   return (
-    <div className="space-y-4 font-mono text-xs">
+    <div className="space-y-4 font-mono text-xs text-[#F4EFF6]">
       {/* Module Header Banner */}
-      <div className="p-3 border border-[#1f2533] bg-[#0c0e14] flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+      <div className="p-3 border border-[#443849] bg-[#2A2432] rounded flex flex-col sm:flex-row sm:items-center justify-between gap-2">
         <div>
           <div className="flex items-center gap-2">
-            <span className="text-xs text-[#94a3b8] uppercase font-bold">
+            <span className="text-xs text-[#B7ACBD] uppercase font-bold">
               04 COVARIATE &amp; CONCEPT DISTRIBUTION DRIFT
             </span>
             {isRealData ? (
-              <span className="px-1.5 py-0.2 text-[9px] font-bold bg-[#10b981]/20 text-[#10b981] border border-[#10b981]/40">
+              <span className="px-1.5 py-0.2 text-[9px] font-bold bg-[#B7D7A8]/20 text-[#B7D7A8] border border-[#B7D7A8]/40 rounded">
                 REAL STATISTICAL EVIDENCE
               </span>
             ) : (
-              <span className="px-1.5 py-0.2 text-[9px] font-bold bg-[#f59e0b]/20 text-[#f59e0b] border border-[#f59e0b]/40">
+              <span className="px-1.5 py-0.2 text-[9px] font-bold bg-[#E8B66D]/20 text-[#E8B66D] border border-[#E8B66D]/40 rounded">
                 DEMO / SYNTHETIC FIXTURE FALLBACK
               </span>
             )}
           </div>
-          <div className="text-[11px] text-[#64748b] mt-0.5">
+          <div className="text-[11px] text-[#8E8295] mt-0.5">
             Two-sample Kolmogorov-Smirnov continuous test, Population Stability Index (PSI), Wasserstein-1 metric, and Chi-Square contingency.
           </div>
         </div>
 
         <div
-          className={`px-2.5 py-1 text-xs font-bold shrink-0 ${
+          className={`px-2.5 py-1 text-xs font-bold shrink-0 rounded ${
             summary.criticalDriftCount > 0 || (summary.maxPsi && summary.maxPsi >= 0.25)
-              ? "bg-[#ef4444] text-black"
+              ? "bg-[#F18B78] text-[#211D29]"
               : summary.highDriftCount > 0 || summary.mediumDriftCount > 0
-              ? "bg-[#f59e0b] text-black"
-              : "bg-[#10b981] text-black"
+              ? "bg-[#E8B66D] text-[#211D29]"
+              : "bg-[#B7D7A8] text-[#211D29]"
           }`}
         >
           {summary.criticalDriftCount > 0 || (summary.maxPsi && summary.maxPsi >= 0.25)
@@ -125,85 +125,85 @@ export const DriftView: React.FC<DriftViewProps> = ({ result, status, statusMess
 
       {/* Metrics Summary Grid */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
-        <div className="p-2.5 border border-[#1f2533] bg-[#0c0e14]">
-          <div className="text-[10px] text-[#64748b] uppercase">MAX PSI (STABILITY)</div>
+        <div className="p-2.5 border border-[#443849] bg-[#2A2432] rounded">
+          <div className="text-[10px] text-[#8E8295] uppercase">MAX PSI (STABILITY)</div>
           <div
             className={`text-xl font-bold tabular-nums mt-0.5 ${
               (summary.maxPsi || 0) >= 0.25
-                ? "text-[#ef4444]"
+                ? "text-[#F18B78]"
                 : (summary.maxPsi || 0) >= 0.10
-                ? "text-[#f59e0b]"
-                : "text-[#10b981]"
+                ? "text-[#E8B66D]"
+                : "text-[#B7D7A8]"
             }`}
           >
             {summary.maxPsi !== undefined && summary.maxPsi !== null ? summary.maxPsi.toFixed(3) : "0.000"}
           </div>
-          <div className="text-[10px] text-[#64748b] truncate">
+          <div className="text-[10px] text-[#8E8295] truncate">
             {summary.maxPsiFeature || "None"} (&gt;= 0.25 is High)
           </div>
         </div>
 
-        <div className="p-2.5 border border-[#1f2533] bg-[#0c0e14]">
-          <div className="text-[10px] text-[#64748b] uppercase">STATISTICALLY SIGNIFICANT</div>
+        <div className="p-2.5 border border-[#443849] bg-[#2A2432] rounded">
+          <div className="text-[10px] text-[#8E8295] uppercase">STATISTICALLY SIGNIFICANT</div>
           <div
             className={`text-xl font-bold tabular-nums mt-0.5 ${
-              summary.statisticallySignificantCount > 0 ? "text-[#f59e0b]" : "text-[#10b981]"
+              summary.statisticallySignificantCount > 0 ? "text-[#E8B66D]" : "text-[#B7D7A8]"
             }`}
           >
             {summary.statisticallySignificantCount ?? 0} / {summary.featuresEvaluated ?? 0}
           </div>
-          <div className="text-[10px] text-[#64748b]">FDR adjusted p &lt; 0.05</div>
+          <div className="text-[10px] text-[#8E8295]">FDR adjusted p &lt; 0.05</div>
         </div>
 
-        <div className="p-2.5 border border-[#1f2533] bg-[#0c0e14]">
-          <div className="text-[10px] text-[#64748b] uppercase">PRACTICAL DRIFT (HIGH)</div>
+        <div className="p-2.5 border border-[#443849] bg-[#2A2432] rounded">
+          <div className="text-[10px] text-[#8E8295] uppercase">PRACTICAL DRIFT (HIGH)</div>
           <div
             className={`text-xl font-bold tabular-nums mt-0.5 ${
-              (summary.practicalDriftCount || 0) > 0 ? "text-[#ef4444]" : "text-white"
+              (summary.practicalDriftCount || 0) > 0 ? "text-[#F18B78]" : "text-[#F4EFF6]"
             }`}
           >
             {(summary.criticalDriftCount || 0) + (summary.highDriftCount || 0)} feature(s)
           </div>
-          <div className="text-[10px] text-[#64748b]">PSI &gt;= 0.25 or KS &gt;= 0.20</div>
+          <div className="text-[10px] text-[#8E8295]">PSI &gt;= 0.25 or KS &gt;= 0.20</div>
         </div>
 
-        <div className="p-2.5 border border-[#1f2533] bg-[#0c0e14]">
-          <div className="text-[10px] text-[#64748b] uppercase">WASSERSTEIN-1 (AVG)</div>
-          <div className="text-xl font-bold text-white tabular-nums mt-0.5">
+        <div className="p-2.5 border border-[#443849] bg-[#2A2432] rounded">
+          <div className="text-[10px] text-[#8E8295] uppercase">WASSERSTEIN-1 (AVG)</div>
+          <div className="text-xl font-bold text-[#F4EFF6] tabular-nums mt-0.5">
             {summary.avgWasserstein !== undefined && summary.avgWasserstein !== null
               ? summary.avgWasserstein.toFixed(4)
               : "0.0000"}
           </div>
-          <div className="text-[10px] text-[#64748b]">Earth Mover continuous mean</div>
+          <div className="text-[10px] text-[#8E8295]">Earth Mover continuous mean</div>
         </div>
       </div>
 
       {/* Schema Comparison Banner if Schema Drift Detected */}
       {schema && (schema.missingInEvaluation?.length > 0 || schema.newInEvaluation?.length > 0 || schema.dtypeDifferences?.length > 0) && (
-        <div className="border border-[#f59e0b] bg-[#16120b] p-3 space-y-2">
-          <div className="text-xs text-[#f59e0b] uppercase font-bold flex items-center justify-between">
+        <div className="border border-[#E8B66D] bg-[#E8B66D]/10 rounded p-3 space-y-2">
+          <div className="text-xs text-[#E8B66D] uppercase font-bold flex items-center justify-between">
             <span>SCHEMA TOPOLOGY DIFFERENCES DETECTED</span>
-            <span className="text-[10px] text-[#94a3b8]">
+            <span className="text-[10px] text-[#B7ACBD]">
               BASELINE: {schema.baselineRowCount?.toLocaleString()} rows | EVAL: {schema.evaluationRowCount?.toLocaleString()} rows
             </span>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 text-[11px]">
             {schema.missingInEvaluation?.length > 0 && (
-              <div className="p-2 border border-[#ef4444]/40 bg-[#170e10]">
-                <span className="text-[#ef4444] font-bold">MISSING IN EVALUATION ({schema.missingInEvaluation.length}):</span>
-                <div className="text-[#94a3b8] mt-0.5">{schema.missingInEvaluation.join(", ")}</div>
+              <div className="p-2 border border-[#F18B78]/40 bg-[#F18B78]/10 rounded">
+                <span className="text-[#F18B78] font-bold">MISSING IN EVALUATION ({schema.missingInEvaluation.length}):</span>
+                <div className="text-[#B7ACBD] mt-0.5">{schema.missingInEvaluation.join(", ")}</div>
               </div>
             )}
             {schema.newInEvaluation?.length > 0 && (
-              <div className="p-2 border border-[#3b82f6]/40 bg-[#0e1420]">
-                <span className="text-[#3b82f6] font-bold">NEW IN EVALUATION ({schema.newInEvaluation.length}):</span>
-                <div className="text-[#94a3b8] mt-0.5">{schema.newInEvaluation.join(", ")}</div>
+              <div className="p-2 border border-[#443849] bg-[#332B3C] rounded">
+                <span className="text-[#F18B78] font-bold">NEW IN EVALUATION ({schema.newInEvaluation.length}):</span>
+                <div className="text-[#B7ACBD] mt-0.5">{schema.newInEvaluation.join(", ")}</div>
               </div>
             )}
             {schema.dtypeDifferences?.length > 0 && (
-              <div className="p-2 border border-[#f59e0b]/40 bg-[#17130b]">
-                <span className="text-[#f59e0b] font-bold">TYPE MISMATCHES ({schema.dtypeDifferences.length}):</span>
-                <div className="text-[#94a3b8] mt-0.5">
+              <div className="p-2 border border-[#E8B66D]/40 bg-[#E8B66D]/10 rounded">
+                <span className="text-[#E8B66D] font-bold">TYPE MISMATCHES ({schema.dtypeDifferences.length}):</span>
+                <div className="text-[#B7ACBD] mt-0.5">
                   {schema.dtypeDifferences.map((m: any) => `${m.column} (${m.baselineInferred}->${m.evaluationInferred})`).join(", ")}
                 </div>
               </div>
@@ -214,10 +214,10 @@ export const DriftView: React.FC<DriftViewProps> = ({ result, status, statusMess
 
       {/* Structured Findings Section */}
       {findings.length > 0 && (
-        <div className="border border-[#1f2533] bg-[#0c0e14] p-3 space-y-2">
-          <div className="text-xs text-[#94a3b8] uppercase font-bold flex items-center justify-between">
+        <div className="border border-[#443849] bg-[#2A2432] rounded p-3 space-y-2">
+          <div className="text-xs text-[#B7ACBD] uppercase font-bold flex items-center justify-between">
             <span>DISTRIBUTION DRIFT FINDINGS &amp; EVIDENCE ({findings.length})</span>
-            <span className="text-[10px] text-[#64748b]">SORTED BY SEVERITY</span>
+            <span className="text-[10px] text-[#8E8295]">SORTED BY SEVERITY</span>
           </div>
 
           <div className="space-y-1.5">
@@ -225,38 +225,38 @@ export const DriftView: React.FC<DriftViewProps> = ({ result, status, statusMess
               const isCrit = f.severity === "CRITICAL";
               const isWarn = f.severity === "WARNING" || f.severity === "HIGH";
               const borderColor = isCrit
-                ? "border-[#ef4444]"
+                ? "border-[#F18B78]"
                 : isWarn
-                ? "border-[#f59e0b]"
-                : "border-[#1f2533]";
-              const bgColor = isCrit ? "bg-[#170e10]" : isWarn ? "bg-[#16120b]" : "bg-[#141822]";
+                ? "border-[#E8B66D]"
+                : "border-[#443849]";
+              const bgColor = isCrit ? "bg-[#F18B78]/10" : isWarn ? "bg-[#E8B66D]/10" : "bg-[#332B3C]";
 
               return (
-                <div key={f.id || idx} className={`p-2.5 border ${borderColor} ${bgColor} space-y-1`}>
+                <div key={f.id || idx} className={`p-2.5 border ${borderColor} ${bgColor} rounded space-y-1`}>
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
                       <span
-                        className={`px-1.5 py-0.2 text-[9px] font-bold ${
+                        className={`px-1.5 py-0.2 text-[9px] font-bold rounded ${
                           isCrit
-                            ? "bg-[#ef4444] text-black"
+                            ? "bg-[#F18B78] text-[#211D29]"
                             : isWarn
-                            ? "bg-[#f59e0b] text-black"
-                            : "bg-[#3b82f6] text-white"
+                            ? "bg-[#E8B66D] text-[#211D29]"
+                            : "bg-[#332B3C] text-[#B7ACBD] border border-[#443849]"
                         }`}
                       >
                         {f.severity}
                       </span>
-                      <span className="text-white font-bold">{f.title || f.id}</span>
+                      <span className="text-[#F4EFF6] font-bold">{f.title || f.id}</span>
                     </div>
                     {f.affected_features?.length > 0 && (
-                      <span className="text-[10px] text-[#94a3b8] font-bold">
+                      <span className="text-[10px] text-[#B7ACBD] font-bold">
                         FEATURE: {f.affected_features.join(", ")}
                       </span>
                     )}
                   </div>
-                  <div className="text-[11px] text-[#94a3b8]">{f.description}</div>
+                  <div className="text-[11px] text-[#B7ACBD]">{f.description}</div>
                   {f.recommendation && (
-                    <div className="text-[11px] text-[#10b981] pt-1">
+                    <div className="text-[11px] text-[#B7D7A8] pt-1">
                       <strong>Remediation:</strong> {f.recommendation}
                     </div>
                   )}
@@ -268,14 +268,14 @@ export const DriftView: React.FC<DriftViewProps> = ({ result, status, statusMess
       )}
 
       {/* Selected Feature Drift Profile Inspector */}
-      <div className="border border-[#1f2533] bg-[#0c0e14] p-3">
-        <div className="text-xs text-[#94a3b8] mb-3 uppercase font-bold flex items-center justify-between">
+      <div className="border border-[#443849] bg-[#2A2432] rounded p-3">
+        <div className="text-xs text-[#B7ACBD] mb-3 uppercase font-bold flex items-center justify-between">
           <span>
             DRIFT PROFILE FOR SELECTED FEATURE:{" "}
-            <span className="text-[#3b82f6]">{selectedFeatureName}</span>
+            <span className="text-[#F18B78]">{selectedFeatureName}</span>
           </span>
           {selectedFeatureData && (
-            <span className="text-[10px] text-[#64748b]">
+            <span className="text-[10px] text-[#8E8295]">
               PSI: {selectedFeatureData.psi?.toFixed(4)} | TYPE: {selectedFeatureData.type} | SEVERITY: {selectedFeatureData.severity}
             </span>
           )}
@@ -289,21 +289,21 @@ export const DriftView: React.FC<DriftViewProps> = ({ result, status, statusMess
                 {selectedFeatureData.binning.bins.map((bin: any) => (
                   <div key={bin.binIndex} className="text-xs">
                     <div className="flex justify-between text-[11px] mb-1">
-                      <span className="text-[#f1f3f8] w-28 truncate">{bin.binRange}</span>
-                      <span className="text-[#64748b]">
+                      <span className="text-[#F4EFF6] w-28 truncate">{bin.binRange}</span>
+                      <span className="text-[#8E8295]">
                         Baseline: {(bin.baselineDensity * 100).toFixed(1)}% | Current: {(bin.currentDensity * 100).toFixed(1)}%
                       </span>
-                      <span className={bin.psiDelta > 0.03 ? "text-[#ef4444] font-bold" : "text-[#64748b]"}>
+                      <span className={bin.psiDelta > 0.03 ? "text-[#F18B78] font-bold" : "text-[#8E8295]"}>
                         PSI Contribution: {bin.psiDelta.toFixed(4)}
                       </span>
                     </div>
-                    <div className="grid grid-cols-2 gap-1 h-3 bg-[#141822] p-0.5 border border-[#1f2533]">
+                    <div className="grid grid-cols-2 gap-1 h-3 bg-[#1C1824] p-0.5 border border-[#443849] rounded">
                       <div
-                        className="bg-[#3b82f6] h-full"
+                        className="bg-[#332B3C] border border-[#443849] h-full rounded-xs"
                         style={{ width: `${Math.min(100, bin.baselineDensity * 100 * 2.5)}%` }}
                       />
                       <div
-                        className={bin.psiDelta > 0.03 ? "bg-[#ef4444] h-full" : "bg-[#10b981] h-full"}
+                        className={bin.psiDelta > 0.03 ? "bg-[#F18B78] h-full rounded-xs" : "bg-[#B7D7A8] h-full rounded-xs"}
                         style={{ width: `${Math.min(100, bin.currentDensity * 100 * 2.5)}%` }}
                       />
                     </div>
@@ -315,21 +315,21 @@ export const DriftView: React.FC<DriftViewProps> = ({ result, status, statusMess
                 {selectedFeatureData.categoryDistribution.map((cat: any) => (
                   <div key={cat.category} className="text-xs">
                     <div className="flex justify-between text-[11px] mb-1">
-                      <span className="text-[#f1f3f8] w-28 truncate font-bold">{cat.category}</span>
-                      <span className="text-[#64748b]">
+                      <span className="text-[#F4EFF6] w-28 truncate font-bold">{cat.category}</span>
+                      <span className="text-[#8E8295]">
                         Baseline: {(cat.baselineProportion * 100).toFixed(1)}% ({cat.baselineCount}) | Current: {(cat.evaluationProportion * 100).toFixed(1)}% ({cat.evaluationCount})
                       </span>
-                      <span className={Math.abs(cat.proportionDelta) > 0.05 ? "text-[#f59e0b] font-bold" : "text-[#64748b]"}>
+                      <span className={Math.abs(cat.proportionDelta) > 0.05 ? "text-[#E8B66D] font-bold" : "text-[#8E8295]"}>
                         Delta: {(cat.proportionDelta * 100).toFixed(1)}% (PSI d: {cat.psiDelta?.toFixed(4)})
                       </span>
                     </div>
-                    <div className="grid grid-cols-2 gap-1 h-3 bg-[#141822] p-0.5 border border-[#1f2533]">
+                    <div className="grid grid-cols-2 gap-1 h-3 bg-[#1C1824] p-0.5 border border-[#443849] rounded">
                       <div
-                        className="bg-[#3b82f6] h-full"
+                        className="bg-[#332B3C] border border-[#443849] h-full rounded-xs"
                         style={{ width: `${Math.min(100, cat.baselineProportion * 100 * 2)}%` }}
                       />
                       <div
-                        className={Math.abs(cat.proportionDelta) > 0.05 ? "bg-[#f59e0b] h-full" : "bg-[#10b981] h-full"}
+                        className={Math.abs(cat.proportionDelta) > 0.05 ? "bg-[#E8B66D] h-full rounded-xs" : "bg-[#B7D7A8] h-full rounded-xs"}
                         style={{ width: `${Math.min(100, cat.evaluationProportion * 100 * 2)}%` }}
                       />
                     </div>
@@ -337,7 +337,7 @@ export const DriftView: React.FC<DriftViewProps> = ({ result, status, statusMess
                 ))}
               </div>
             ) : (
-              <div className="text-[11px] text-[#64748b] py-2">
+              <div className="text-[11px] text-[#8E8295] py-2">
                 No granular binning data available for this feature.
               </div>
             )}
@@ -348,18 +348,18 @@ export const DriftView: React.FC<DriftViewProps> = ({ result, status, statusMess
             {DISTRIBUTION_BINS.map((bin) => (
               <div key={bin.binIndex} className="text-xs">
                 <div className="flex justify-between text-[11px] mb-1">
-                  <span className="text-[#f1f3f8] w-20">{bin.binRange}</span>
-                  <span className="text-[#64748b]">
+                  <span className="text-[#F4EFF6] w-20">{bin.binRange}</span>
+                  <span className="text-[#8E8295]">
                     Baseline: {(bin.baselineDensity * 100).toFixed(1)}% | Current: {(bin.currentDensity * 100).toFixed(1)}%
                   </span>
-                  <span className={bin.psiDelta > 0.03 ? "text-[#ef4444] font-bold" : "text-[#64748b]"}>
+                  <span className={bin.psiDelta > 0.03 ? "text-[#F18B78] font-bold" : "text-[#8E8295]"}>
                     PSI Contribution: {bin.psiDelta.toFixed(3)}
                   </span>
                 </div>
-                <div className="grid grid-cols-2 gap-1 h-3 bg-[#141822] p-0.5 border border-[#1f2533]">
-                  <div className="bg-[#3b82f6] h-full" style={{ width: `${bin.baselineDensity * 100 * 2}%` }} />
+                <div className="grid grid-cols-2 gap-1 h-3 bg-[#1C1824] p-0.5 border border-[#443849] rounded">
+                  <div className="bg-[#332B3C] border border-[#443849] h-full rounded-xs" style={{ width: `${bin.baselineDensity * 100 * 2}%` }} />
                   <div
-                    className={bin.psiDelta > 0.03 ? "bg-[#ef4444] h-full" : "bg-[#10b981] h-full"}
+                    className={bin.psiDelta > 0.03 ? "bg-[#F18B78] h-full rounded-xs" : "bg-[#B7D7A8] h-full rounded-xs"}
                     style={{ width: `${bin.currentDensity * 100 * 2}%` }}
                   />
                 </div>
@@ -371,16 +371,16 @@ export const DriftView: React.FC<DriftViewProps> = ({ result, status, statusMess
 
       {/* Feature Drift Ranking & Statistical Evidence Table */}
       {isRealData && features.length > 0 && (
-        <div className="border border-[#1f2533] bg-[#0c0e14] p-3">
-          <div className="text-xs text-[#94a3b8] mb-3 uppercase font-bold flex items-center justify-between">
+        <div className="border border-[#443849] bg-[#2A2432] rounded p-3">
+          <div className="text-xs text-[#B7ACBD] mb-3 uppercase font-bold flex items-center justify-between">
             <span>FEATURE-BY-FEATURE DRIFT MATRIX ({features.length} FEATURES)</span>
-            <span className="text-[10px] text-[#64748b]">CLICK ROW TO INSPECT BINS</span>
+            <span className="text-[10px] text-[#8E8295]">CLICK ROW TO INSPECT BINS</span>
           </div>
 
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs">
               <thead>
-                <tr className="border-b border-[#1f2533] text-[#64748b] text-[10px] uppercase">
+                <tr className="border-b border-[#443849] text-[#8E8295] text-[10px] uppercase">
                   <th className="py-1.5 px-2">Feature Name</th>
                   <th className="py-1.5 px-2">Type</th>
                   <th className="py-1.5 px-2">KS / Chi2 Stat</th>
@@ -393,7 +393,7 @@ export const DriftView: React.FC<DriftViewProps> = ({ result, status, statusMess
                   <th className="py-1.5 px-2">Severity</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-[#1f2533] tabular-nums">
+              <tbody className="divide-y divide-[#443849] tabular-nums">
                 {features.map((f: any) => {
                   const isSelected = f.feature === selectedFeatureName;
                   const isCrit = f.severity === "CRITICAL";
@@ -410,19 +410,19 @@ export const DriftView: React.FC<DriftViewProps> = ({ result, status, statusMess
                       key={f.feature}
                       onClick={() => setSelectedFeatureName(f.feature)}
                       className={`cursor-pointer transition-colors ${
-                        isSelected ? "bg-[#141c2e] border-l-2 border-[#3b82f6]" : "hover:bg-[#12161f]"
+                        isSelected ? "bg-[#332B3C] border-l-2 border-[#F18B78]" : "hover:bg-[#332B3C]/50"
                       }`}
                     >
-                      <td className="py-2 px-2 text-[#f1f3f8] font-bold">{f.feature}</td>
-                      <td className="py-2 px-2 text-[#94a3b8]">
-                        <span className="px-1 py-0.2 bg-[#141822] border border-[#222633] text-[10px]">
+                      <td className="py-2 px-2 text-[#F4EFF6] font-bold">{f.feature}</td>
+                      <td className="py-2 px-2 text-[#B7ACBD]">
+                        <span className="px-1 py-0.2 bg-[#332B3C] border border-[#443849] text-[10px] rounded">
                           {f.type}
                         </span>
                       </td>
-                      <td className="py-2 px-2 text-[#f1f3f8]">
+                      <td className="py-2 px-2 text-[#F4EFF6]">
                         {statVal !== undefined && statVal !== null ? statVal.toFixed(3) : "-"}
                       </td>
-                      <td className="py-2 px-2 text-[#64748b]">
+                      <td className="py-2 px-2 text-[#8E8295]">
                         {rawP !== undefined && rawP !== null
                           ? rawP < 0.0001
                             ? rawP.toExponential(2)
@@ -431,7 +431,7 @@ export const DriftView: React.FC<DriftViewProps> = ({ result, status, statusMess
                       </td>
                       <td
                         className={`py-2 px-2 ${
-                          adjP !== undefined && adjP < 0.05 ? "text-[#f59e0b] font-bold" : "text-[#64748b]"
+                          adjP !== undefined && adjP < 0.05 ? "text-[#E8B66D] font-bold" : "text-[#8E8295]"
                         }`}
                       >
                         {adjP !== undefined && adjP !== null
@@ -440,7 +440,7 @@ export const DriftView: React.FC<DriftViewProps> = ({ result, status, statusMess
                             : adjP.toFixed(4)
                           : "-"}
                       </td>
-                      <td className="py-2 px-2 text-[#94a3b8]">
+                      <td className="py-2 px-2 text-[#B7ACBD]">
                         {f.type === "NUMERIC"
                           ? normW !== undefined && normW !== null
                             ? `${normW.toFixed(3)} (${f.wasserstein?.normalization})`
@@ -450,10 +450,10 @@ export const DriftView: React.FC<DriftViewProps> = ({ result, status, statusMess
                       <td
                         className={`py-2 px-2 font-bold ${
                           (f.psi || 0) >= 0.25
-                            ? "text-[#ef4444]"
+                            ? "text-[#F18B78]"
                             : (f.psi || 0) >= 0.10
-                            ? "text-[#f59e0b]"
-                            : "text-[#10b981]"
+                            ? "text-[#E8B66D]"
+                            : "text-[#B7D7A8]"
                         }`}
                       >
                         {f.psi !== undefined && f.psi !== null ? f.psi.toFixed(4) : "0.0000"}
@@ -461,7 +461,7 @@ export const DriftView: React.FC<DriftViewProps> = ({ result, status, statusMess
                       <td className="py-2 px-2">
                         <span
                           className={`text-[10px] font-bold ${
-                            f.statistically_significant ? "text-[#f59e0b]" : "text-[#64748b]"
+                            f.statistically_significant ? "text-[#E8B66D]" : "text-[#8E8295]"
                           }`}
                         >
                           {f.statistically_significant ? "TRUE" : "FALSE"}
@@ -471,10 +471,10 @@ export const DriftView: React.FC<DriftViewProps> = ({ result, status, statusMess
                         <span
                           className={`text-[10px] font-bold ${
                             f.practical_drift === "HIGH"
-                              ? "text-[#ef4444]"
+                              ? "text-[#F18B78]"
                               : f.practical_drift === "MEDIUM"
-                              ? "text-[#f59e0b]"
-                              : "text-[#10b981]"
+                              ? "text-[#E8B66D]"
+                              : "text-[#B7D7A8]"
                           }`}
                         >
                           {f.practical_drift || "LOW"}
@@ -482,14 +482,14 @@ export const DriftView: React.FC<DriftViewProps> = ({ result, status, statusMess
                       </td>
                       <td className="py-2 px-2">
                         <span
-                          className={`px-1.5 py-0.5 text-[9px] font-bold ${
+                          className={`px-1.5 py-0.5 text-[9px] font-bold rounded ${
                             isCrit
-                              ? "bg-[#ef4444] text-black"
+                              ? "bg-[#F18B78] text-[#211D29]"
                               : isHigh
-                              ? "bg-[#ef4444] text-black"
+                              ? "bg-[#F18B78] text-[#211D29]"
                               : isWarn
-                              ? "bg-[#f59e0b] text-black"
-                              : "bg-[#10b981] text-black"
+                              ? "bg-[#E8B66D] text-[#211D29]"
+                              : "bg-[#B7D7A8] text-[#211D29]"
                           }`}
                         >
                           {f.severity || "LOW"}

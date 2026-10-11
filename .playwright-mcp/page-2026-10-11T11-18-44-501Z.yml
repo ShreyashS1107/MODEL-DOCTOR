@@ -1,0 +1,125 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - banner [ref=e3]:
+      - generic [ref=e4]:
+        - link "MODEL DOCTOR" [ref=e5] [cursor=pointer]:
+          - /url: /
+        - generic [ref=e6]: /
+        - generic [ref=e7]: CONFIGURATION CONSOLE & ARTIFACT INTELLIGENCE
+      - link "← BACK TO HOME" [ref=e9] [cursor=pointer]:
+        - /url: /
+    - main [ref=e10]:
+      - generic [ref=e11]:
+        - generic [ref=e12]:
+          - heading "DIAGNOSTIC RUN CONFIGURATION" [level=1] [ref=e13]
+          - paragraph [ref=e14]: Select or upload models & datasets with live schema inspection and preflight validation.
+        - generic [ref=e15]:
+          - button "REAL ARTIFACTS" [ref=e16] [cursor=pointer]
+          - button "BENCHMARK FIXTURES" [ref=e17] [cursor=pointer]
+      - generic [ref=e18]:
+        - generic [ref=e19]:
+          - generic [ref=e20]:
+            - generic [ref=e21]: 1. MODEL ARTIFACT
+            - generic [ref=e22]:
+              - button "EXISTING (0)" [ref=e23] [cursor=pointer]
+              - button "+ UPLOAD NEW" [ref=e24] [cursor=pointer]
+          - generic [ref=e25]: No stored model artifacts found. Please switch to “+ UPLOAD NEW” to upload a model.
+        - generic [ref=e27]:
+          - generic [ref=e28]:
+            - generic [ref=e29]: 2. EVALUATION DATASET (REQUIRED)
+            - generic [ref=e30]:
+              - button "EXISTING (0)" [ref=e31] [cursor=pointer]
+              - button "+ UPLOAD NEW" [ref=e32] [cursor=pointer]
+          - generic [ref=e33]: No stored dataset artifacts found. Please switch to “+ UPLOAD NEW” to upload a dataset.
+        - generic [ref=e36]:
+          - generic [ref=e37]: 3. BASELINE REFERENCE DATASET (OPTIONAL)
+          - generic [ref=e38]:
+            - button "EXISTING (0)" [ref=e39] [cursor=pointer]
+            - button "+ UPLOAD NEW" [ref=e40] [cursor=pointer]
+            - button "NONE" [ref=e41] [cursor=pointer]
+        - generic [ref=e42]:
+          - generic [ref=e43]: 4. SCHEMA INTELLIGENCE & BINDING
+          - generic [ref=e45]:
+            - generic [ref=e46]:
+              - generic [ref=e47]: "Target / Ground Truth Column:"
+              - textbox "e.g. is_fraud" [ref=e48]: is_fraud
+            - generic [ref=e49]:
+              - generic [ref=e50]: "Prediction Probability Column (Optional):"
+              - textbox "e.g. pred_prob" [ref=e51]: pred_prob
+            - generic [ref=e52]:
+              - generic [ref=e53]: "Protected Attribute (Bias / Fairness):"
+              - textbox "e.g. is_foreign_ip" [ref=e54]: is_foreign_ip
+        - generic [ref=e55]:
+          - generic [ref=e56]:
+            - generic [ref=e57]: 5. DIAGNOSTIC ANALYTICAL MODULES
+            - generic [ref=e58]: 7 / 7 SELECTED
+          - generic [ref=e59]:
+            - generic [ref=e60] [cursor=pointer]:
+              - generic [ref=e61]:
+                - checkbox [checked] [ref=e62]
+                - generic [ref=e63]:
+                  - generic [ref=e64]:
+                    - generic [ref=e65]: "01"
+                    - generic [ref=e66]: DATA QUALITY
+                  - generic [ref=e67]: Missingness topology, constant columns, duplicate hashes, outlier fractions.
+              - generic [ref=e68]: READY
+            - generic [ref=e69] [cursor=pointer]:
+              - generic [ref=e70]:
+                - checkbox [checked] [ref=e71]
+                - generic [ref=e72]:
+                  - generic [ref=e73]:
+                    - generic [ref=e74]: "02"
+                    - generic [ref=e75]: DATA LEAKAGE
+                  - generic [ref=e76]: Target mutual information, proxy surrogate detection, train/eval contamination.
+              - generic [ref=e77]: READY
+            - generic [ref=e78] [cursor=pointer]:
+              - generic [ref=e79]:
+                - checkbox [checked] [ref=e80]
+                - generic [ref=e81]:
+                  - generic [ref=e82]:
+                    - generic [ref=e83]: "03"
+                    - generic [ref=e84]: DISTRIBUTION DRIFT
+                  - generic [ref=e85]: Two-sample KS-test, quantile-binned PSI, Wasserstein-1 distance with FDR control.
+              - generic [ref=e86]: READY
+            - generic [ref=e87] [cursor=pointer]:
+              - generic [ref=e88]:
+                - checkbox [checked] [ref=e89]
+                - generic [ref=e90]:
+                  - generic [ref=e91]:
+                    - generic [ref=e92]: "04"
+                    - generic [ref=e93]: PERFORMANCE & CALIBRATION
+                  - generic [ref=e94]: ROC-AUC, PR-AUC, Expected Calibration Error (ECE), 10-bin reliability diagrams, Brier score.
+              - generic [ref=e95]: READY
+            - generic [ref=e96] [cursor=pointer]:
+              - generic [ref=e97]:
+                - checkbox [checked] [ref=e98]
+                - generic [ref=e99]:
+                  - generic [ref=e100]:
+                    - generic [ref=e101]: "05"
+                    - generic [ref=e102]: EXPLAINABILITY (SHAP)
+                  - generic [ref=e103]: TreeSHAP feature attributions, permutation importance, waterfall decomposition profiles.
+              - generic [ref=e104]: READY
+            - generic [ref=e105] [cursor=pointer]:
+              - generic [ref=e106]:
+                - checkbox [checked] [ref=e107]
+                - generic [ref=e108]:
+                  - generic [ref=e109]:
+                    - generic [ref=e110]: "06"
+                    - generic [ref=e111]: BIAS & FAIRNESS
+                  - generic [ref=e112]: Demographic parity ratios, equalized odds gaps, 80% disparate impact rule.
+              - generic [ref=e113]: READY
+            - generic [ref=e114] [cursor=pointer]:
+              - generic [ref=e115]:
+                - checkbox [checked] [ref=e116]
+                - generic [ref=e117]:
+                  - generic [ref=e118]:
+                    - generic [ref=e119]: "07"
+                    - generic [ref=e120]: ADVERSARIAL ROBUSTNESS
+                  - generic [ref=e121]: Gaussian noise jitter stress, feature perturbation resilience, decision boundary margin flips.
+              - generic [ref=e122]: READY
+        - generic [ref=e123]:
+          - generic [ref=e124]: 6. PREFLIGHT VALIDATION STATUS
+          - generic [ref=e126]:
+            - generic [ref=e127]: "Model: None • Eval: None"
+            - button "RUN DIAGNOSTIC →" [disabled] [ref=e128] [cursor=pointer]
+  - button "Open Next.js Dev Tools" [ref=e134] [cursor=pointer]

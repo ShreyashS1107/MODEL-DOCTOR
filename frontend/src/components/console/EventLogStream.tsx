@@ -10,7 +10,6 @@ interface EventLogStreamProps {
 
 export const EventLogStream: React.FC<EventLogStreamProps> = ({
   logs,
-  onClearLogs,
 }) => {
   const [filterLevel, setFilterLevel] = useState<"ALL" | "CRIT" | "WARN" | "INFO">("ALL");
   const [isExpanded, setIsExpanded] = useState(false);
@@ -23,65 +22,65 @@ export const EventLogStream: React.FC<EventLogStreamProps> = ({
   const getLevelBadgeClass = (level: LogEntry["level"]) => {
     switch (level) {
       case "CRIT":
-        return "bg-[#ef4444] text-black font-bold";
+        return "bg-[#F18B78] text-[#211D29] font-bold";
       case "WARN":
-        return "bg-[#f59e0b] text-black font-bold";
+        return "bg-[#E8B66D] text-[#211D29] font-bold";
       case "EVAL":
-        return "bg-[#3b82f6] text-white font-bold";
+        return "bg-[#B7D7A8] text-[#211D29] font-bold";
       case "INFO":
       default:
-        return "bg-[#1f2533] text-[#94a3b8]";
+        return "bg-[#332B3C] text-[#B7ACBD]";
     }
   };
 
   return (
     <div
-      className={`bg-[#0c0e14] border-t border-[#1f2533] flex flex-col shrink-0 select-none font-mono text-xs transition-all ${
+      className={`bg-[#2A2432] border-t border-[#443849] flex flex-col shrink-0 select-none font-mono text-xs transition-all ${
         isExpanded ? "h-64" : "h-36"
       }`}
     >
       {/* Console Toolbar Header */}
-      <div className="h-8 bg-[#090b0e] border-b border-[#1f2533] px-3 flex items-center justify-between shrink-0">
+      <div className="h-8 bg-[#211D29] border-b border-[#443849] px-3 flex items-center justify-between shrink-0">
         <div className="flex items-center gap-2">
-          <span className="text-[10px] text-[#64748b] uppercase font-bold tracking-wider">
+          <span className="text-[10px] text-[#B7ACBD] uppercase font-bold tracking-wider">
             DIAGNOSTIC EVENT STREAM
           </span>
-          <span className="text-[10px] text-[#64748b]">
+          <span className="text-[10px] text-[#8E8295]">
             ({filteredLogs.length} entries)
           </span>
         </div>
 
         {/* Filter Buttons */}
         <div className="flex items-center gap-2 text-[10px]">
-          <div className="flex items-center bg-[#141822] border border-[#222633]">
+          <div className="flex items-center bg-[#332B3C] border border-[#443849] rounded-sm">
             <button
               onClick={() => setFilterLevel("ALL")}
-              className={`px-2 py-0.5 ${
-                filterLevel === "ALL" ? "bg-[#1f2533] text-white font-bold" : "text-[#64748b] hover:text-[#94a3b8]"
+              className={`px-2 py-0.5 cursor-pointer ${
+                filterLevel === "ALL" ? "bg-[#443849] text-[#F4EFF6] font-bold" : "text-[#8E8295] hover:text-[#B7ACBD]"
               }`}
             >
               ALL
             </button>
             <button
               onClick={() => setFilterLevel("CRIT")}
-              className={`px-2 py-0.5 ${
-                filterLevel === "CRIT" ? "bg-[#1f2533] text-[#ef4444] font-bold" : "text-[#64748b] hover:text-[#94a3b8]"
+              className={`px-2 py-0.5 cursor-pointer ${
+                filterLevel === "CRIT" ? "bg-[#443849] text-[#F18B78] font-bold" : "text-[#8E8295] hover:text-[#B7ACBD]"
               }`}
             >
               CRIT
             </button>
             <button
               onClick={() => setFilterLevel("WARN")}
-              className={`px-2 py-0.5 ${
-                filterLevel === "WARN" ? "bg-[#1f2533] text-[#f59e0b] font-bold" : "text-[#64748b] hover:text-[#94a3b8]"
+              className={`px-2 py-0.5 cursor-pointer ${
+                filterLevel === "WARN" ? "bg-[#443849] text-[#E8B66D] font-bold" : "text-[#8E8295] hover:text-[#B7ACBD]"
               }`}
             >
               WARN
             </button>
             <button
               onClick={() => setFilterLevel("INFO")}
-              className={`px-2 py-0.5 ${
-                filterLevel === "INFO" ? "bg-[#1f2533] text-[#3b82f6] font-bold" : "text-[#64748b] hover:text-[#94a3b8]"
+              className={`px-2 py-0.5 cursor-pointer ${
+                filterLevel === "INFO" ? "bg-[#443849] text-[#B7D7A8] font-bold" : "text-[#8E8295] hover:text-[#B7ACBD]"
               }`}
             >
               INFO
@@ -90,7 +89,7 @@ export const EventLogStream: React.FC<EventLogStreamProps> = ({
 
           <button
             onClick={() => setIsExpanded(!isExpanded)}
-            className="px-2 py-0.5 bg-[#141822] hover:bg-[#1a202c] border border-[#222633] text-[#94a3b8] hover:text-white"
+            className="px-2 py-0.5 bg-[#332B3C] hover:bg-[#3D3448] border border-[#443849] text-[#B7ACBD] hover:text-[#F4EFF6] rounded-sm cursor-pointer"
           >
             {isExpanded ? "COLLAPSE" : "EXPAND"}
           </button>
@@ -98,20 +97,20 @@ export const EventLogStream: React.FC<EventLogStreamProps> = ({
       </div>
 
       {/* Log Entry Rows */}
-      <div className="flex-1 overflow-y-auto p-2 space-y-1 bg-[#07090c] font-mono text-[11px]">
+      <div className="flex-1 overflow-y-auto p-2 space-y-1 bg-[#1C1824] font-mono text-[11px]">
         {filteredLogs.map((log) => (
           <div
             key={log.id}
-            className="flex items-start gap-2 hover:bg-[#10141d] px-1.5 py-0.5 leading-tight"
+            className="flex items-start gap-2 hover:bg-[#2A2432] px-1.5 py-0.5 leading-tight rounded-xs"
           >
-            <span className="text-[#64748b] tabular-nums shrink-0">{log.timestamp}</span>
-            <span className={`px-1 py-0.2 text-[9px] shrink-0 ${getLevelBadgeClass(log.level)}`}>
+            <span className="text-[#8E8295] tabular-nums shrink-0">{log.timestamp}</span>
+            <span className={`px-1 py-0.2 text-[9px] shrink-0 rounded-xs ${getLevelBadgeClass(log.level)}`}>
               {log.level}
             </span>
-            <span className="text-[#94a3b8] shrink-0 w-36 truncate font-semibold">
+            <span className="text-[#B7ACBD] shrink-0 w-36 truncate font-semibold">
               [{log.module}]
             </span>
-            <span className="text-[#f1f3f8] break-all">{log.message}</span>
+            <span className="text-[#F4EFF6] break-all">{log.message}</span>
           </div>
         ))}
       </div>
